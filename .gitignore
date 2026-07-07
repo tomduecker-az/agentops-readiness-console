@@ -141,3 +141,60 @@ dist
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
 .vite/
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+.venv/
+venv/
+env/
+.env
+.env.*
+!.env.example
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# FastAPI / local runtime
+*.log
+logs/
+tmp/
+temp/
+
+# Supabase
+.supabase/
+supabase/.branches/
+supabase/.temp/
+
+# Local databases / generated data
+*.db
+*.sqlite
+*.sqlite3
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.example.json
+
+# Docker
+docker-compose.override.yml
+
+# Build artifacts
+dist/
+build/
+coverage/
+
+# Secrets / credentials
+*.pem
+*.key
+*.crt
+*.p12
+*.json.key
+service-account*.json
