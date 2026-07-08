@@ -1,0 +1,6 @@
+record_id,payment_date,payment_amount,source_system,exception_type,status,assigned_role,days_open,requires_supervisor_review,notes
+REC-001,2026-01-03,245.50,SystemA,Missing Reference,Open,Analyst,3,false,Missing source reference
+REC-002,2026-01-04,8200.00,SystemB,Amount Mismatch,Pending Review,Supervisor,7,true,Amount exceeds approval threshold
+REC-003,2026-01-05,155.25,SystemA,Duplicate Indicator,Open,Analyst,2,true,Possible duplicate payment
+REC-004,2026-01-06,475.00,SystemC,Unmatched Payment,Open,Analyst,5,false,No matching record found
+REC-005,2026-01-07,12900.00,SystemB,Missing Source ID,Pending Review,Supervisor,9,true,Source identifier missing
