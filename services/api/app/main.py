@@ -1,7 +1,9 @@
 from fastapi import FastAPI
+
+from app.core.config import get_settings
 from app.routes.health import router as health_router
 from app.routes.runs import router as runs_router
-from app.core.config import get_settings
+from app.routes.workflows import router as workflows_router
 
 
 settings = get_settings()
@@ -13,6 +15,7 @@ app = FastAPI(
 )
 
 app.include_router(health_router, prefix="/health", tags=["health"])
+app.include_router(workflows_router, prefix="/workflows", tags=["workflows"])
 app.include_router(runs_router, prefix="/runs", tags=["runs"])
 
 
