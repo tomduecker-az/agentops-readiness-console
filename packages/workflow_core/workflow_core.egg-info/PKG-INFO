@@ -1,0 +1,6 @@
+Metadata-Version: 2.4
+Name: workflow-core
+Version: 0.1.0
+Summary: Reusable workflow registry and document access logic for AgentOps Readiness Console.
+Requires-Python: >=3.12
+Requires-Dist: pydantic>=2.0.0

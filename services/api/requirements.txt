@@ -5,3 +5,5 @@ pydantic-settings==2.11.0
 python-dotenv==1.1.1
 openai-agents==0.3.2
 mcp==1.16.0
+
+-e packages/workflow_core
