@@ -7,5 +7,5 @@ openai-agents==0.3.2
 mcp==1.16.0
 
 -e packages/workflow_core
--e packages/workflow_core
 -e packages/policy_core
+-e packages/audit_core
