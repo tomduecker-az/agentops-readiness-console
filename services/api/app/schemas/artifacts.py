@@ -1,4 +1,7 @@
+from datetime import UTC, datetime
 from enum import Enum
+from typing import Any
+
 from pydantic import BaseModel, Field
 
 
@@ -21,4 +24,5 @@ class AnalysisArtifact(BaseModel):
     run_id: str
     artifact_type: ArtifactType
     status: ArtifactStatus = ArtifactStatus.draft
-    content: dict = Field(default_factory=dict)
+    content: dict[str, Any] = Field(default_factory=dict)
+    created_at: datetime = Field(default_factory=lambda: datetime.now(UTC))
