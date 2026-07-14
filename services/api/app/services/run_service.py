@@ -43,5 +43,5 @@ def create_workflow_run(request: WorkflowRunRequest) -> WorkflowRunResponse:
         run_id=run_id,
         workflow_id=workflow.workflow_id,
         status="created",
-        message="Workflow run created and initial workflow map generated.",
+        message="Workflow run created and initial analysis artifacts generated.",
     )

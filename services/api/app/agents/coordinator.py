@@ -1,5 +1,6 @@
 from audit_core import AuditEventType
 
+from app.agents.data_sensitivity import generate_data_sensitivity_report
 from app.agents.workflow_mapper import generate_workflow_map
 from app.services.audit_service import log_audit_event
 
@@ -23,6 +24,16 @@ def run_initial_analysis(run_id: str, workflow_id: str) -> list[dict]:
         workflow_id=workflow_id,
     )
 
+    data_sensitivity_artifact = generate_data_sensitivity_report(
+        run_id=run_id,
+        workflow_id=workflow_id,
+    )
+
+    artifacts = [
+        workflow_map_artifact,
+        data_sensitivity_artifact,
+    ]
+
     log_audit_event(
         run_id=run_id,
         event_type=AuditEventType.agent_completed,
@@ -30,8 +41,10 @@ def run_initial_analysis(run_id: str, workflow_id: str) -> list[dict]:
         details={
             "workflow_id": workflow_id,
             "phase": "initial_analysis",
-            "artifacts_created": [workflow_map_artifact["artifact_id"]],
+            "artifacts_created": [
+                artifact["artifact_id"] for artifact in artifacts
+            ],
         },
     )
 
-    return [workflow_map_artifact]
+    return artifacts

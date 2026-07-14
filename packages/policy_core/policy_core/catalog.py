@@ -12,6 +12,42 @@ DATA_CLASSIFICATION_CATALOG: dict[str, dict[str, object]] = {
         "requires_redaction": False,
         "rationale": "Synthetic/internal record identifiers are allowed in the demo context.",
     },
+        "payment_date": {
+        "sensitivity": DataSensitivity.financial_internal,
+        "allowed_in_model_context": True,
+        "requires_redaction": False,
+        "rationale": "Payment dates are financial transaction metadata and should be handled as internal financial data.",
+    },
+    "exception_type": {
+        "sensitivity": DataSensitivity.internal,
+        "allowed_in_model_context": True,
+        "requires_redaction": False,
+        "rationale": "Exception type is internal operational metadata.",
+    },
+    "status": {
+        "sensitivity": DataSensitivity.internal,
+        "allowed_in_model_context": True,
+        "requires_redaction": False,
+        "rationale": "Workflow status is internal operational metadata.",
+    },
+    "assigned_role": {
+        "sensitivity": DataSensitivity.internal,
+        "allowed_in_model_context": True,
+        "requires_redaction": False,
+        "rationale": "Assigned role is internal process metadata and does not identify an individual in the demo workflow.",
+    },
+    "days_open": {
+        "sensitivity": DataSensitivity.internal,
+        "allowed_in_model_context": True,
+        "requires_redaction": False,
+        "rationale": "Days open is internal process-aging metadata.",
+    },
+    "requires_supervisor_review": {
+        "sensitivity": DataSensitivity.internal,
+        "allowed_in_model_context": True,
+        "requires_redaction": False,
+        "rationale": "Supervisor review requirement is internal control metadata.",
+    },
     "payment_amount": {
         "sensitivity": DataSensitivity.financial_internal,
         "allowed_in_model_context": True,
@@ -61,6 +97,37 @@ TOOL_PERMISSION_CATALOG: dict[str, dict[str, object]] = {
         ],
         "requires_human_approval": False,
         "rationale": "Reading registered workflow documents is allowed for analysis agents.",
+    },
+        "policy_server.classify_data": {
+        "access_level": ToolAccessLevel.read,
+        "allowed_agents": [
+            "data_sensitivity_classifier",
+            "risk_control_designer",
+            "coordinator",
+            "tool_policy_guardian",
+        ],
+        "requires_human_approval": False,
+        "rationale": "Data classification policy checks are read-only governance operations.",
+    },
+    "policy_server.get_required_controls": {
+        "access_level": ToolAccessLevel.read,
+        "allowed_agents": [
+            "risk_control_designer",
+            "hitl_designer",
+            "coordinator",
+            "tool_policy_guardian",
+        ],
+        "requires_human_approval": False,
+        "rationale": "Control lookup is a read-only governance operation.",
+    },
+    "policy_server.check_tool_permission": {
+        "access_level": ToolAccessLevel.read,
+        "allowed_agents": [
+            "coordinator",
+            "tool_policy_guardian",
+        ],
+        "requires_human_approval": False,
+        "rationale": "Tool permission checks are read-only governance operations.",
     },
     "document_server.search_documents": {
         "access_level": ToolAccessLevel.read,

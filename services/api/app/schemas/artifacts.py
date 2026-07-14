@@ -7,6 +7,7 @@ from pydantic import BaseModel, Field
 
 class ArtifactType(str, Enum):
     workflow_map = "workflow_map"
+    data_sensitivity_report = "data_sensitivity_report"
     risk_control_matrix = "risk_control_matrix"
     hitl_design = "hitl_design"
     implementation_backlog = "implementation_backlog"
