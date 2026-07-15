@@ -1,6 +1,7 @@
 from audit_core import AuditEventType
 
 from app.agents.data_sensitivity import generate_data_sensitivity_report
+from app.agents.hitl_designer import generate_hitl_design
 from app.agents.risk_control import generate_risk_control_matrix
 from app.agents.workflow_mapper import generate_workflow_map
 from app.services.audit_service import log_audit_event
@@ -35,10 +36,16 @@ def run_initial_analysis(run_id: str, workflow_id: str) -> list[dict]:
         workflow_id=workflow_id,
     )
 
+    hitl_design_artifact = generate_hitl_design(
+        run_id=run_id,
+        workflow_id=workflow_id,
+    )
+
     artifacts = [
         workflow_map_artifact,
         data_sensitivity_artifact,
         risk_control_artifact,
+        hitl_design_artifact,
     ]
 
     log_audit_event(

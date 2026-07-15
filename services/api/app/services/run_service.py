@@ -43,5 +43,5 @@ def create_workflow_run(request: WorkflowRunRequest) -> WorkflowRunResponse:
         run_id=run_id,
         workflow_id=workflow.workflow_id,
         status="created",
-        message="Workflow run created and governed analysis artifacts generated.",
+        message="Workflow run created and governed workflow design artifacts generated.",
     )
