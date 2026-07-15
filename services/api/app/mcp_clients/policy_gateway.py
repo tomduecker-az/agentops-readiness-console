@@ -3,8 +3,9 @@ from policy_core import (
     PolicyDecision,
     check_tool_permission as core_check_tool_permission,
     classify_data as core_classify_data,
+    get_required_controls as core_get_required_controls,
 )
-from policy_core.models import DataClassificationResult
+from policy_core.models import DataClassificationResult, RequiredControlsResult
 
 from app.services.audit_service import log_audit_event
 
@@ -76,4 +77,31 @@ def classify_data(
         },
     )
 
+    
+
     return core_classify_data(data_element)
+
+def get_required_controls(
+    run_id: str,
+    agent_name: str,
+    workflow_step: str,
+) -> RequiredControlsResult:
+    tool_name = "policy_server.get_required_controls"
+
+    _check_tool_access(
+        run_id=run_id,
+        agent_name=agent_name,
+        tool_name=tool_name,
+    )
+
+    log_audit_event(
+        run_id=run_id,
+        event_type=AuditEventType.tool_called,
+        actor=agent_name,
+        details={
+            "tool_name": tool_name,
+            "workflow_step": workflow_step,
+        },
+    )
+
+    return core_get_required_controls(workflow_step)
