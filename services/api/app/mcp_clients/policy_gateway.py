@@ -5,7 +5,11 @@ from policy_core import (
     classify_data as core_classify_data,
     get_required_controls as core_get_required_controls,
 )
-from policy_core.models import DataClassificationResult, RequiredControlsResult
+from policy_core.models import (
+    DataClassificationResult,
+    RequiredControlsResult,
+    ToolPermissionResult,
+)
 
 from app.services.audit_service import log_audit_event
 
@@ -105,3 +109,50 @@ def get_required_controls(
     )
 
     return core_get_required_controls(workflow_step)
+
+def check_tool_permission(
+    run_id: str,
+    requesting_agent_name: str,
+    target_tool_name: str,
+    approval_granted: bool = False,
+) -> ToolPermissionResult:
+    policy_tool_name = "policy_server.check_tool_permission"
+
+    _check_tool_access(
+        run_id=run_id,
+        agent_name="tool_policy_guardian",
+        tool_name=policy_tool_name,
+    )
+
+    log_audit_event(
+        run_id=run_id,
+        event_type=AuditEventType.tool_called,
+        actor="tool_policy_guardian",
+        details={
+            "tool_name": policy_tool_name,
+            "requesting_agent_name": requesting_agent_name,
+            "target_tool_name": target_tool_name,
+            "approval_granted": approval_granted,
+        },
+    )
+
+    decision = core_check_tool_permission(
+        tool_name=target_tool_name,
+        agent_name=requesting_agent_name,
+        approval_granted=approval_granted,
+    )
+
+    log_audit_event(
+        run_id=run_id,
+        event_type=AuditEventType.policy_checked,
+        actor="tool_policy_guardian",
+        details={
+            "tool_name": target_tool_name,
+            "agent_name": requesting_agent_name,
+            "decision": decision.decision.value,
+            "requires_human_approval": decision.requires_human_approval,
+            "rationale": decision.rationale,
+        },
+    )
+
+    return decision
