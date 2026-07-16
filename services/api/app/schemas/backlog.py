@@ -1,29 +1,32 @@
-from enum import Enum
+from typing import Any
+
 from pydantic import BaseModel, Field
 
 
-class BacklogPriority(str, Enum):
-    high = "high"
-    medium = "medium"
-    low = "low"
+class BacklogApprovalRequest(BaseModel):
+    approved_by: str = Field(
+        default="human_reviewer",
+        description="Person or reviewer role approving the backlog write action.",
+    )
+    approval_reference: str | None = Field(
+        default=None,
+        description="Optional external approval reference. If omitted, one is generated.",
+    )
+    dry_run: bool = Field(
+        default=True,
+        description="When true, simulate issue creation without writing to GitHub.",
+    )
+    labels: list[str] = Field(
+        default_factory=lambda: ["agentops", "approved-backlog"],
+        description="Labels to apply if a GitHub issue is created.",
+    )
 
 
-class BacklogItemStatus(str, Enum):
-    proposed = "proposed"
-    approved = "approved"
-    rejected = "rejected"
-    created = "created"
-
-
-class BacklogItem(BaseModel):
-    item_id: str
+class BacklogApprovalResponse(BaseModel):
     run_id: str
-    title: str
-    user_story: str
-    business_value: str
-    acceptance_criteria: list[str] = Field(default_factory=list)
-    priority: BacklogPriority = BacklogPriority.medium
-    related_workflow_step: str | None = None
-    related_control: str | None = None
-    status: BacklogItemStatus = BacklogItemStatus.proposed
-    github_issue_url: str | None = None
+    backlog_id: str
+    status: str
+    approval_reference: str
+    dry_run: bool
+    issue_creation_result: dict[str, Any]
+    message: str
