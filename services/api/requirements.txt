@@ -9,3 +9,4 @@ mcp==1.16.0
 -e packages/workflow_core
 -e packages/policy_core
 -e packages/audit_core
+-e packages/project_mgmt_core
