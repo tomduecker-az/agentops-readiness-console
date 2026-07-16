@@ -104,3 +104,35 @@ A production enterprise system would include:
 ## Enterprise Principle
 
 A portfolio MVP can be smaller than a production system, but it should not hide where production hardening would be required.
+
+## Current MVP Deviations
+
+### Deterministic Agents
+
+The current agents use deterministic logic to generate workflow artifacts.
+
+Enterprise interpretation: the orchestration, policy, audit, and artifact boundaries are being validated before adding LLM reasoning. LLM-backed reasoning can be introduced behind the same controls.
+
+### In-Memory Artifact and Audit Stores
+
+The MVP stores artifacts and audit events in memory.
+
+Enterprise interpretation: production systems should persist artifacts and audit events to durable storage such as Postgres/Supabase, with retention and access controls.
+
+### Local Gateway Adapters Instead of Full MCP Transport
+
+The API currently uses gateway modules that enforce policy and audit behavior while calling shared core packages directly.
+
+Enterprise interpretation: production orchestration would call MCP servers through MCP client transport. The local gateway approach keeps the MVP testable while preserving the policy and audit control pattern.
+
+### Synchronous Run Execution
+
+The MVP executes the workflow analysis synchronously during `POST /runs`.
+
+Enterprise interpretation: production systems should move longer-running analysis into background jobs or workflow orchestration infrastructure.
+
+### Static Policy Catalog with Conservative Fallback
+
+The MVP uses a policy catalog plus heuristic fallback classification.
+
+Enterprise interpretation: production systems should integrate with enterprise data catalogs, policy-as-code, RBAC/ABAC, and security-reviewed classification rules.

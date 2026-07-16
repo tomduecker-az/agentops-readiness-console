@@ -1,0 +1,3 @@
+record_id,status,assigned_role,days_open,notes
+REC-001,Open,Analyst,2,Example note
+REC-002,Pending Review,Supervisor,5,Example note requiring review

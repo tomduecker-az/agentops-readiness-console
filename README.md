@@ -49,3 +49,72 @@ data/
 
 docs/
   Architecture, security, MCP contracts, and enterprise design notes
+
+  ## Try It With Your Own Workflow
+
+This project supports custom workflow packets for local testing.
+
+A workflow packet lives under:
+
+```text
+data/workflows/<workflow_id>/
+```
+
+Each packet includes:
+
+```text
+workflow_manifest.json
+process_narrative.md
+current_workflow_steps.md
+policy_and_controls.md
+sample_records.csv
+```
+
+To create a new workflow packet:
+
+```bash
+cp -r data/workflow_packet_template data/workflows/my_test_workflow
+mv data/workflows/my_test_workflow/workflow_manifest.example.json data/workflows/my_test_workflow/workflow_manifest.json
+```
+
+Edit the manifest:
+
+```json
+{
+  "workflow_id": "my_test_workflow",
+  "display_name": "My Test Workflow",
+  "packet_path": "data/workflows/my_test_workflow"
+}
+```
+
+Then edit the narrative, workflow steps, policy notes, and sample records.
+
+Start the API:
+
+```bash
+cd services/api
+source .venv/bin/activate
+uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
+```
+
+Open:
+
+```text
+http://localhost:8000/docs
+```
+
+Run:
+
+```text
+GET /workflows
+POST /runs
+GET /runs/{run_id}/artifacts
+GET /runs/{run_id}/audit
+```
+
+For detailed packet instructions, see:
+
+```text
+docs/workflow_packet_format.md
+docs/local_test_plan.md
+```
