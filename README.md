@@ -52,6 +52,14 @@ docs/
 
   ## Try It With Your Own Workflow
 
+  ## End-to-End Smoke Test
+
+  To verify the full governed workflow locally:
+
+  ```bash
+  source services/api/.venv/bin/activate
+  PYTHONPATH=services/api python -m scripts.smoke_test_full_governed_flow
+
 This project supports custom workflow packets for local testing.
 
 A workflow packet lives under:

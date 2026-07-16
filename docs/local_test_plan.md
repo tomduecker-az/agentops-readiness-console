@@ -162,6 +162,22 @@ Then run:
   "workflow_id": "my_test_workflow"
 }
 ```
+## 7. Test the full governed approval flow
+
+The project includes an end-to-end smoke test that verifies:
+
+- workflow run creation
+- artifact generation
+- implementation backlog creation
+- human approval
+- dry-run project-management write action
+- audit trail verification
+
+Run from repo root:
+
+```bash
+source services/api/.venv/bin/activate
+PYTHONPATH=services/api python -m scripts.smoke_test_full_governed_flow
 
 ## Notes
 
