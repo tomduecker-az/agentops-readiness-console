@@ -69,6 +69,14 @@ source services/api/.venv/bin/activate
 PYTHONPATH=services/api python -m scripts.export_example_outputs --workflow-id payment_reconciliation --output-dir examples/payment_reconciliation_outputs
 ```
 
+To validate the checked-in example outputs:
+
+```bash
+PYTHONPATH=services/api python -m scripts.validate_example_outputs
+```
+
+This verifies that the exported artifacts include audit evidence, dry-run approval behavior, and workflow-specific output for the customer onboarding example.
+
 ## Architecture Themes
 
 - Multi-agent orchestration
