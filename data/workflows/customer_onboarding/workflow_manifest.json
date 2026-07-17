@@ -1,0 +1,36 @@
+{
+  "workflow_id": "customer_onboarding",
+  "display_name": "SaaS Customer Onboarding",
+  "description": "A SaaS customer onboarding workflow used to evaluate handoffs, approval points, data sensitivity, and readiness for governed AI assistance.",
+  "packet_path": "data/workflows/customer_onboarding",
+  "documents": [
+    {
+      "document_id": "process_narrative",
+      "title": "Process Narrative",
+      "relative_path": "process_narrative.md",
+      "document_type": "narrative",
+      "required": true
+    },
+    {
+      "document_id": "current_workflow_steps",
+      "title": "Current Workflow Steps",
+      "relative_path": "current_workflow_steps.md",
+      "document_type": "workflow_steps",
+      "required": true
+    },
+    {
+      "document_id": "policy_and_controls",
+      "title": "Policy and Controls",
+      "relative_path": "policy_and_controls.md",
+      "document_type": "policy",
+      "required": true
+    },
+    {
+      "document_id": "sample_records",
+      "title": "Sample Records",
+      "relative_path": "sample_records.csv",
+      "document_type": "sample_records",
+      "required": true
+    }
+  ]
+}

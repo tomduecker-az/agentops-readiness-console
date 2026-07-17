@@ -113,6 +113,7 @@ def _build_backlog_items(
 
     risk_ids = _collect_risk_ids(matrix_rows)
     control_ids = _collect_control_ids(matrix_rows)
+    workflow_context = _infer_workflow_context(matrix_rows)
 
     if "RISK-DATA-001" in risk_ids:
         items.append(
@@ -134,17 +135,16 @@ def _build_backlog_items(
         )
 
     if "RISK-APPROVAL-001" in risk_ids:
+        approval_text = _approval_backlog_text(workflow_context)
+
         items.append(
             _backlog_item(
                 backlog_id="BACKLOG-HITL-001",
-                title="Add supervisor approval gate for threshold exceptions",
-                description=(
-                    "Require supervisor approval before exceptions above threshold "
-                    "can be advanced, closed, or marked resolved."
-                ),
+                title=approval_text["title"],
+                description=approval_text["description"],
                 priority="high",
                 implementation_type="workflow_approval_gate",
-                recommended_owner="Operations / Process owner",
+                recommended_owner=approval_text["owner"],
                 source_risk_ids=["RISK-APPROVAL-001"],
                 source_control_ids=_matching_controls(control_ids, ["CTRL-HITL-001", "CTRL-AUDIT-001"]),
                 requires_human_approval=requires_human_approval,
@@ -153,17 +153,16 @@ def _build_backlog_items(
         )
 
     if "RISK-WRITE-001" in risk_ids:
+        write_text = _write_backlog_text(workflow_context)
+
         items.append(
             _backlog_item(
                 backlog_id="BACKLOG-WRITE-001",
-                title="Block write actions until approval is recorded",
-                description=(
-                    "Ensure financial or operational status updates remain draft-only "
-                    "until an approved human decision is present."
-                ),
+                title=write_text["title"],
+                description=write_text["description"],
                 priority="high",
                 implementation_type="write_action_guardrail",
-                recommended_owner="Engineering / AI platform owner",
+                recommended_owner=write_text["owner"],
                 source_risk_ids=["RISK-WRITE-001"],
                 source_control_ids=_matching_controls(control_ids, ["CTRL-HITL-001", "CTRL-AUDIT-001"]),
                 requires_human_approval=requires_human_approval,
@@ -172,17 +171,16 @@ def _build_backlog_items(
         )
 
     if "RISK-SOURCE-001" in risk_ids:
+        source_text = _source_backlog_text(workflow_context)
+
         items.append(
             _backlog_item(
                 backlog_id="BACKLOG-SOURCE-001",
-                title="Validate source-system identifiers before resolution",
-                description=(
-                    "Prevent auto-resolution or closure when source-system identifiers "
-                    "are missing, ambiguous, or conflicting."
-                ),
+                title=source_text["title"],
+                description=source_text["description"],
                 priority="high",
                 implementation_type="data_quality_validation",
-                recommended_owner="Operations / Data owner",
+                recommended_owner=source_text["owner"],
                 source_risk_ids=["RISK-SOURCE-001"],
                 source_control_ids=_matching_controls(control_ids, ["CTRL-VALID-001"]),
                 requires_human_approval=requires_human_approval,
@@ -191,45 +189,45 @@ def _build_backlog_items(
         )
 
     if review_queue_design:
+        queue_text = _queue_backlog_text(workflow_context)
+
         items.append(
             _backlog_item(
                 backlog_id="BACKLOG-QUEUE-001",
-                title="Create review queue for high-risk workflow steps",
-                description=(
-                    "Route high-risk exceptions to a review queue with required evidence, "
-                    "recommended reviewer, and approval status."
-                ),
+                title=queue_text["title"],
+                description=queue_text["description"],
                 priority="medium",
                 implementation_type="review_workflow",
-                recommended_owner="Product / Operations",
+                recommended_owner=queue_text["owner"],
                 source_risk_ids=sorted(risk_ids),
                 source_control_ids=sorted(control_ids),
                 requires_human_approval=requires_human_approval,
                 write_permission_decision=write_permission_decision,
                 additional_context={
                     "review_queue_count": len(review_queue_design),
+                    "workflow_context": workflow_context,
                 },
             )
         )
 
     if escalation_rules:
+        escalation_text = _escalation_backlog_text(workflow_context)
+
         items.append(
             _backlog_item(
                 backlog_id="BACKLOG-ESCALATION-001",
-                title="Implement escalation rules for blocked or high-risk cases",
-                description=(
-                    "Escalate records that meet high-risk conditions such as missing "
-                    "source identifiers or approval-threshold exceptions."
-                ),
+                title=escalation_text["title"],
+                description=escalation_text["description"],
                 priority="medium",
                 implementation_type="escalation_rule",
-                recommended_owner="Operations / Process owner",
+                recommended_owner=escalation_text["owner"],
                 source_risk_ids=sorted(risk_ids),
                 source_control_ids=sorted(control_ids),
                 requires_human_approval=requires_human_approval,
                 write_permission_decision=write_permission_decision,
                 additional_context={
                     "escalation_rule_count": len(escalation_rules),
+                    "workflow_context": workflow_context,
                 },
             )
         )
@@ -254,6 +252,164 @@ def _build_backlog_items(
         )
 
     return items
+
+
+def _infer_workflow_context(matrix_rows: list[dict[str, Any]]) -> str:
+    combined_text = " ".join(
+        str(row.get("description", "")) for row in matrix_rows
+    ).lower()
+
+    if _contains_any(
+        combined_text,
+        [
+            "customer onboarding",
+            "onboarding",
+            "customer-facing",
+            "kickoff",
+            "implementation plan",
+            "implementation specialist",
+            "requested integrations",
+            "account executive",
+            "customer success",
+        ],
+    ):
+        return "customer_onboarding"
+
+    if _contains_any(
+        combined_text,
+        [
+            "payment",
+            "reconciliation",
+            "exception",
+            "source system",
+            "supervisor approval",
+            "resolution",
+        ],
+    ):
+        return "financial_operations"
+
+    return "general_operations"
+
+
+def _approval_backlog_text(workflow_context: str) -> dict[str, str]:
+    if workflow_context == "customer_onboarding":
+        return {
+            "title": "Add approval gate for high-risk onboarding plans",
+            "description": (
+                "Require authorized review before onboarding plans involving sensitive data, "
+                "custom integrations, enterprise terms, accelerated timelines, or customer-facing "
+                "commitments are finalized or advanced."
+            ),
+            "owner": "Customer success / Operations process owner",
+        }
+
+    if workflow_context == "financial_operations":
+        return {
+            "title": "Add approval gate for governed operational decisions",
+            "description": (
+                "Require authorized review before workflow items that meet policy-defined "
+                "approval conditions are advanced, closed, or finalized."
+            ),
+            "owner": "Operations / Process owner",
+        }
+
+    return {
+        "title": "Add approval gate for governed workflow decisions",
+        "description": (
+            "Require authorized review before workflow items that meet policy-defined "
+            "approval conditions are advanced, finalized, or communicated externally."
+        ),
+        "owner": "Operations / Process owner",
+    }
+
+
+def _write_backlog_text(workflow_context: str) -> dict[str, str]:
+    if workflow_context == "customer_onboarding":
+        return {
+            "title": "Block customer-facing and system-of-record updates until approval is recorded",
+            "description": (
+                "Keep onboarding plan updates, task assignments, customer-facing commitments, "
+                "and system-of-record changes in draft state until human approval is present."
+            ),
+            "owner": "Engineering / AI platform owner",
+        }
+
+    return {
+        "title": "Block operational write actions until approval is recorded",
+        "description": (
+            "Ensure workflow state changes, task assignments, external communications, "
+            "and system-of-record updates remain draft-only until an approved human decision is present."
+        ),
+        "owner": "Engineering / AI platform owner",
+    }
+
+
+def _source_backlog_text(workflow_context: str) -> dict[str, str]:
+    if workflow_context == "customer_onboarding":
+        return {
+            "title": "Validate onboarding intake and source records before planning",
+            "description": (
+                "Prevent onboarding plans from being finalized when required intake fields, "
+                "contract terms, integration details, or source records are missing, ambiguous, or conflicting."
+            ),
+            "owner": "Customer operations / Data owner",
+        }
+
+    return {
+        "title": "Validate source records before workflow finalization",
+        "description": (
+            "Prevent workflow items from being finalized when required source information "
+            "is missing, ambiguous, or conflicting."
+        ),
+        "owner": "Operations / Data owner",
+    }
+
+
+def _queue_backlog_text(workflow_context: str) -> dict[str, str]:
+    if workflow_context == "customer_onboarding":
+        return {
+            "title": "Create review queue for high-risk onboarding cases",
+            "description": (
+                "Route onboarding cases with sensitive data, custom integrations, enterprise terms, "
+                "missing intake, customer-facing commitments, or compressed timelines to a review queue "
+                "with required evidence and approval status."
+            ),
+            "owner": "Product / Customer operations",
+        }
+
+    return {
+        "title": "Create review queue for high-risk workflow items",
+        "description": (
+            "Route high-risk workflow items to a review queue with required evidence, "
+            "recommended reviewer, and approval status."
+        ),
+        "owner": "Product / Operations",
+    }
+
+
+def _escalation_backlog_text(workflow_context: str) -> dict[str, str]:
+    if workflow_context == "customer_onboarding":
+        return {
+            "title": "Implement escalation rules for high-risk onboarding cases",
+            "description": (
+                "Escalate cases that involve missing intake, sensitive customer data, custom integrations, "
+                "enterprise terms, customer-facing commitments, or compressed launch timelines."
+            ),
+            "owner": "Customer operations / Process owner",
+        }
+
+    return {
+        "title": "Implement escalation rules for blocked or high-risk workflow items",
+        "description": (
+            "Escalate workflow items that meet high-risk conditions such as missing source information, "
+            "required approval, sensitive data handling, or policy review."
+        ),
+        "owner": "Operations / Process owner",
+    }
+
+
+def _contains_any(value: str, terms: list[str]) -> bool:
+    return any(term in value for term in terms)
 
 
 def _backlog_item(

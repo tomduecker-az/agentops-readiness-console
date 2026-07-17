@@ -1,0 +1,6 @@
+record_id,customer_identifier,customer_name,contract_tier,implementation_scope,requested_integrations,contains_sensitive_data,launch_timeline_days,account_owner,onboarding_status,requires_supervisor_review,notes
+ONB-001,CUST-1001,Northstar Foods,Enterprise,Multi-site rollout,ERP and SSO,true,45,Avery Lee,Intake Review,true,Customer requests accelerated onboarding and SSO integration
+ONB-002,CUST-1002,Blue River Retail,Standard,Single-site rollout,CSV import,false,60,Jordan Smith,Kickoff Scheduled,false,Standard onboarding path
+ONB-003,CUST-1003,Helio Manufacturing,Enterprise,Custom workflow integration,ERP and data warehouse,true,30,Morgan Patel,Supervisor Review,true,Custom integration and compressed timeline
+ONB-004,CUST-1004,Clearview Services,Professional,Standard implementation,CRM,false,75,Riley Chen,Task Planning,false,No elevated risk identified
+ONB-005,CUST-1005,Summit Health Partners,Enterprise,Regulated data workflow,SSO and secure file transfer,true,90,Taylor Brooks,Supervisor Review,true,Sensitive data requirements must be reviewed before planning

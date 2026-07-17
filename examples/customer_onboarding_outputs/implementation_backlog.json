@@ -1,6 +1,6 @@
 {
-  "artifact_id": "artifact_4e2888183c0b4b3689c6a6b4f538a2cd",
-  "run_id": "run_4257db1084f547b397a8e14176a87c9b",
+  "artifact_id": "artifact_2903b1f8040341b5b99c6a6b74cae9dc",
+  "run_id": "run_5f04f85aaab1452ebaeb3dd540db7ecf",
   "artifact_type": "implementation_backlog",
   "status": "ready_for_review",
   "content": {
@@ -52,11 +52,11 @@
       },
       {
         "backlog_id": "BACKLOG-HITL-001",
-        "title": "Add supervisor approval gate for threshold exceptions",
-        "description": "Require supervisor approval before exceptions above threshold can be advanced, closed, or marked resolved.",
+        "title": "Add approval gate for high-risk onboarding plans",
+        "description": "Require authorized review before onboarding plans involving sensitive data, custom integrations, enterprise terms, accelerated timelines, or customer-facing commitments are finalized or advanced.",
         "priority": "high",
         "implementation_type": "workflow_approval_gate",
-        "recommended_owner": "Operations / Process owner",
+        "recommended_owner": "Customer success / Operations process owner",
         "source_risk_ids": [
           "RISK-APPROVAL-001"
         ],
@@ -72,8 +72,8 @@
       },
       {
         "backlog_id": "BACKLOG-WRITE-001",
-        "title": "Block write actions until approval is recorded",
-        "description": "Ensure financial or operational status updates remain draft-only until an approved human decision is present.",
+        "title": "Block customer-facing and system-of-record updates until approval is recorded",
+        "description": "Keep onboarding plan updates, task assignments, customer-facing commitments, and system-of-record changes in draft state until human approval is present.",
         "priority": "high",
         "implementation_type": "write_action_guardrail",
         "recommended_owner": "Engineering / AI platform owner",
@@ -92,11 +92,11 @@
       },
       {
         "backlog_id": "BACKLOG-QUEUE-001",
-        "title": "Create review queue for high-risk workflow steps",
-        "description": "Route high-risk exceptions to a review queue with required evidence, recommended reviewer, and approval status.",
+        "title": "Create review queue for high-risk onboarding cases",
+        "description": "Route onboarding cases with sensitive data, custom integrations, enterprise terms, missing intake, customer-facing commitments, or compressed timelines to a review queue with required evidence and approval status.",
         "priority": "medium",
         "implementation_type": "review_workflow",
-        "recommended_owner": "Product / Operations",
+        "recommended_owner": "Product / Customer operations",
         "source_risk_ids": [
           "RISK-APPROVAL-001",
           "RISK-DATA-001",
@@ -114,16 +114,17 @@
         "status": "proposed",
         "github_issue_created": false,
         "additional_context": {
-          "review_queue_count": 12
+          "review_queue_count": 12,
+          "workflow_context": "customer_onboarding"
         }
       },
       {
         "backlog_id": "BACKLOG-ESCALATION-001",
-        "title": "Implement escalation rules for blocked or high-risk cases",
-        "description": "Escalate records that meet high-risk conditions such as missing source identifiers or approval-threshold exceptions.",
+        "title": "Implement escalation rules for high-risk onboarding cases",
+        "description": "Escalate cases that involve missing intake, sensitive customer data, custom integrations, enterprise terms, customer-facing commitments, or compressed launch timelines.",
         "priority": "medium",
         "implementation_type": "escalation_rule",
-        "recommended_owner": "Operations / Process owner",
+        "recommended_owner": "Customer operations / Process owner",
         "source_risk_ids": [
           "RISK-APPROVAL-001",
           "RISK-DATA-001",
@@ -141,7 +142,8 @@
         "status": "proposed",
         "github_issue_created": false,
         "additional_context": {
-          "escalation_rule_count": 1
+          "escalation_rule_count": 1,
+          "workflow_context": "customer_onboarding"
         }
       },
       {
@@ -179,5 +181,5 @@
     },
     "generation_mode": "deterministic_skeleton"
   },
-  "created_at": "2026-07-17T18:03:38.330595Z"
+  "created_at": "2026-07-17T18:12:55.309399Z"
 }
