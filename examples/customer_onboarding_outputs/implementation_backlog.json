@@ -1,6 +1,6 @@
 {
-  "artifact_id": "artifact_2903b1f8040341b5b99c6a6b74cae9dc",
-  "run_id": "run_5f04f85aaab1452ebaeb3dd540db7ecf",
+  "artifact_id": "artifact_597e92c8a7cc43258323c4871298f160",
+  "run_id": "run_6a91439e1c75426b830c1422589db38a",
   "artifact_type": "implementation_backlog",
   "status": "ready_for_review",
   "content": {
@@ -91,6 +91,25 @@
         "additional_context": {}
       },
       {
+        "backlog_id": "BACKLOG-SOURCE-001",
+        "title": "Validate onboarding intake and source records before planning",
+        "description": "Prevent onboarding plans from being finalized when required intake fields, contract terms, integration details, or source records are missing, ambiguous, or conflicting.",
+        "priority": "high",
+        "implementation_type": "data_quality_validation",
+        "recommended_owner": "Customer operations / Data owner",
+        "source_risk_ids": [
+          "RISK-SOURCE-001"
+        ],
+        "source_control_ids": [
+          "CTRL-VALID-001"
+        ],
+        "requires_human_approval_before_execution": true,
+        "write_permission_decision_without_approval": "require_approval",
+        "status": "proposed",
+        "github_issue_created": false,
+        "additional_context": {}
+      },
+      {
         "backlog_id": "BACKLOG-QUEUE-001",
         "title": "Create review queue for high-risk onboarding cases",
         "description": "Route onboarding cases with sensitive data, custom integrations, enterprise terms, missing intake, customer-facing commitments, or compressed timelines to a review queue with required evidence and approval status.",
@@ -99,15 +118,21 @@
         "recommended_owner": "Product / Customer operations",
         "source_risk_ids": [
           "RISK-APPROVAL-001",
+          "RISK-COMMITMENT-001",
           "RISK-DATA-001",
           "RISK-DECISION-001",
+          "RISK-HANDOFF-001",
+          "RISK-INTEGRATION-001",
+          "RISK-SCOPE-001",
+          "RISK-SOURCE-001",
           "RISK-WRITE-001"
         ],
         "source_control_ids": [
           "CTRL-AUDIT-001",
           "CTRL-AUDIT-002",
           "CTRL-HITL-001",
-          "CTRL-HITL-002"
+          "CTRL-HITL-002",
+          "CTRL-VALID-001"
         ],
         "requires_human_approval_before_execution": true,
         "write_permission_decision_without_approval": "require_approval",
@@ -127,22 +152,28 @@
         "recommended_owner": "Customer operations / Process owner",
         "source_risk_ids": [
           "RISK-APPROVAL-001",
+          "RISK-COMMITMENT-001",
           "RISK-DATA-001",
           "RISK-DECISION-001",
+          "RISK-HANDOFF-001",
+          "RISK-INTEGRATION-001",
+          "RISK-SCOPE-001",
+          "RISK-SOURCE-001",
           "RISK-WRITE-001"
         ],
         "source_control_ids": [
           "CTRL-AUDIT-001",
           "CTRL-AUDIT-002",
           "CTRL-HITL-001",
-          "CTRL-HITL-002"
+          "CTRL-HITL-002",
+          "CTRL-VALID-001"
         ],
         "requires_human_approval_before_execution": true,
         "write_permission_decision_without_approval": "require_approval",
         "status": "proposed",
         "github_issue_created": false,
         "additional_context": {
-          "escalation_rule_count": 1,
+          "escalation_rule_count": 2,
           "workflow_context": "customer_onboarding"
         }
       },
@@ -155,15 +186,21 @@
         "recommended_owner": "Engineering / Security",
         "source_risk_ids": [
           "RISK-APPROVAL-001",
+          "RISK-COMMITMENT-001",
           "RISK-DATA-001",
           "RISK-DECISION-001",
+          "RISK-HANDOFF-001",
+          "RISK-INTEGRATION-001",
+          "RISK-SCOPE-001",
+          "RISK-SOURCE-001",
           "RISK-WRITE-001"
         ],
         "source_control_ids": [
           "CTRL-AUDIT-001",
           "CTRL-AUDIT-002",
           "CTRL-HITL-001",
-          "CTRL-HITL-002"
+          "CTRL-HITL-002",
+          "CTRL-VALID-001"
         ],
         "requires_human_approval_before_execution": true,
         "write_permission_decision_without_approval": "require_approval",
@@ -173,13 +210,13 @@
       }
     ],
     "summary": {
-      "backlog_item_count": 6,
-      "high_priority_count": 3,
-      "approval_required_count": 6,
+      "backlog_item_count": 7,
+      "high_priority_count": 4,
+      "approval_required_count": 7,
       "approved_count": 1,
       "github_issues_created": 0
     },
     "generation_mode": "deterministic_skeleton"
   },
-  "created_at": "2026-07-17T18:12:55.309399Z"
+  "created_at": "2026-07-17T18:17:51.592632Z"
 }

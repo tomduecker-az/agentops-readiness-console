@@ -1,6 +1,6 @@
 {
-  "artifact_id": "artifact_7eea5dd48e684afeb01d4f13944fabe1",
-  "run_id": "run_aa932e34fe3049d88670244f4ca631de",
+  "artifact_id": "artifact_18f5065e5dbc4a4fb8ccf9f63173529f",
+  "run_id": "run_625607f4dc22422a926f1f063d4c31c6",
   "artifact_type": "risk_control_matrix",
   "status": "ready_for_review",
   "content": {
@@ -180,7 +180,7 @@
         "identified_risks": [
           {
             "risk_id": "RISK-DECISION-001",
-            "risk_name": "Decision logic may be applied inconsistently",
+            "risk_name": "Workflow decision may be applied inconsistently",
             "risk_description": "Decision points require clear criteria, traceability, and review expectations.",
             "severity": "medium",
             "control_lookup_key": "financial_status_adjustment"
@@ -259,10 +259,10 @@
         "identified_risks": [
           {
             "risk_id": "RISK-WRITE-001",
-            "risk_name": "Financial or operational status may be changed without control",
-            "risk_description": "Status-changing actions require audit logging and appropriate human approval.",
+            "risk_name": "Operational write action may occur without control",
+            "risk_description": "Workflow state changes, assignments, external language, or system-of-record updates require approval and auditability.",
             "severity": "high",
-            "control_lookup_key": "financial_status_adjustment"
+            "control_lookup_key": "operational_write_action"
           },
           {
             "risk_id": "RISK-DATA-001",
@@ -281,26 +281,28 @@
         "required_control_groups": [
           {
             "risk_id": "RISK-WRITE-001",
-            "control_lookup_key": "financial_status_adjustment",
+            "control_lookup_key": "operational_write_action",
             "controls": [
               {
                 "control_id": "CTRL-HITL-001",
-                "name": "Human approval before financial write action",
-                "description": "Any action that changes financial status requires human approval before execution.",
+                "name": "Human approval before operational write action",
+                "description": "Workflow status, assignments, customer-facing language, or system-of-record updates require approval before execution.",
                 "applies_to": [
-                  "payment_amount",
                   "status",
-                  "adjustment"
+                  "assignment",
+                  "external_message",
+                  "system_of_record"
                 ]
               },
               {
                 "control_id": "CTRL-AUDIT-001",
-                "name": "Audit log for financial decision",
-                "description": "Financial decisions and write actions must be logged with run ID, actor, timestamp, and rationale.",
+                "name": "Audit log for operational write action",
+                "description": "Operational write actions must be logged with approval reference, actor, timestamp, and affected record.",
                 "applies_to": [
-                  "payment_amount",
+                  "write_action",
                   "status",
-                  "approval"
+                  "assignment",
+                  "system_of_record"
                 ]
               }
             ]
@@ -338,15 +340,15 @@
         "identified_risks": [
           {
             "risk_id": "RISK-DECISION-001",
-            "risk_name": "Decision logic may be applied inconsistently",
+            "risk_name": "Workflow decision may be applied inconsistently",
             "risk_description": "Decision points require clear criteria, traceability, and review expectations.",
             "severity": "medium",
             "control_lookup_key": "financial_status_adjustment"
           },
           {
             "risk_id": "RISK-APPROVAL-001",
-            "risk_name": "Approval requirement may be bypassed",
-            "risk_description": "Items requiring approval must not be auto-closed or advanced without supervisor review.",
+            "risk_name": "Governed approval requirement may be bypassed",
+            "risk_description": "Items requiring approval must not advance, finalize, or trigger external communication without authorized review.",
             "severity": "high",
             "control_lookup_key": "financial_status_adjustment"
           },
@@ -450,24 +452,24 @@
         "identified_risks": [
           {
             "risk_id": "RISK-DECISION-001",
-            "risk_name": "Decision logic may be applied inconsistently",
+            "risk_name": "Workflow decision may be applied inconsistently",
             "risk_description": "Decision points require clear criteria, traceability, and review expectations.",
             "severity": "medium",
             "control_lookup_key": "financial_status_adjustment"
           },
           {
             "risk_id": "RISK-APPROVAL-001",
-            "risk_name": "Approval requirement may be bypassed",
-            "risk_description": "Items requiring approval must not be auto-closed or advanced without supervisor review.",
+            "risk_name": "Governed approval requirement may be bypassed",
+            "risk_description": "Items requiring approval must not advance, finalize, or trigger external communication without authorized review.",
             "severity": "high",
             "control_lookup_key": "financial_status_adjustment"
           },
           {
             "risk_id": "RISK-WRITE-001",
-            "risk_name": "Financial or operational status may be changed without control",
-            "risk_description": "Status-changing actions require audit logging and appropriate human approval.",
+            "risk_name": "Operational write action may occur without control",
+            "risk_description": "Workflow state changes, assignments, external language, or system-of-record updates require approval and auditability.",
             "severity": "high",
-            "control_lookup_key": "financial_status_adjustment"
+            "control_lookup_key": "operational_write_action"
           },
           {
             "risk_id": "RISK-DATA-001",
@@ -538,26 +540,28 @@
           },
           {
             "risk_id": "RISK-WRITE-001",
-            "control_lookup_key": "financial_status_adjustment",
+            "control_lookup_key": "operational_write_action",
             "controls": [
               {
                 "control_id": "CTRL-HITL-001",
-                "name": "Human approval before financial write action",
-                "description": "Any action that changes financial status requires human approval before execution.",
+                "name": "Human approval before operational write action",
+                "description": "Workflow status, assignments, customer-facing language, or system-of-record updates require approval before execution.",
                 "applies_to": [
-                  "payment_amount",
                   "status",
-                  "adjustment"
+                  "assignment",
+                  "external_message",
+                  "system_of_record"
                 ]
               },
               {
                 "control_id": "CTRL-AUDIT-001",
-                "name": "Audit log for financial decision",
-                "description": "Financial decisions and write actions must be logged with run ID, actor, timestamp, and rationale.",
+                "name": "Audit log for operational write action",
+                "description": "Operational write actions must be logged with approval reference, actor, timestamp, and affected record.",
                 "applies_to": [
-                  "payment_amount",
+                  "write_action",
                   "status",
-                  "approval"
+                  "assignment",
+                  "system_of_record"
                 ]
               }
             ]
@@ -595,10 +599,10 @@
         "identified_risks": [
           {
             "risk_id": "RISK-WRITE-001",
-            "risk_name": "Financial or operational status may be changed without control",
-            "risk_description": "Status-changing actions require audit logging and appropriate human approval.",
+            "risk_name": "Operational write action may occur without control",
+            "risk_description": "Workflow state changes, assignments, external language, or system-of-record updates require approval and auditability.",
             "severity": "high",
-            "control_lookup_key": "financial_status_adjustment"
+            "control_lookup_key": "operational_write_action"
           },
           {
             "risk_id": "RISK-DATA-001",
@@ -617,26 +621,28 @@
         "required_control_groups": [
           {
             "risk_id": "RISK-WRITE-001",
-            "control_lookup_key": "financial_status_adjustment",
+            "control_lookup_key": "operational_write_action",
             "controls": [
               {
                 "control_id": "CTRL-HITL-001",
-                "name": "Human approval before financial write action",
-                "description": "Any action that changes financial status requires human approval before execution.",
+                "name": "Human approval before operational write action",
+                "description": "Workflow status, assignments, customer-facing language, or system-of-record updates require approval before execution.",
                 "applies_to": [
-                  "payment_amount",
                   "status",
-                  "adjustment"
+                  "assignment",
+                  "external_message",
+                  "system_of_record"
                 ]
               },
               {
                 "control_id": "CTRL-AUDIT-001",
-                "name": "Audit log for financial decision",
-                "description": "Financial decisions and write actions must be logged with run ID, actor, timestamp, and rationale.",
+                "name": "Audit log for operational write action",
+                "description": "Operational write actions must be logged with approval reference, actor, timestamp, and affected record.",
                 "applies_to": [
-                  "payment_amount",
+                  "write_action",
                   "status",
-                  "approval"
+                  "assignment",
+                  "system_of_record"
                 ]
               }
             ]
@@ -720,5 +726,5 @@
     },
     "generation_mode": "deterministic_skeleton"
   },
-  "created_at": "2026-07-17T17:41:35.124606Z"
+  "created_at": "2026-07-17T18:18:05.556615Z"
 }

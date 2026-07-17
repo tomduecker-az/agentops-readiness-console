@@ -1,11 +1,11 @@
 {
-  "generated_at": "2026-07-17T18:12:55.323857+00:00",
-  "audit_event_count": 88,
+  "generated_at": "2026-07-17T18:17:51.617569+00:00",
+  "audit_event_count": 130,
   "event_type_counts": {
     "run_started": 1,
     "agent_started": 6,
-    "policy_checked": 37,
-    "tool_called": 35,
+    "policy_checked": 58,
+    "tool_called": 56,
     "agent_completed": 6,
     "run_completed": 1,
     "approval_granted": 1,
@@ -15,9 +15,9 @@
     "system": 2,
     "coordinator": 2,
     "workflow_mapper": 6,
-    "tool_policy_guardian": 39,
+    "tool_policy_guardian": 60,
     "data_sensitivity_classifier": 15,
-    "risk_control_designer": 18,
+    "risk_control_designer": 39,
     "hitl_designer": 2,
     "implementation_planner": 3,
     "example_export_reviewer": 1

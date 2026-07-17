@@ -1,6 +1,6 @@
 {
-  "artifact_id": "artifact_41649315ecb04473a990aa0d322d3267",
-  "run_id": "run_5f04f85aaab1452ebaeb3dd540db7ecf",
+  "artifact_id": "artifact_59656d57dfc9429abc25db52b1f60d4d",
+  "run_id": "run_6a91439e1c75426b830c1422589db38a",
   "artifact_type": "risk_control_matrix",
   "status": "ready_for_review",
   "content": {
@@ -18,6 +18,20 @@
         "actor": "Unspecified",
         "decision_point": false,
         "identified_risks": [
+          {
+            "risk_id": "RISK-SOURCE-001",
+            "risk_name": "Missing or unclear onboarding intake information",
+            "risk_description": "Onboarding plans should not be finalized when intake fields, contract context, integration details, or handoff information are missing or unclear.",
+            "severity": "high",
+            "control_lookup_key": "source_record_validation"
+          },
+          {
+            "risk_id": "RISK-HANDOFF-001",
+            "risk_name": "Incomplete intake or handoff may lead to incorrect planning",
+            "risk_description": "Missing or unclear handoff information can cause incorrect plans, missed dependencies, or premature customer communication.",
+            "severity": "medium",
+            "control_lookup_key": "intake_handoff_quality"
+          },
           {
             "risk_id": "RISK-DATA-001",
             "risk_name": "Sensitive data may enter model context",
@@ -48,6 +62,40 @@
           }
         ],
         "required_control_groups": [
+          {
+            "risk_id": "RISK-SOURCE-001",
+            "control_lookup_key": "source_record_validation",
+            "controls": [
+              {
+                "control_id": "CTRL-VALID-001",
+                "name": "Validate source and intake records before finalization",
+                "description": "Workflow items cannot be finalized when required source, intake, or reference information is missing or conflicting.",
+                "applies_to": [
+                  "source_record",
+                  "intake",
+                  "record_id",
+                  "required_fields"
+                ]
+              }
+            ]
+          },
+          {
+            "risk_id": "RISK-HANDOFF-001",
+            "control_lookup_key": "intake_handoff_quality",
+            "controls": [
+              {
+                "control_id": "CTRL-VALID-001",
+                "name": "Validate intake and handoff completeness",
+                "description": "Missing or unclear intake information must be routed for clarification before planning or customer communication.",
+                "applies_to": [
+                  "intake",
+                  "handoff",
+                  "required_fields",
+                  "clarification"
+                ]
+              }
+            ]
+          },
           {
             "risk_id": "RISK-DATA-001",
             "control_lookup_key": "implementation_backlog_write",
@@ -80,255 +128,18 @@
         "decision_point": false,
         "identified_risks": [
           {
-            "risk_id": "RISK-DATA-001",
-            "risk_name": "Sensitive data may enter model context",
-            "risk_description": "Fields requiring redaction or blocked from model context must be controlled before LLM use.",
-            "severity": "high",
-            "control_lookup_key": "implementation_backlog_write",
-            "affected_fields": {
-              "blocked_from_model_context": [
-                "customer_identifier",
-                "customer_name",
-                "contract_tier",
-                "implementation_scope",
-                "requested_integrations",
-                "contains_sensitive_data",
-                "account_owner"
-              ],
-              "requires_redaction": [
-                "customer_identifier",
-                "customer_name",
-                "contract_tier",
-                "implementation_scope",
-                "requested_integrations",
-                "contains_sensitive_data",
-                "account_owner",
-                "notes"
-              ]
-            }
-          }
-        ],
-        "required_control_groups": [
-          {
-            "risk_id": "RISK-DATA-001",
-            "control_lookup_key": "implementation_backlog_write",
-            "controls": [
-              {
-                "control_id": "CTRL-HITL-002",
-                "name": "Human approval before backlog creation",
-                "description": "Backlog items may be proposed by the agent, but real issue creation requires approval.",
-                "applies_to": [
-                  "project_mgmt_server.create_issue"
-                ]
-              },
-              {
-                "control_id": "CTRL-AUDIT-002",
-                "name": "Audit project-management write action",
-                "description": "Issue creation must be logged with approval reference and created issue URL.",
-                "applies_to": [
-                  "project_mgmt_server.create_issue"
-                ]
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "step_id": "step_3",
-        "sequence": 3,
-        "description": "The onboarding coordinator checks whether required intake fields are complete.",
-        "actor": "Unspecified",
-        "decision_point": false,
-        "identified_risks": [
-          {
-            "risk_id": "RISK-DATA-001",
-            "risk_name": "Sensitive data may enter model context",
-            "risk_description": "Fields requiring redaction or blocked from model context must be controlled before LLM use.",
-            "severity": "high",
-            "control_lookup_key": "implementation_backlog_write",
-            "affected_fields": {
-              "blocked_from_model_context": [
-                "customer_identifier",
-                "customer_name",
-                "contract_tier",
-                "implementation_scope",
-                "requested_integrations",
-                "contains_sensitive_data",
-                "account_owner"
-              ],
-              "requires_redaction": [
-                "customer_identifier",
-                "customer_name",
-                "contract_tier",
-                "implementation_scope",
-                "requested_integrations",
-                "contains_sensitive_data",
-                "account_owner",
-                "notes"
-              ]
-            }
-          }
-        ],
-        "required_control_groups": [
-          {
-            "risk_id": "RISK-DATA-001",
-            "control_lookup_key": "implementation_backlog_write",
-            "controls": [
-              {
-                "control_id": "CTRL-HITL-002",
-                "name": "Human approval before backlog creation",
-                "description": "Backlog items may be proposed by the agent, but real issue creation requires approval.",
-                "applies_to": [
-                  "project_mgmt_server.create_issue"
-                ]
-              },
-              {
-                "control_id": "CTRL-AUDIT-002",
-                "name": "Audit project-management write action",
-                "description": "Issue creation must be logged with approval reference and created issue URL.",
-                "applies_to": [
-                  "project_mgmt_server.create_issue"
-                ]
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "step_id": "step_4",
-        "sequence": 4,
-        "description": "Missing or unclear intake information is routed back to the account executive.",
-        "actor": "Unspecified",
-        "decision_point": false,
-        "identified_risks": [
-          {
-            "risk_id": "RISK-DATA-001",
-            "risk_name": "Sensitive data may enter model context",
-            "risk_description": "Fields requiring redaction or blocked from model context must be controlled before LLM use.",
-            "severity": "high",
-            "control_lookup_key": "implementation_backlog_write",
-            "affected_fields": {
-              "blocked_from_model_context": [
-                "customer_identifier",
-                "customer_name",
-                "contract_tier",
-                "implementation_scope",
-                "requested_integrations",
-                "contains_sensitive_data",
-                "account_owner"
-              ],
-              "requires_redaction": [
-                "customer_identifier",
-                "customer_name",
-                "contract_tier",
-                "implementation_scope",
-                "requested_integrations",
-                "contains_sensitive_data",
-                "account_owner",
-                "notes"
-              ]
-            }
-          }
-        ],
-        "required_control_groups": [
-          {
-            "risk_id": "RISK-DATA-001",
-            "control_lookup_key": "implementation_backlog_write",
-            "controls": [
-              {
-                "control_id": "CTRL-HITL-002",
-                "name": "Human approval before backlog creation",
-                "description": "Backlog items may be proposed by the agent, but real issue creation requires approval.",
-                "applies_to": [
-                  "project_mgmt_server.create_issue"
-                ]
-              },
-              {
-                "control_id": "CTRL-AUDIT-002",
-                "name": "Audit project-management write action",
-                "description": "Issue creation must be logged with approval reference and created issue URL.",
-                "applies_to": [
-                  "project_mgmt_server.create_issue"
-                ]
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "step_id": "step_5",
-        "sequence": 5,
-        "description": "The implementation specialist reviews requested integrations and technical requirements.",
-        "actor": "Unspecified",
-        "decision_point": false,
-        "identified_risks": [
-          {
-            "risk_id": "RISK-DATA-001",
-            "risk_name": "Sensitive data may enter model context",
-            "risk_description": "Fields requiring redaction or blocked from model context must be controlled before LLM use.",
-            "severity": "high",
-            "control_lookup_key": "implementation_backlog_write",
-            "affected_fields": {
-              "blocked_from_model_context": [
-                "customer_identifier",
-                "customer_name",
-                "contract_tier",
-                "implementation_scope",
-                "requested_integrations",
-                "contains_sensitive_data",
-                "account_owner"
-              ],
-              "requires_redaction": [
-                "customer_identifier",
-                "customer_name",
-                "contract_tier",
-                "implementation_scope",
-                "requested_integrations",
-                "contains_sensitive_data",
-                "account_owner",
-                "notes"
-              ]
-            }
-          }
-        ],
-        "required_control_groups": [
-          {
-            "risk_id": "RISK-DATA-001",
-            "control_lookup_key": "implementation_backlog_write",
-            "controls": [
-              {
-                "control_id": "CTRL-HITL-002",
-                "name": "Human approval before backlog creation",
-                "description": "Backlog items may be proposed by the agent, but real issue creation requires approval.",
-                "applies_to": [
-                  "project_mgmt_server.create_issue"
-                ]
-              },
-              {
-                "control_id": "CTRL-AUDIT-002",
-                "name": "Audit project-management write action",
-                "description": "Issue creation must be logged with approval reference and created issue URL.",
-                "applies_to": [
-                  "project_mgmt_server.create_issue"
-                ]
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "step_id": "step_6",
-        "sequence": 6,
-        "description": "Customers with sensitive data, custom integrations, or enterprise terms are routed for supervisor review.",
-        "actor": "Supervisor",
-        "decision_point": false,
-        "identified_risks": [
-          {
             "risk_id": "RISK-APPROVAL-001",
-            "risk_name": "Approval requirement may be bypassed",
-            "risk_description": "Items requiring approval must not be auto-closed or advanced without supervisor review.",
+            "risk_name": "Governed approval requirement may be bypassed",
+            "risk_description": "Onboarding plans involving sensitive data, custom integrations, enterprise terms, customer-facing commitments, or supervisor review must not advance without approval.",
             "severity": "high",
-            "control_lookup_key": "financial_status_adjustment"
+            "control_lookup_key": "governed_workflow_decision"
+          },
+          {
+            "risk_id": "RISK-SCOPE-001",
+            "risk_name": "Implementation scope may change without approval",
+            "risk_description": "Scope, enterprise terms, or custom implementation requirements must be reviewed before the onboarding plan is finalized.",
+            "severity": "high",
+            "control_lookup_key": "implementation_scope_change"
           },
           {
             "risk_id": "RISK-DATA-001",
@@ -362,25 +173,565 @@
         "required_control_groups": [
           {
             "risk_id": "RISK-APPROVAL-001",
-            "control_lookup_key": "financial_status_adjustment",
+            "control_lookup_key": "governed_workflow_decision",
             "controls": [
               {
                 "control_id": "CTRL-HITL-001",
-                "name": "Human approval before financial write action",
-                "description": "Any action that changes financial status requires human approval before execution.",
+                "name": "Human approval before governed decision",
+                "description": "Policy-defined approval decisions must be reviewed before the workflow item advances.",
                 "applies_to": [
-                  "payment_amount",
-                  "status",
-                  "adjustment"
+                  "approval",
+                  "review",
+                  "decision",
+                  "workflow_advancement"
                 ]
               },
               {
                 "control_id": "CTRL-AUDIT-001",
-                "name": "Audit log for financial decision",
-                "description": "Financial decisions and write actions must be logged with run ID, actor, timestamp, and rationale.",
+                "name": "Audit log for governed decision",
+                "description": "Approval decisions must be logged with run ID, actor, timestamp, and rationale.",
                 "applies_to": [
-                  "payment_amount",
-                  "status",
+                  "approval",
+                  "decision",
+                  "review"
+                ]
+              }
+            ]
+          },
+          {
+            "risk_id": "RISK-SCOPE-001",
+            "control_lookup_key": "implementation_scope_change",
+            "controls": [
+              {
+                "control_id": "CTRL-HITL-001",
+                "name": "Human review before implementation scope change",
+                "description": "Implementation scope, custom integration, or enterprise-term changes require approval before finalization.",
+                "applies_to": [
+                  "scope",
+                  "integration",
+                  "enterprise_terms",
+                  "implementation_plan"
+                ]
+              },
+              {
+                "control_id": "CTRL-AUDIT-001",
+                "name": "Audit implementation scope decision",
+                "description": "Scope-related decisions must be traceable to reviewer, rationale, and source evidence.",
+                "applies_to": [
+                  "scope",
+                  "integration",
+                  "approval"
+                ]
+              }
+            ]
+          },
+          {
+            "risk_id": "RISK-DATA-001",
+            "control_lookup_key": "implementation_backlog_write",
+            "controls": [
+              {
+                "control_id": "CTRL-HITL-002",
+                "name": "Human approval before backlog creation",
+                "description": "Backlog items may be proposed by the agent, but real issue creation requires approval.",
+                "applies_to": [
+                  "project_mgmt_server.create_issue"
+                ]
+              },
+              {
+                "control_id": "CTRL-AUDIT-002",
+                "name": "Audit project-management write action",
+                "description": "Issue creation must be logged with approval reference and created issue URL.",
+                "applies_to": [
+                  "project_mgmt_server.create_issue"
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "step_id": "step_3",
+        "sequence": 3,
+        "description": "The onboarding coordinator checks whether required intake fields are complete.",
+        "actor": "Unspecified",
+        "decision_point": false,
+        "identified_risks": [
+          {
+            "risk_id": "RISK-SOURCE-001",
+            "risk_name": "Missing or unclear onboarding intake information",
+            "risk_description": "Onboarding plans should not be finalized when intake fields, contract context, integration details, or handoff information are missing or unclear.",
+            "severity": "high",
+            "control_lookup_key": "source_record_validation"
+          },
+          {
+            "risk_id": "RISK-HANDOFF-001",
+            "risk_name": "Incomplete intake or handoff may lead to incorrect planning",
+            "risk_description": "Missing or unclear handoff information can cause incorrect plans, missed dependencies, or premature customer communication.",
+            "severity": "medium",
+            "control_lookup_key": "intake_handoff_quality"
+          },
+          {
+            "risk_id": "RISK-DATA-001",
+            "risk_name": "Sensitive data may enter model context",
+            "risk_description": "Fields requiring redaction or blocked from model context must be controlled before LLM use.",
+            "severity": "high",
+            "control_lookup_key": "implementation_backlog_write",
+            "affected_fields": {
+              "blocked_from_model_context": [
+                "customer_identifier",
+                "customer_name",
+                "contract_tier",
+                "implementation_scope",
+                "requested_integrations",
+                "contains_sensitive_data",
+                "account_owner"
+              ],
+              "requires_redaction": [
+                "customer_identifier",
+                "customer_name",
+                "contract_tier",
+                "implementation_scope",
+                "requested_integrations",
+                "contains_sensitive_data",
+                "account_owner",
+                "notes"
+              ]
+            }
+          }
+        ],
+        "required_control_groups": [
+          {
+            "risk_id": "RISK-SOURCE-001",
+            "control_lookup_key": "source_record_validation",
+            "controls": [
+              {
+                "control_id": "CTRL-VALID-001",
+                "name": "Validate source and intake records before finalization",
+                "description": "Workflow items cannot be finalized when required source, intake, or reference information is missing or conflicting.",
+                "applies_to": [
+                  "source_record",
+                  "intake",
+                  "record_id",
+                  "required_fields"
+                ]
+              }
+            ]
+          },
+          {
+            "risk_id": "RISK-HANDOFF-001",
+            "control_lookup_key": "intake_handoff_quality",
+            "controls": [
+              {
+                "control_id": "CTRL-VALID-001",
+                "name": "Validate intake and handoff completeness",
+                "description": "Missing or unclear intake information must be routed for clarification before planning or customer communication.",
+                "applies_to": [
+                  "intake",
+                  "handoff",
+                  "required_fields",
+                  "clarification"
+                ]
+              }
+            ]
+          },
+          {
+            "risk_id": "RISK-DATA-001",
+            "control_lookup_key": "implementation_backlog_write",
+            "controls": [
+              {
+                "control_id": "CTRL-HITL-002",
+                "name": "Human approval before backlog creation",
+                "description": "Backlog items may be proposed by the agent, but real issue creation requires approval.",
+                "applies_to": [
+                  "project_mgmt_server.create_issue"
+                ]
+              },
+              {
+                "control_id": "CTRL-AUDIT-002",
+                "name": "Audit project-management write action",
+                "description": "Issue creation must be logged with approval reference and created issue URL.",
+                "applies_to": [
+                  "project_mgmt_server.create_issue"
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "step_id": "step_4",
+        "sequence": 4,
+        "description": "Missing or unclear intake information is routed back to the account executive.",
+        "actor": "Unspecified",
+        "decision_point": false,
+        "identified_risks": [
+          {
+            "risk_id": "RISK-SOURCE-001",
+            "risk_name": "Missing or unclear onboarding intake information",
+            "risk_description": "Onboarding plans should not be finalized when intake fields, contract context, integration details, or handoff information are missing or unclear.",
+            "severity": "high",
+            "control_lookup_key": "source_record_validation"
+          },
+          {
+            "risk_id": "RISK-HANDOFF-001",
+            "risk_name": "Incomplete intake or handoff may lead to incorrect planning",
+            "risk_description": "Missing or unclear handoff information can cause incorrect plans, missed dependencies, or premature customer communication.",
+            "severity": "medium",
+            "control_lookup_key": "intake_handoff_quality"
+          },
+          {
+            "risk_id": "RISK-DATA-001",
+            "risk_name": "Sensitive data may enter model context",
+            "risk_description": "Fields requiring redaction or blocked from model context must be controlled before LLM use.",
+            "severity": "high",
+            "control_lookup_key": "implementation_backlog_write",
+            "affected_fields": {
+              "blocked_from_model_context": [
+                "customer_identifier",
+                "customer_name",
+                "contract_tier",
+                "implementation_scope",
+                "requested_integrations",
+                "contains_sensitive_data",
+                "account_owner"
+              ],
+              "requires_redaction": [
+                "customer_identifier",
+                "customer_name",
+                "contract_tier",
+                "implementation_scope",
+                "requested_integrations",
+                "contains_sensitive_data",
+                "account_owner",
+                "notes"
+              ]
+            }
+          }
+        ],
+        "required_control_groups": [
+          {
+            "risk_id": "RISK-SOURCE-001",
+            "control_lookup_key": "source_record_validation",
+            "controls": [
+              {
+                "control_id": "CTRL-VALID-001",
+                "name": "Validate source and intake records before finalization",
+                "description": "Workflow items cannot be finalized when required source, intake, or reference information is missing or conflicting.",
+                "applies_to": [
+                  "source_record",
+                  "intake",
+                  "record_id",
+                  "required_fields"
+                ]
+              }
+            ]
+          },
+          {
+            "risk_id": "RISK-HANDOFF-001",
+            "control_lookup_key": "intake_handoff_quality",
+            "controls": [
+              {
+                "control_id": "CTRL-VALID-001",
+                "name": "Validate intake and handoff completeness",
+                "description": "Missing or unclear intake information must be routed for clarification before planning or customer communication.",
+                "applies_to": [
+                  "intake",
+                  "handoff",
+                  "required_fields",
+                  "clarification"
+                ]
+              }
+            ]
+          },
+          {
+            "risk_id": "RISK-DATA-001",
+            "control_lookup_key": "implementation_backlog_write",
+            "controls": [
+              {
+                "control_id": "CTRL-HITL-002",
+                "name": "Human approval before backlog creation",
+                "description": "Backlog items may be proposed by the agent, but real issue creation requires approval.",
+                "applies_to": [
+                  "project_mgmt_server.create_issue"
+                ]
+              },
+              {
+                "control_id": "CTRL-AUDIT-002",
+                "name": "Audit project-management write action",
+                "description": "Issue creation must be logged with approval reference and created issue URL.",
+                "applies_to": [
+                  "project_mgmt_server.create_issue"
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "step_id": "step_5",
+        "sequence": 5,
+        "description": "The implementation specialist reviews requested integrations and technical requirements.",
+        "actor": "Unspecified",
+        "decision_point": false,
+        "identified_risks": [
+          {
+            "risk_id": "RISK-APPROVAL-001",
+            "risk_name": "Governed approval requirement may be bypassed",
+            "risk_description": "Onboarding plans involving sensitive data, custom integrations, enterprise terms, customer-facing commitments, or supervisor review must not advance without approval.",
+            "severity": "high",
+            "control_lookup_key": "governed_workflow_decision"
+          },
+          {
+            "risk_id": "RISK-INTEGRATION-001",
+            "risk_name": "Sensitive integration or security requirement may be mishandled",
+            "risk_description": "Sensitive data, custom integrations, SSO, or security-related requirements need technical review before planning or execution.",
+            "severity": "high",
+            "control_lookup_key": "sensitive_integration_review"
+          },
+          {
+            "risk_id": "RISK-DATA-001",
+            "risk_name": "Sensitive data may enter model context",
+            "risk_description": "Fields requiring redaction or blocked from model context must be controlled before LLM use.",
+            "severity": "high",
+            "control_lookup_key": "implementation_backlog_write",
+            "affected_fields": {
+              "blocked_from_model_context": [
+                "customer_identifier",
+                "customer_name",
+                "contract_tier",
+                "implementation_scope",
+                "requested_integrations",
+                "contains_sensitive_data",
+                "account_owner"
+              ],
+              "requires_redaction": [
+                "customer_identifier",
+                "customer_name",
+                "contract_tier",
+                "implementation_scope",
+                "requested_integrations",
+                "contains_sensitive_data",
+                "account_owner",
+                "notes"
+              ]
+            }
+          }
+        ],
+        "required_control_groups": [
+          {
+            "risk_id": "RISK-APPROVAL-001",
+            "control_lookup_key": "governed_workflow_decision",
+            "controls": [
+              {
+                "control_id": "CTRL-HITL-001",
+                "name": "Human approval before governed decision",
+                "description": "Policy-defined approval decisions must be reviewed before the workflow item advances.",
+                "applies_to": [
+                  "approval",
+                  "review",
+                  "decision",
+                  "workflow_advancement"
+                ]
+              },
+              {
+                "control_id": "CTRL-AUDIT-001",
+                "name": "Audit log for governed decision",
+                "description": "Approval decisions must be logged with run ID, actor, timestamp, and rationale.",
+                "applies_to": [
+                  "approval",
+                  "decision",
+                  "review"
+                ]
+              }
+            ]
+          },
+          {
+            "risk_id": "RISK-INTEGRATION-001",
+            "control_lookup_key": "sensitive_integration_review",
+            "controls": [
+              {
+                "control_id": "CTRL-HITL-001",
+                "name": "Human review before sensitive integration planning",
+                "description": "Sensitive data, security, SSO, file transfer, or custom integration requirements require technical or security review.",
+                "applies_to": [
+                  "sensitive_data",
+                  "integration",
+                  "sso",
+                  "security",
+                  "file_transfer"
+                ]
+              },
+              {
+                "control_id": "CTRL-AUDIT-001",
+                "name": "Audit sensitive integration review",
+                "description": "Sensitive integration review decisions must be logged with reviewer, rationale, and required controls.",
+                "applies_to": [
+                  "integration",
+                  "security_review",
+                  "approval"
+                ]
+              }
+            ]
+          },
+          {
+            "risk_id": "RISK-DATA-001",
+            "control_lookup_key": "implementation_backlog_write",
+            "controls": [
+              {
+                "control_id": "CTRL-HITL-002",
+                "name": "Human approval before backlog creation",
+                "description": "Backlog items may be proposed by the agent, but real issue creation requires approval.",
+                "applies_to": [
+                  "project_mgmt_server.create_issue"
+                ]
+              },
+              {
+                "control_id": "CTRL-AUDIT-002",
+                "name": "Audit project-management write action",
+                "description": "Issue creation must be logged with approval reference and created issue URL.",
+                "applies_to": [
+                  "project_mgmt_server.create_issue"
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "step_id": "step_6",
+        "sequence": 6,
+        "description": "Customers with sensitive data, custom integrations, or enterprise terms are routed for supervisor review.",
+        "actor": "Supervisor",
+        "decision_point": false,
+        "identified_risks": [
+          {
+            "risk_id": "RISK-APPROVAL-001",
+            "risk_name": "Governed approval requirement may be bypassed",
+            "risk_description": "Onboarding plans involving sensitive data, custom integrations, enterprise terms, customer-facing commitments, or supervisor review must not advance without approval.",
+            "severity": "high",
+            "control_lookup_key": "governed_workflow_decision"
+          },
+          {
+            "risk_id": "RISK-SCOPE-001",
+            "risk_name": "Implementation scope may change without approval",
+            "risk_description": "Scope, enterprise terms, or custom implementation requirements must be reviewed before the onboarding plan is finalized.",
+            "severity": "high",
+            "control_lookup_key": "implementation_scope_change"
+          },
+          {
+            "risk_id": "RISK-INTEGRATION-001",
+            "risk_name": "Sensitive integration or security requirement may be mishandled",
+            "risk_description": "Sensitive data, custom integrations, SSO, or security-related requirements need technical review before planning or execution.",
+            "severity": "high",
+            "control_lookup_key": "sensitive_integration_review"
+          },
+          {
+            "risk_id": "RISK-DATA-001",
+            "risk_name": "Sensitive data may enter model context",
+            "risk_description": "Fields requiring redaction or blocked from model context must be controlled before LLM use.",
+            "severity": "high",
+            "control_lookup_key": "implementation_backlog_write",
+            "affected_fields": {
+              "blocked_from_model_context": [
+                "customer_identifier",
+                "customer_name",
+                "contract_tier",
+                "implementation_scope",
+                "requested_integrations",
+                "contains_sensitive_data",
+                "account_owner"
+              ],
+              "requires_redaction": [
+                "customer_identifier",
+                "customer_name",
+                "contract_tier",
+                "implementation_scope",
+                "requested_integrations",
+                "contains_sensitive_data",
+                "account_owner",
+                "notes"
+              ]
+            }
+          }
+        ],
+        "required_control_groups": [
+          {
+            "risk_id": "RISK-APPROVAL-001",
+            "control_lookup_key": "governed_workflow_decision",
+            "controls": [
+              {
+                "control_id": "CTRL-HITL-001",
+                "name": "Human approval before governed decision",
+                "description": "Policy-defined approval decisions must be reviewed before the workflow item advances.",
+                "applies_to": [
+                  "approval",
+                  "review",
+                  "decision",
+                  "workflow_advancement"
+                ]
+              },
+              {
+                "control_id": "CTRL-AUDIT-001",
+                "name": "Audit log for governed decision",
+                "description": "Approval decisions must be logged with run ID, actor, timestamp, and rationale.",
+                "applies_to": [
+                  "approval",
+                  "decision",
+                  "review"
+                ]
+              }
+            ]
+          },
+          {
+            "risk_id": "RISK-SCOPE-001",
+            "control_lookup_key": "implementation_scope_change",
+            "controls": [
+              {
+                "control_id": "CTRL-HITL-001",
+                "name": "Human review before implementation scope change",
+                "description": "Implementation scope, custom integration, or enterprise-term changes require approval before finalization.",
+                "applies_to": [
+                  "scope",
+                  "integration",
+                  "enterprise_terms",
+                  "implementation_plan"
+                ]
+              },
+              {
+                "control_id": "CTRL-AUDIT-001",
+                "name": "Audit implementation scope decision",
+                "description": "Scope-related decisions must be traceable to reviewer, rationale, and source evidence.",
+                "applies_to": [
+                  "scope",
+                  "integration",
+                  "approval"
+                ]
+              }
+            ]
+          },
+          {
+            "risk_id": "RISK-INTEGRATION-001",
+            "control_lookup_key": "sensitive_integration_review",
+            "controls": [
+              {
+                "control_id": "CTRL-HITL-001",
+                "name": "Human review before sensitive integration planning",
+                "description": "Sensitive data, security, SSO, file transfer, or custom integration requirements require technical or security review.",
+                "applies_to": [
+                  "sensitive_data",
+                  "integration",
+                  "sso",
+                  "security",
+                  "file_transfer"
+                ]
+              },
+              {
+                "control_id": "CTRL-AUDIT-001",
+                "name": "Audit sensitive integration review",
+                "description": "Sensitive integration review decisions must be logged with reviewer, rationale, and required controls.",
+                "applies_to": [
+                  "integration",
+                  "security_review",
                   "approval"
                 ]
               }
@@ -419,17 +770,24 @@
         "identified_risks": [
           {
             "risk_id": "RISK-DECISION-001",
-            "risk_name": "Decision logic may be applied inconsistently",
+            "risk_name": "Workflow decision may be applied inconsistently",
             "risk_description": "Decision points require clear criteria, traceability, and review expectations.",
             "severity": "medium",
-            "control_lookup_key": "financial_status_adjustment"
+            "control_lookup_key": "governed_workflow_decision"
           },
           {
             "risk_id": "RISK-APPROVAL-001",
-            "risk_name": "Approval requirement may be bypassed",
-            "risk_description": "Items requiring approval must not be auto-closed or advanced without supervisor review.",
+            "risk_name": "Governed approval requirement may be bypassed",
+            "risk_description": "Onboarding plans involving sensitive data, custom integrations, enterprise terms, customer-facing commitments, or supervisor review must not advance without approval.",
             "severity": "high",
-            "control_lookup_key": "financial_status_adjustment"
+            "control_lookup_key": "governed_workflow_decision"
+          },
+          {
+            "risk_id": "RISK-SCOPE-001",
+            "risk_name": "Implementation scope may change without approval",
+            "risk_description": "Scope, enterprise terms, or custom implementation requirements must be reviewed before the onboarding plan is finalized.",
+            "severity": "high",
+            "control_lookup_key": "implementation_scope_change"
           },
           {
             "risk_id": "RISK-DATA-001",
@@ -463,51 +821,80 @@
         "required_control_groups": [
           {
             "risk_id": "RISK-DECISION-001",
-            "control_lookup_key": "financial_status_adjustment",
+            "control_lookup_key": "governed_workflow_decision",
             "controls": [
               {
                 "control_id": "CTRL-HITL-001",
-                "name": "Human approval before financial write action",
-                "description": "Any action that changes financial status requires human approval before execution.",
+                "name": "Human approval before governed decision",
+                "description": "Policy-defined approval decisions must be reviewed before the workflow item advances.",
                 "applies_to": [
-                  "payment_amount",
-                  "status",
-                  "adjustment"
+                  "approval",
+                  "review",
+                  "decision",
+                  "workflow_advancement"
                 ]
               },
               {
                 "control_id": "CTRL-AUDIT-001",
-                "name": "Audit log for financial decision",
-                "description": "Financial decisions and write actions must be logged with run ID, actor, timestamp, and rationale.",
+                "name": "Audit log for governed decision",
+                "description": "Approval decisions must be logged with run ID, actor, timestamp, and rationale.",
                 "applies_to": [
-                  "payment_amount",
-                  "status",
-                  "approval"
+                  "approval",
+                  "decision",
+                  "review"
                 ]
               }
             ]
           },
           {
             "risk_id": "RISK-APPROVAL-001",
-            "control_lookup_key": "financial_status_adjustment",
+            "control_lookup_key": "governed_workflow_decision",
             "controls": [
               {
                 "control_id": "CTRL-HITL-001",
-                "name": "Human approval before financial write action",
-                "description": "Any action that changes financial status requires human approval before execution.",
+                "name": "Human approval before governed decision",
+                "description": "Policy-defined approval decisions must be reviewed before the workflow item advances.",
                 "applies_to": [
-                  "payment_amount",
-                  "status",
-                  "adjustment"
+                  "approval",
+                  "review",
+                  "decision",
+                  "workflow_advancement"
                 ]
               },
               {
                 "control_id": "CTRL-AUDIT-001",
-                "name": "Audit log for financial decision",
-                "description": "Financial decisions and write actions must be logged with run ID, actor, timestamp, and rationale.",
+                "name": "Audit log for governed decision",
+                "description": "Approval decisions must be logged with run ID, actor, timestamp, and rationale.",
                 "applies_to": [
-                  "payment_amount",
-                  "status",
+                  "approval",
+                  "decision",
+                  "review"
+                ]
+              }
+            ]
+          },
+          {
+            "risk_id": "RISK-SCOPE-001",
+            "control_lookup_key": "implementation_scope_change",
+            "controls": [
+              {
+                "control_id": "CTRL-HITL-001",
+                "name": "Human review before implementation scope change",
+                "description": "Implementation scope, custom integration, or enterprise-term changes require approval before finalization.",
+                "applies_to": [
+                  "scope",
+                  "integration",
+                  "enterprise_terms",
+                  "implementation_plan"
+                ]
+              },
+              {
+                "control_id": "CTRL-AUDIT-001",
+                "name": "Audit implementation scope decision",
+                "description": "Scope-related decisions must be traceable to reviewer, rationale, and source evidence.",
+                "applies_to": [
+                  "scope",
+                  "integration",
                   "approval"
                 ]
               }
@@ -545,6 +932,13 @@
         "decision_point": false,
         "identified_risks": [
           {
+            "risk_id": "RISK-WRITE-001",
+            "risk_name": "Operational write action may occur without control",
+            "risk_description": "Workflow state changes, assignments, external language, or system-of-record updates require approval and auditability.",
+            "severity": "high",
+            "control_lookup_key": "operational_write_action"
+          },
+          {
             "risk_id": "RISK-DATA-001",
             "risk_name": "Sensitive data may enter model context",
             "risk_description": "Fields requiring redaction or blocked from model context must be controlled before LLM use.",
@@ -574,6 +968,34 @@
           }
         ],
         "required_control_groups": [
+          {
+            "risk_id": "RISK-WRITE-001",
+            "control_lookup_key": "operational_write_action",
+            "controls": [
+              {
+                "control_id": "CTRL-HITL-001",
+                "name": "Human approval before operational write action",
+                "description": "Workflow status, assignments, customer-facing language, or system-of-record updates require approval before execution.",
+                "applies_to": [
+                  "status",
+                  "assignment",
+                  "external_message",
+                  "system_of_record"
+                ]
+              },
+              {
+                "control_id": "CTRL-AUDIT-001",
+                "name": "Audit log for operational write action",
+                "description": "Operational write actions must be logged with approval reference, actor, timestamp, and affected record.",
+                "applies_to": [
+                  "write_action",
+                  "status",
+                  "assignment",
+                  "system_of_record"
+                ]
+              }
+            ]
+          },
           {
             "risk_id": "RISK-DATA-001",
             "control_lookup_key": "implementation_backlog_write",
@@ -667,6 +1089,27 @@
         "decision_point": false,
         "identified_risks": [
           {
+            "risk_id": "RISK-APPROVAL-001",
+            "risk_name": "Governed approval requirement may be bypassed",
+            "risk_description": "Onboarding plans involving sensitive data, custom integrations, enterprise terms, customer-facing commitments, or supervisor review must not advance without approval.",
+            "severity": "high",
+            "control_lookup_key": "governed_workflow_decision"
+          },
+          {
+            "risk_id": "RISK-WRITE-001",
+            "risk_name": "Operational write action may occur without control",
+            "risk_description": "Workflow state changes, assignments, external language, or system-of-record updates require approval and auditability.",
+            "severity": "high",
+            "control_lookup_key": "operational_write_action"
+          },
+          {
+            "risk_id": "RISK-COMMITMENT-001",
+            "risk_name": "Customer-facing commitment may be made without review",
+            "risk_description": "Customer-facing timelines, scope, or commitments should not be finalized from agent output without authorized review.",
+            "severity": "high",
+            "control_lookup_key": "customer_facing_commitment"
+          },
+          {
             "risk_id": "RISK-DATA-001",
             "risk_name": "Sensitive data may enter model context",
             "risk_description": "Fields requiring redaction or blocked from model context must be controlled before LLM use.",
@@ -696,6 +1139,88 @@
           }
         ],
         "required_control_groups": [
+          {
+            "risk_id": "RISK-APPROVAL-001",
+            "control_lookup_key": "governed_workflow_decision",
+            "controls": [
+              {
+                "control_id": "CTRL-HITL-001",
+                "name": "Human approval before governed decision",
+                "description": "Policy-defined approval decisions must be reviewed before the workflow item advances.",
+                "applies_to": [
+                  "approval",
+                  "review",
+                  "decision",
+                  "workflow_advancement"
+                ]
+              },
+              {
+                "control_id": "CTRL-AUDIT-001",
+                "name": "Audit log for governed decision",
+                "description": "Approval decisions must be logged with run ID, actor, timestamp, and rationale.",
+                "applies_to": [
+                  "approval",
+                  "decision",
+                  "review"
+                ]
+              }
+            ]
+          },
+          {
+            "risk_id": "RISK-WRITE-001",
+            "control_lookup_key": "operational_write_action",
+            "controls": [
+              {
+                "control_id": "CTRL-HITL-001",
+                "name": "Human approval before operational write action",
+                "description": "Workflow status, assignments, customer-facing language, or system-of-record updates require approval before execution.",
+                "applies_to": [
+                  "status",
+                  "assignment",
+                  "external_message",
+                  "system_of_record"
+                ]
+              },
+              {
+                "control_id": "CTRL-AUDIT-001",
+                "name": "Audit log for operational write action",
+                "description": "Operational write actions must be logged with approval reference, actor, timestamp, and affected record.",
+                "applies_to": [
+                  "write_action",
+                  "status",
+                  "assignment",
+                  "system_of_record"
+                ]
+              }
+            ]
+          },
+          {
+            "risk_id": "RISK-COMMITMENT-001",
+            "control_lookup_key": "customer_facing_commitment",
+            "controls": [
+              {
+                "control_id": "CTRL-HITL-001",
+                "name": "Human review before customer-facing commitment",
+                "description": "Customer-facing commitments, timelines, and external language require authorized review before release.",
+                "applies_to": [
+                  "customer_message",
+                  "commitment",
+                  "timeline",
+                  "external_communication"
+                ]
+              },
+              {
+                "control_id": "CTRL-AUDIT-001",
+                "name": "Audit customer-facing commitment approval",
+                "description": "Customer-facing approvals must be logged with reviewer, rationale, and approved version.",
+                "applies_to": [
+                  "customer_message",
+                  "commitment",
+                  "approval"
+                ]
+              }
+            ]
+          },
           {
             "risk_id": "RISK-DATA-001",
             "control_lookup_key": "implementation_backlog_write",
@@ -728,6 +1253,34 @@
         "decision_point": false,
         "identified_risks": [
           {
+            "risk_id": "RISK-APPROVAL-001",
+            "risk_name": "Governed approval requirement may be bypassed",
+            "risk_description": "Onboarding plans involving sensitive data, custom integrations, enterprise terms, customer-facing commitments, or supervisor review must not advance without approval.",
+            "severity": "high",
+            "control_lookup_key": "governed_workflow_decision"
+          },
+          {
+            "risk_id": "RISK-WRITE-001",
+            "risk_name": "Operational write action may occur without control",
+            "risk_description": "Workflow state changes, assignments, external language, or system-of-record updates require approval and auditability.",
+            "severity": "high",
+            "control_lookup_key": "operational_write_action"
+          },
+          {
+            "risk_id": "RISK-COMMITMENT-001",
+            "risk_name": "Customer-facing commitment may be made without review",
+            "risk_description": "Customer-facing timelines, scope, or commitments should not be finalized from agent output without authorized review.",
+            "severity": "high",
+            "control_lookup_key": "customer_facing_commitment"
+          },
+          {
+            "risk_id": "RISK-SCOPE-001",
+            "risk_name": "Implementation scope may change without approval",
+            "risk_description": "Scope, enterprise terms, or custom implementation requirements must be reviewed before the onboarding plan is finalized.",
+            "severity": "high",
+            "control_lookup_key": "implementation_scope_change"
+          },
+          {
             "risk_id": "RISK-DATA-001",
             "risk_name": "Sensitive data may enter model context",
             "risk_description": "Fields requiring redaction or blocked from model context must be controlled before LLM use.",
@@ -757,6 +1310,115 @@
           }
         ],
         "required_control_groups": [
+          {
+            "risk_id": "RISK-APPROVAL-001",
+            "control_lookup_key": "governed_workflow_decision",
+            "controls": [
+              {
+                "control_id": "CTRL-HITL-001",
+                "name": "Human approval before governed decision",
+                "description": "Policy-defined approval decisions must be reviewed before the workflow item advances.",
+                "applies_to": [
+                  "approval",
+                  "review",
+                  "decision",
+                  "workflow_advancement"
+                ]
+              },
+              {
+                "control_id": "CTRL-AUDIT-001",
+                "name": "Audit log for governed decision",
+                "description": "Approval decisions must be logged with run ID, actor, timestamp, and rationale.",
+                "applies_to": [
+                  "approval",
+                  "decision",
+                  "review"
+                ]
+              }
+            ]
+          },
+          {
+            "risk_id": "RISK-WRITE-001",
+            "control_lookup_key": "operational_write_action",
+            "controls": [
+              {
+                "control_id": "CTRL-HITL-001",
+                "name": "Human approval before operational write action",
+                "description": "Workflow status, assignments, customer-facing language, or system-of-record updates require approval before execution.",
+                "applies_to": [
+                  "status",
+                  "assignment",
+                  "external_message",
+                  "system_of_record"
+                ]
+              },
+              {
+                "control_id": "CTRL-AUDIT-001",
+                "name": "Audit log for operational write action",
+                "description": "Operational write actions must be logged with approval reference, actor, timestamp, and affected record.",
+                "applies_to": [
+                  "write_action",
+                  "status",
+                  "assignment",
+                  "system_of_record"
+                ]
+              }
+            ]
+          },
+          {
+            "risk_id": "RISK-COMMITMENT-001",
+            "control_lookup_key": "customer_facing_commitment",
+            "controls": [
+              {
+                "control_id": "CTRL-HITL-001",
+                "name": "Human review before customer-facing commitment",
+                "description": "Customer-facing commitments, timelines, and external language require authorized review before release.",
+                "applies_to": [
+                  "customer_message",
+                  "commitment",
+                  "timeline",
+                  "external_communication"
+                ]
+              },
+              {
+                "control_id": "CTRL-AUDIT-001",
+                "name": "Audit customer-facing commitment approval",
+                "description": "Customer-facing approvals must be logged with reviewer, rationale, and approved version.",
+                "applies_to": [
+                  "customer_message",
+                  "commitment",
+                  "approval"
+                ]
+              }
+            ]
+          },
+          {
+            "risk_id": "RISK-SCOPE-001",
+            "control_lookup_key": "implementation_scope_change",
+            "controls": [
+              {
+                "control_id": "CTRL-HITL-001",
+                "name": "Human review before implementation scope change",
+                "description": "Implementation scope, custom integration, or enterprise-term changes require approval before finalization.",
+                "applies_to": [
+                  "scope",
+                  "integration",
+                  "enterprise_terms",
+                  "implementation_plan"
+                ]
+              },
+              {
+                "control_id": "CTRL-AUDIT-001",
+                "name": "Audit implementation scope decision",
+                "description": "Scope-related decisions must be traceable to reviewer, rationale, and source evidence.",
+                "applies_to": [
+                  "scope",
+                  "integration",
+                  "approval"
+                ]
+              }
+            ]
+          },
           {
             "risk_id": "RISK-DATA-001",
             "control_lookup_key": "implementation_backlog_write",
@@ -790,10 +1452,10 @@
         "identified_risks": [
           {
             "risk_id": "RISK-WRITE-001",
-            "risk_name": "Financial or operational status may be changed without control",
-            "risk_description": "Status-changing actions require audit logging and appropriate human approval.",
+            "risk_name": "Operational write action may occur without control",
+            "risk_description": "Workflow state changes, assignments, external language, or system-of-record updates require approval and auditability.",
             "severity": "high",
-            "control_lookup_key": "financial_status_adjustment"
+            "control_lookup_key": "operational_write_action"
           },
           {
             "risk_id": "RISK-DATA-001",
@@ -827,26 +1489,28 @@
         "required_control_groups": [
           {
             "risk_id": "RISK-WRITE-001",
-            "control_lookup_key": "financial_status_adjustment",
+            "control_lookup_key": "operational_write_action",
             "controls": [
               {
                 "control_id": "CTRL-HITL-001",
-                "name": "Human approval before financial write action",
-                "description": "Any action that changes financial status requires human approval before execution.",
+                "name": "Human approval before operational write action",
+                "description": "Workflow status, assignments, customer-facing language, or system-of-record updates require approval before execution.",
                 "applies_to": [
-                  "payment_amount",
                   "status",
-                  "adjustment"
+                  "assignment",
+                  "external_message",
+                  "system_of_record"
                 ]
               },
               {
                 "control_id": "CTRL-AUDIT-001",
-                "name": "Audit log for financial decision",
-                "description": "Financial decisions and write actions must be logged with run ID, actor, timestamp, and rationale.",
+                "name": "Audit log for operational write action",
+                "description": "Operational write actions must be logged with approval reference, actor, timestamp, and affected record.",
                 "applies_to": [
-                  "payment_amount",
+                  "write_action",
                   "status",
-                  "approval"
+                  "assignment",
+                  "system_of_record"
                 ]
               }
             ]
@@ -878,11 +1542,11 @@
     ],
     "summary": {
       "row_count": 12,
-      "risk_count": 16,
-      "high_severity_risk_count": 15,
-      "control_count": 32
+      "risk_count": 37,
+      "high_severity_risk_count": 33,
+      "control_count": 68
     },
     "generation_mode": "deterministic_skeleton"
   },
-  "created_at": "2026-07-17T18:12:55.307828Z"
+  "created_at": "2026-07-17T18:17:51.591806Z"
 }

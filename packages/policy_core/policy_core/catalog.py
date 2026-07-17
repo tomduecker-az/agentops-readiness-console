@@ -202,4 +202,104 @@ CONTROL_CATALOG: dict[str, list[RequiredControl]] = {
             applies_to=["project_mgmt_server.create_issue"],
         ),
     ],
+    "governed_workflow_decision": [
+        RequiredControl(
+            control_id="CTRL-HITL-001",
+            name="Human approval before governed decision",
+            description="Policy-defined approval decisions must be reviewed before the workflow item advances.",
+            applies_to=["approval", "review", "decision", "workflow_advancement"],
+        ),
+        RequiredControl(
+            control_id="CTRL-AUDIT-001",
+            name="Audit log for governed decision",
+            description="Approval decisions must be logged with run ID, actor, timestamp, and rationale.",
+            applies_to=["approval", "decision", "review"],
+        ),
+    ],
+    "operational_write_action": [
+        RequiredControl(
+            control_id="CTRL-HITL-001",
+            name="Human approval before operational write action",
+            description="Workflow status, assignments, customer-facing language, or system-of-record updates require approval before execution.",
+            applies_to=["status", "assignment", "external_message", "system_of_record"],
+        ),
+        RequiredControl(
+            control_id="CTRL-AUDIT-001",
+            name="Audit log for operational write action",
+            description="Operational write actions must be logged with approval reference, actor, timestamp, and affected record.",
+            applies_to=["write_action", "status", "assignment", "system_of_record"],
+        ),
+    ],
+    "source_record_validation": [
+        RequiredControl(
+            control_id="CTRL-VALID-001",
+            name="Validate source and intake records before finalization",
+            description="Workflow items cannot be finalized when required source, intake, or reference information is missing or conflicting.",
+            applies_to=["source_record", "intake", "record_id", "required_fields"],
+        ),
+    ],
+    "customer_facing_commitment": [
+        RequiredControl(
+            control_id="CTRL-HITL-001",
+            name="Human review before customer-facing commitment",
+            description="Customer-facing commitments, timelines, and external language require authorized review before release.",
+            applies_to=["customer_message", "commitment", "timeline", "external_communication"],
+        ),
+        RequiredControl(
+            control_id="CTRL-AUDIT-001",
+            name="Audit customer-facing commitment approval",
+            description="Customer-facing approvals must be logged with reviewer, rationale, and approved version.",
+            applies_to=["customer_message", "commitment", "approval"],
+        ),
+    ],
+    "implementation_scope_change": [
+        RequiredControl(
+            control_id="CTRL-HITL-001",
+            name="Human review before implementation scope change",
+            description="Implementation scope, custom integration, or enterprise-term changes require approval before finalization.",
+            applies_to=["scope", "integration", "enterprise_terms", "implementation_plan"],
+        ),
+        RequiredControl(
+            control_id="CTRL-AUDIT-001",
+            name="Audit implementation scope decision",
+            description="Scope-related decisions must be traceable to reviewer, rationale, and source evidence.",
+            applies_to=["scope", "integration", "approval"],
+        ),
+    ],
+    "sensitive_integration_review": [
+        RequiredControl(
+            control_id="CTRL-HITL-001",
+            name="Human review before sensitive integration planning",
+            description="Sensitive data, security, SSO, file transfer, or custom integration requirements require technical or security review.",
+            applies_to=["sensitive_data", "integration", "sso", "security", "file_transfer"],
+        ),
+        RequiredControl(
+            control_id="CTRL-AUDIT-001",
+            name="Audit sensitive integration review",
+            description="Sensitive integration review decisions must be logged with reviewer, rationale, and required controls.",
+            applies_to=["integration", "security_review", "approval"],
+        ),
+    ],
+    "intake_handoff_quality": [
+        RequiredControl(
+            control_id="CTRL-VALID-001",
+            name="Validate intake and handoff completeness",
+            description="Missing or unclear intake information must be routed for clarification before planning or customer communication.",
+            applies_to=["intake", "handoff", "required_fields", "clarification"],
+        ),
+    ],
+    "accelerated_timeline_review": [
+        RequiredControl(
+            control_id="CTRL-HITL-001",
+            name="Human review before accelerated timeline commitment",
+            description="Compressed timelines require review before dates, staffing, or delivery commitments are shared externally.",
+            applies_to=["timeline", "launch_date", "capacity", "commitment"],
+        ),
+        RequiredControl(
+            control_id="CTRL-AUDIT-001",
+            name="Audit accelerated timeline approval",
+            description="Accelerated timeline approvals must be logged with reviewer, rationale, and accepted risk.",
+            applies_to=["timeline", "approval", "commitment"],
+        ),
+    ],
 }

@@ -11,7 +11,7 @@ customer_onboarding
 ## Run
 
 ```text
-run_5f04f85aaab1452ebaeb3dd540db7ecf
+run_6a91439e1c75426b830c1422589db38a
 ```
 
 ## Artifacts
@@ -39,7 +39,7 @@ The approval was executed in dry-run mode, so no real GitHub issue was created b
 The run produced:
 
 ```text
-88 audit events
+130 audit events
 ```
 
 See:
