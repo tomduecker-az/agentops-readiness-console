@@ -1,6 +1,6 @@
 {
-  "artifact_id": "artifact_4970940f46274217938b1f50a543eaab",
-  "run_id": "run_11bb34d8f12b49479f4923ae552a9642",
+  "artifact_id": "artifact_c7e8c27e6fa6408986d838568d59d010",
+  "run_id": "run_aa932e34fe3049d88670244f4ca631de",
   "artifact_type": "implementation_backlog",
   "status": "ready_for_review",
   "content": {
@@ -37,7 +37,7 @@
         "status": "approved",
         "github_issue_created": false,
         "additional_context": {},
-        "approval_reference": "approval_example_export_001",
+        "approval_reference": "approval_example_export_payment_reconciliation_001",
         "approved_by": "example_export_reviewer",
         "dry_run": true,
         "issue_creation_result": {
@@ -46,7 +46,7 @@
           "issue_number": null,
           "issue_url": null,
           "dry_run": true,
-          "approval_reference": "approval_example_export_001",
+          "approval_reference": "approval_example_export_payment_reconciliation_001",
           "message": "Dry run succeeded. No GitHub issue was created."
         }
       },
@@ -204,5 +204,5 @@
     },
     "generation_mode": "deterministic_skeleton"
   },
-  "created_at": "2026-07-17T17:22:17.517654Z"
+  "created_at": "2026-07-17T17:41:35.125153Z"
 }

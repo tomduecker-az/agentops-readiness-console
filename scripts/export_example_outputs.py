@@ -1,3 +1,4 @@
+import argparse
 import json
 from datetime import UTC, datetime
 from pathlib import Path
@@ -10,22 +11,25 @@ from app.main import app
 from app.services.artifact_service import clear_artifacts
 
 
-OUTPUT_DIR = Path("examples/payment_reconciliation_outputs")
-
-
 def main() -> None:
-    OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+    args = _parse_args()
+
+    workflow_id = args.workflow_id
+    output_dir = Path(args.output_dir or f"examples/{workflow_id}_outputs")
+    approval_reference = args.approval_reference or f"approval_example_export_{workflow_id}_001"
+
+    output_dir.mkdir(parents=True, exist_ok=True)
 
     clear_artifacts()
     clear_audit_events()
 
     client = TestClient(app)
 
-    print("Creating payment reconciliation workflow run...")
+    print(f"Creating workflow run for: {workflow_id}")
 
     run_response = client.post(
         "/runs",
-        json={"workflow_id": "payment_reconciliation"},
+        json={"workflow_id": workflow_id},
     )
     run_response.raise_for_status()
 
@@ -44,7 +48,11 @@ def main() -> None:
     )
 
     backlog_items = implementation_backlog["content"]["backlog_items"]
-    selected_backlog_id = backlog_items[0]["backlog_id"]
+
+    if not backlog_items:
+        raise ValueError("No backlog items were generated.")
+
+    selected_backlog_id = args.backlog_id or backlog_items[0]["backlog_id"]
 
     print(f"Approving backlog item in dry-run mode: {selected_backlog_id}")
 
@@ -52,7 +60,7 @@ def main() -> None:
         f"/runs/{run_id}/backlog/{selected_backlog_id}/approve",
         json={
             "approved_by": "example_export_reviewer",
-            "approval_reference": "approval_example_export_001",
+            "approval_reference": approval_reference,
             "dry_run": True,
             "labels": ["agentops", "example-output"],
         },
@@ -70,25 +78,59 @@ def main() -> None:
 
     print("Writing example output files...")
 
-    _write_json("run_response.json", run_data)
-    _write_json("approval_response.json", approval_data)
-    _write_json("artifacts.json", updated_artifacts)
-    _write_json("audit_events.json", audit_events)
-    _write_json("audit_summary.json", _build_audit_summary(audit_events))
+    _write_json(output_dir, "run_response.json", run_data)
+    _write_json(output_dir, "approval_response.json", approval_data)
+    _write_json(output_dir, "artifacts.json", updated_artifacts)
+    _write_json(output_dir, "audit_events.json", audit_events)
+    _write_json(output_dir, "audit_summary.json", _build_audit_summary(audit_events))
 
     for artifact in updated_artifacts:
         artifact_type = artifact["artifact_type"]
-        _write_json(f"{artifact_type}.json", artifact)
+        _write_json(output_dir, f"{artifact_type}.json", artifact)
 
     _write_readme(
+        output_dir=output_dir,
+        workflow_id=workflow_id,
         run_id=run_id,
         artifact_types=[artifact["artifact_type"] for artifact in updated_artifacts],
         selected_backlog_id=selected_backlog_id,
         audit_event_count=len(audit_events),
     )
 
-    print(f"Example outputs written to: {OUTPUT_DIR}")
+    print(f"Example outputs written to: {output_dir}")
     print("Done.")
+
+
+def _parse_args() -> argparse.Namespace:
+    parser = argparse.ArgumentParser(
+        description="Export example governed workflow outputs.",
+    )
+
+    parser.add_argument(
+        "--workflow-id",
+        default="payment_reconciliation",
+        help="Workflow ID to run and export.",
+    )
+
+    parser.add_argument(
+        "--output-dir",
+        default=None,
+        help="Directory where example outputs should be written.",
+    )
+
+    parser.add_argument(
+        "--backlog-id",
+        default=None,
+        help="Specific backlog item to approve. Defaults to the first generated backlog item.",
+    )
+
+    parser.add_argument(
+        "--approval-reference",
+        default=None,
+        help="Approval reference to include in the dry-run approval.",
+    )
+
+    return parser.parse_args()
 
 
 def _find_artifact(
@@ -102,8 +144,8 @@ def _find_artifact(
     raise ValueError(f"Artifact not found: {artifact_type}")
 
 
-def _write_json(filename: str, data: Any) -> None:
-    path = OUTPUT_DIR / filename
+def _write_json(output_dir: Path, filename: str, data: Any) -> None:
+    path = output_dir / filename
 
     path.write_text(
         json.dumps(data, indent=2, sort_keys=False),
@@ -135,6 +177,8 @@ def _build_audit_summary(
 
 
 def _write_readme(
+    output_dir: Path,
+    workflow_id: str,
     run_id: str,
     artifact_types: list[str],
     selected_backlog_id: str,
@@ -144,15 +188,15 @@ def _write_readme(
 
     content = "\n".join(
         [
-            "# Payment Reconciliation Example Outputs",
+            f"# {workflow_id} Example Outputs",
             "",
-            "This folder contains example output from the AgentOps Readiness Console using the demo workflow:",
+            "This folder contains example output from the AgentOps Readiness Console.",
+            "",
+            "## Workflow",
             "",
             "```text",
-            "payment_reconciliation",
+            workflow_id,
             "```",
-            "",
-            "The example run generated the full governed analysis chain and approved one backlog item in dry-run mode.",
             "",
             "## Run",
             "",
@@ -207,7 +251,8 @@ def _write_readme(
         ]
     )
 
-    (OUTPUT_DIR / "README.md").write_text(content, encoding="utf-8")
+    (output_dir / "README.md").write_text(content, encoding="utf-8")
+
 
 if __name__ == "__main__":
     main()

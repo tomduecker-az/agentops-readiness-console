@@ -66,7 +66,7 @@ To regenerate them locally:
 
 ```bash
 source services/api/.venv/bin/activate
-PYTHONPATH=services/api python -m scripts.export_payment_reconciliation_example_outputs
+PYTHONPATH=services/api python -m scripts.export_example_outputs --workflow-id payment_reconciliation --output-dir examples/payment_reconciliation_outputs
 ```
 
 ## Architecture Themes

@@ -1,17 +1,17 @@
-# Payment Reconciliation Example Outputs
+# payment_reconciliation Example Outputs
 
-This folder contains example output from the AgentOps Readiness Console using the demo workflow:
+This folder contains example output from the AgentOps Readiness Console.
+
+## Workflow
 
 ```text
 payment_reconciliation
 ```
 
-The example run generated the full governed analysis chain and approved one backlog item in dry-run mode.
-
 ## Run
 
 ```text
-run_11bb34d8f12b49479f4923ae552a9642
+run_aa932e34fe3049d88670244f4ca631de
 ```
 
 ## Artifacts
