@@ -1,0 +1,421 @@
+{
+  "artifact_id": "artifact_2854dfa4f968439681b9a7e7ca3ea2d2",
+  "run_id": "run_4257db1084f547b397a8e14176a87c9b",
+  "artifact_type": "hitl_design",
+  "status": "ready_for_review",
+  "content": {
+    "workflow_id": "customer_onboarding",
+    "title": "Human-in-the-Loop Design",
+    "source_artifacts": {
+      "risk_control_matrix": "Risk / Control Matrix"
+    },
+    "approval_gates": [
+      {
+        "gate_id": "HITL-GATE-DATA-001",
+        "name": "Sensitive-data review before model context use",
+        "trigger": "Input includes fields blocked from model context or requiring redaction.",
+        "human_reviewer": "Data steward or process owner",
+        "agent_allowed_action": "Use approved redacted context or request data handling review",
+        "blocked_action_without_approval": "Send sensitive or unredacted data to model context",
+        "source_risk_ids": [
+          "RISK-DATA-001"
+        ],
+        "applies_to_steps": [
+          {
+            "step_id": "step_1",
+            "workflow_step": "Sales marks the customer as closed-won and submits the onboarding handoff form."
+          },
+          {
+            "step_id": "step_2",
+            "workflow_step": "Customer operations reviews account details, contract notes, and implementation scope."
+          },
+          {
+            "step_id": "step_3",
+            "workflow_step": "The onboarding coordinator checks whether required intake fields are complete."
+          },
+          {
+            "step_id": "step_4",
+            "workflow_step": "Missing or unclear intake information is routed back to the account executive."
+          },
+          {
+            "step_id": "step_5",
+            "workflow_step": "The implementation specialist reviews requested integrations and technical requirements."
+          },
+          {
+            "step_id": "step_6",
+            "workflow_step": "Customers with sensitive data, custom integrations, or enterprise terms are routed for supervisor review."
+          },
+          {
+            "step_id": "step_7",
+            "workflow_step": "The supervisor approves, rejects, or requests clarification on the onboarding plan."
+          },
+          {
+            "step_id": "step_8",
+            "workflow_step": "The onboarding coordinator schedules the kickoff meeting and assigns internal owners."
+          },
+          {
+            "step_id": "step_9",
+            "workflow_step": "The implementation specialist drafts the onboarding task plan."
+          },
+          {
+            "step_id": "step_10",
+            "workflow_step": "Customer success reviews customer-facing commitments before they are sent externally."
+          },
+          {
+            "step_id": "step_11",
+            "workflow_step": "The onboarding plan is shared with the customer."
+          },
+          {
+            "step_id": "step_12",
+            "workflow_step": "Weekly onboarding status is tracked until launch."
+          }
+        ],
+        "affected_fields": {
+          "blocked_from_model_context": [
+            "customer_identifier",
+            "customer_name",
+            "contract_tier",
+            "implementation_scope",
+            "requested_integrations",
+            "contains_sensitive_data",
+            "account_owner"
+          ],
+          "requires_redaction": [
+            "customer_identifier",
+            "customer_name",
+            "contract_tier",
+            "implementation_scope",
+            "requested_integrations",
+            "contains_sensitive_data",
+            "account_owner",
+            "notes"
+          ]
+        }
+      },
+      {
+        "gate_id": "HITL-GATE-APPROVAL-001",
+        "name": "Human approval before governed workflow advancement",
+        "trigger": "Workflow item requires supervisor, process-owner, or policy-defined approval before advancing.",
+        "human_reviewer": "Data steward or process owner",
+        "agent_allowed_action": "Draft recommendation with rationale and required evidence",
+        "blocked_action_without_approval": "Advance the workflow item, finalize a decision, or communicate a final outcome",
+        "source_risk_ids": [
+          "RISK-APPROVAL-001"
+        ],
+        "applies_to_steps": [
+          {
+            "step_id": "step_6",
+            "workflow_step": "Customers with sensitive data, custom integrations, or enterprise terms are routed for supervisor review."
+          },
+          {
+            "step_id": "step_7",
+            "workflow_step": "The supervisor approves, rejects, or requests clarification on the onboarding plan."
+          }
+        ]
+      },
+      {
+        "gate_id": "HITL-GATE-WRITE-001",
+        "name": "Human approval before operational write action",
+        "trigger": "Agent recommendation would update workflow state, task assignments, customer-facing language, or system-of-record data.",
+        "human_reviewer": "Process owner or authorized operations reviewer",
+        "agent_allowed_action": "Prepare draft update with rationale",
+        "blocked_action_without_approval": "Execute write action or update system of record",
+        "source_risk_ids": [
+          "RISK-WRITE-001"
+        ],
+        "applies_to_steps": [
+          {
+            "step_id": "step_12",
+            "workflow_step": "Weekly onboarding status is tracked until launch."
+          }
+        ]
+      }
+    ],
+    "review_queue_design": [
+      {
+        "queue_id": "REVIEW-step_1",
+        "workflow_step": "Sales marks the customer as closed-won and submits the onboarding handoff form.",
+        "routing_reason": "One or more high-severity risks were identified for this step.",
+        "recommended_reviewer": "Process owner",
+        "risk_ids": [
+          "RISK-DATA-001"
+        ],
+        "minimum_required_evidence": [
+          "workflow item reference",
+          "agent recommendation",
+          "policy/control rationale",
+          "human approval decision"
+        ]
+      },
+      {
+        "queue_id": "REVIEW-step_2",
+        "workflow_step": "Customer operations reviews account details, contract notes, and implementation scope.",
+        "routing_reason": "One or more high-severity risks were identified for this step.",
+        "recommended_reviewer": "Supervisor or process owner",
+        "risk_ids": [
+          "RISK-DATA-001"
+        ],
+        "minimum_required_evidence": [
+          "workflow item reference",
+          "agent recommendation",
+          "policy/control rationale",
+          "human approval decision"
+        ]
+      },
+      {
+        "queue_id": "REVIEW-step_3",
+        "workflow_step": "The onboarding coordinator checks whether required intake fields are complete.",
+        "routing_reason": "One or more high-severity risks were identified for this step.",
+        "recommended_reviewer": "Process owner",
+        "risk_ids": [
+          "RISK-DATA-001"
+        ],
+        "minimum_required_evidence": [
+          "workflow item reference",
+          "agent recommendation",
+          "policy/control rationale",
+          "human approval decision"
+        ]
+      },
+      {
+        "queue_id": "REVIEW-step_4",
+        "workflow_step": "Missing or unclear intake information is routed back to the account executive.",
+        "routing_reason": "One or more high-severity risks were identified for this step.",
+        "recommended_reviewer": "Process owner",
+        "risk_ids": [
+          "RISK-DATA-001"
+        ],
+        "minimum_required_evidence": [
+          "workflow item reference",
+          "agent recommendation",
+          "policy/control rationale",
+          "human approval decision"
+        ]
+      },
+      {
+        "queue_id": "REVIEW-step_5",
+        "workflow_step": "The implementation specialist reviews requested integrations and technical requirements.",
+        "routing_reason": "One or more high-severity risks were identified for this step.",
+        "recommended_reviewer": "Supervisor or process owner",
+        "risk_ids": [
+          "RISK-DATA-001"
+        ],
+        "minimum_required_evidence": [
+          "workflow item reference",
+          "agent recommendation",
+          "policy/control rationale",
+          "human approval decision"
+        ]
+      },
+      {
+        "queue_id": "REVIEW-step_6",
+        "workflow_step": "Customers with sensitive data, custom integrations, or enterprise terms are routed for supervisor review.",
+        "routing_reason": "One or more high-severity risks were identified for this step.",
+        "recommended_reviewer": "Data steward or process owner",
+        "risk_ids": [
+          "RISK-APPROVAL-001",
+          "RISK-DATA-001"
+        ],
+        "minimum_required_evidence": [
+          "workflow item reference",
+          "agent recommendation",
+          "policy/control rationale",
+          "human approval decision"
+        ]
+      },
+      {
+        "queue_id": "REVIEW-step_7",
+        "workflow_step": "The supervisor approves, rejects, or requests clarification on the onboarding plan.",
+        "routing_reason": "One or more high-severity risks were identified for this step.",
+        "recommended_reviewer": "Supervisor",
+        "risk_ids": [
+          "RISK-APPROVAL-001",
+          "RISK-DATA-001"
+        ],
+        "minimum_required_evidence": [
+          "workflow item reference",
+          "agent recommendation",
+          "policy/control rationale",
+          "human approval decision"
+        ]
+      },
+      {
+        "queue_id": "REVIEW-step_8",
+        "workflow_step": "The onboarding coordinator schedules the kickoff meeting and assigns internal owners.",
+        "routing_reason": "One or more high-severity risks were identified for this step.",
+        "recommended_reviewer": "Process owner",
+        "risk_ids": [
+          "RISK-DATA-001"
+        ],
+        "minimum_required_evidence": [
+          "workflow item reference",
+          "agent recommendation",
+          "policy/control rationale",
+          "human approval decision"
+        ]
+      },
+      {
+        "queue_id": "REVIEW-step_9",
+        "workflow_step": "The implementation specialist drafts the onboarding task plan.",
+        "routing_reason": "One or more high-severity risks were identified for this step.",
+        "recommended_reviewer": "Process owner",
+        "risk_ids": [
+          "RISK-DATA-001"
+        ],
+        "minimum_required_evidence": [
+          "workflow item reference",
+          "agent recommendation",
+          "policy/control rationale",
+          "human approval decision"
+        ]
+      },
+      {
+        "queue_id": "REVIEW-step_10",
+        "workflow_step": "Customer success reviews customer-facing commitments before they are sent externally.",
+        "routing_reason": "One or more high-severity risks were identified for this step.",
+        "recommended_reviewer": "Customer success or process owner",
+        "risk_ids": [
+          "RISK-DATA-001"
+        ],
+        "minimum_required_evidence": [
+          "workflow item reference",
+          "agent recommendation",
+          "policy/control rationale",
+          "human approval decision"
+        ]
+      },
+      {
+        "queue_id": "REVIEW-step_11",
+        "workflow_step": "The onboarding plan is shared with the customer.",
+        "routing_reason": "One or more high-severity risks were identified for this step.",
+        "recommended_reviewer": "Process owner",
+        "risk_ids": [
+          "RISK-DATA-001"
+        ],
+        "minimum_required_evidence": [
+          "workflow item reference",
+          "agent recommendation",
+          "policy/control rationale",
+          "human approval decision"
+        ]
+      },
+      {
+        "queue_id": "REVIEW-step_12",
+        "workflow_step": "Weekly onboarding status is tracked until launch.",
+        "routing_reason": "One or more high-severity risks were identified for this step.",
+        "recommended_reviewer": "Process owner",
+        "risk_ids": [
+          "RISK-WRITE-001",
+          "RISK-DATA-001"
+        ],
+        "minimum_required_evidence": [
+          "workflow item reference",
+          "agent recommendation",
+          "policy/control rationale",
+          "human approval decision"
+        ]
+      }
+    ],
+    "autonomy_recommendations": [
+      {
+        "step_id": "step_1",
+        "workflow_step": "Sales marks the customer as closed-won and submits the onboarding handoff form.",
+        "recommended_autonomy_level": "assistive_with_redacted_context",
+        "rationale": "This step may include sensitive data; the agent may assist only with approved or redacted context."
+      },
+      {
+        "step_id": "step_2",
+        "workflow_step": "Customer operations reviews account details, contract notes, and implementation scope.",
+        "recommended_autonomy_level": "assistive_with_redacted_context",
+        "rationale": "This step may include sensitive data; the agent may assist only with approved or redacted context."
+      },
+      {
+        "step_id": "step_3",
+        "workflow_step": "The onboarding coordinator checks whether required intake fields are complete.",
+        "recommended_autonomy_level": "assistive_with_redacted_context",
+        "rationale": "This step may include sensitive data; the agent may assist only with approved or redacted context."
+      },
+      {
+        "step_id": "step_4",
+        "workflow_step": "Missing or unclear intake information is routed back to the account executive.",
+        "recommended_autonomy_level": "assistive_with_redacted_context",
+        "rationale": "This step may include sensitive data; the agent may assist only with approved or redacted context."
+      },
+      {
+        "step_id": "step_5",
+        "workflow_step": "The implementation specialist reviews requested integrations and technical requirements.",
+        "recommended_autonomy_level": "assistive_with_redacted_context",
+        "rationale": "This step may include sensitive data; the agent may assist only with approved or redacted context."
+      },
+      {
+        "step_id": "step_6",
+        "workflow_step": "Customers with sensitive data, custom integrations, or enterprise terms are routed for supervisor review.",
+        "recommended_autonomy_level": "recommend_only",
+        "rationale": "This step requires a governed approval decision; the agent may provide recommendations but should not make or execute the decision."
+      },
+      {
+        "step_id": "step_7",
+        "workflow_step": "The supervisor approves, rejects, or requests clarification on the onboarding plan.",
+        "recommended_autonomy_level": "recommend_only",
+        "rationale": "This step requires a governed approval decision; the agent may provide recommendations but should not make or execute the decision."
+      },
+      {
+        "step_id": "step_8",
+        "workflow_step": "The onboarding coordinator schedules the kickoff meeting and assigns internal owners.",
+        "recommended_autonomy_level": "draft_only_with_redacted_context",
+        "rationale": "This step can benefit from drafting support, but sensitive fields must be redacted or approved before model use."
+      },
+      {
+        "step_id": "step_9",
+        "workflow_step": "The implementation specialist drafts the onboarding task plan.",
+        "recommended_autonomy_level": "draft_only_with_redacted_context",
+        "rationale": "This step can benefit from drafting support, but sensitive fields must be redacted or approved before model use."
+      },
+      {
+        "step_id": "step_10",
+        "workflow_step": "Customer success reviews customer-facing commitments before they are sent externally.",
+        "recommended_autonomy_level": "approval_required",
+        "rationale": "This step may affect external communication or commitments; the agent should not finalize the action without human review."
+      },
+      {
+        "step_id": "step_11",
+        "workflow_step": "The onboarding plan is shared with the customer.",
+        "recommended_autonomy_level": "approval_required",
+        "rationale": "This step may affect external communication or commitments; the agent should not finalize the action without human review."
+      },
+      {
+        "step_id": "step_12",
+        "workflow_step": "Weekly onboarding status is tracked until launch.",
+        "recommended_autonomy_level": "approval_required",
+        "rationale": "This step may update workflow status, assignments, external language, or system-of-record data; the agent should prepare a draft only until human approval is recorded."
+      }
+    ],
+    "escalation_rules": [
+      {
+        "rule_id": "ESC-APPROVAL-001",
+        "name": "Escalate items requiring governed approval",
+        "condition": "Workflow item meets a policy, supervisor-review, sensitive-data, custom-scope, or elevated-risk condition.",
+        "escalation_target": "Supervisor or process owner",
+        "required_action": "Authorized reviewer must approve, reject, or request clarification before the workflow item advances.",
+        "applies_to_steps": [
+          {
+            "step_id": "step_6",
+            "workflow_step": "Customers with sensitive data, custom integrations, or enterprise terms are routed for supervisor review."
+          },
+          {
+            "step_id": "step_7",
+            "workflow_step": "The supervisor approves, rejects, or requests clarification on the onboarding plan."
+          }
+        ]
+      }
+    ],
+    "summary": {
+      "approval_gate_count": 3,
+      "review_queue_count": 12,
+      "autonomy_recommendation_count": 12,
+      "escalation_rule_count": 1
+    },
+    "generation_mode": "deterministic_skeleton"
+  },
+  "created_at": "2026-07-17T18:03:38.329390Z"
+}

@@ -1,0 +1,17 @@
+{
+  "run_id": "run_4257db1084f547b397a8e14176a87c9b",
+  "backlog_id": "BACKLOG-DATA-001",
+  "status": "approved",
+  "approval_reference": "approval_example_export_customer_onboarding_001",
+  "dry_run": true,
+  "issue_creation_result": {
+    "status": "dry_run",
+    "title": "Add sensitive-data redaction and model-context gate",
+    "issue_number": null,
+    "issue_url": null,
+    "dry_run": true,
+    "approval_reference": "approval_example_export_customer_onboarding_001",
+    "message": "Dry run succeeded. No GitHub issue was created."
+  },
+  "message": "Backlog item approved and project-management write action completed."
+}

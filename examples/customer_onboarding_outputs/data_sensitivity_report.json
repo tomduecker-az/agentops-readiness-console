@@ -1,0 +1,183 @@
+{
+  "artifact_id": "artifact_c0e277bfaf134d909ca2c7a4441c35e5",
+  "run_id": "run_4257db1084f547b397a8e14176a87c9b",
+  "artifact_type": "data_sensitivity_report",
+  "status": "ready_for_review",
+  "content": {
+    "workflow_id": "customer_onboarding",
+    "title": "Data Sensitivity Report",
+    "source_document": "sample_records",
+    "field_count": 12,
+    "classified_fields": [
+      {
+        "field_name": "record_id",
+        "sensitivity": "internal",
+        "allowed_in_model_context": true,
+        "requires_redaction": false,
+        "rationale": "Synthetic/internal record identifiers are allowed in the demo context.",
+        "sample_values": [
+          "ONB-001",
+          "ONB-002",
+          "ONB-003"
+        ]
+      },
+      {
+        "field_name": "customer_identifier",
+        "sensitivity": "pii",
+        "allowed_in_model_context": false,
+        "requires_redaction": true,
+        "rationale": "Customer-identifying data should not be sent to the model context.",
+        "sample_values": [
+          "CUST-1001",
+          "CUST-1002",
+          "CUST-1003"
+        ]
+      },
+      {
+        "field_name": "customer_name",
+        "sensitivity": "pii",
+        "allowed_in_model_context": false,
+        "requires_redaction": true,
+        "rationale": "Field name matched a conservative PII heuristic. Treat as blocked from model context until reviewed.",
+        "sample_values": [
+          "Northstar Foods",
+          "Blue River Retail",
+          "Helio Manufacturing"
+        ]
+      },
+      {
+        "field_name": "contract_tier",
+        "sensitivity": "confidential",
+        "allowed_in_model_context": false,
+        "requires_redaction": true,
+        "rationale": "Field is not defined in the policy catalog and did not match a known heuristic. Defaulting to confidential and requiring review.",
+        "sample_values": [
+          "Enterprise",
+          "Standard",
+          "Professional"
+        ]
+      },
+      {
+        "field_name": "implementation_scope",
+        "sensitivity": "confidential",
+        "allowed_in_model_context": false,
+        "requires_redaction": true,
+        "rationale": "Field is not defined in the policy catalog and did not match a known heuristic. Defaulting to confidential and requiring review.",
+        "sample_values": [
+          "Multi-site rollout",
+          "Single-site rollout",
+          "Custom workflow integration"
+        ]
+      },
+      {
+        "field_name": "requested_integrations",
+        "sensitivity": "confidential",
+        "allowed_in_model_context": false,
+        "requires_redaction": true,
+        "rationale": "Field is not defined in the policy catalog and did not match a known heuristic. Defaulting to confidential and requiring review.",
+        "sample_values": [
+          "ERP and SSO",
+          "CSV import",
+          "ERP and data warehouse"
+        ]
+      },
+      {
+        "field_name": "contains_sensitive_data",
+        "sensitivity": "confidential",
+        "allowed_in_model_context": false,
+        "requires_redaction": true,
+        "rationale": "Field is not defined in the policy catalog and did not match a known heuristic. Defaulting to confidential and requiring review.",
+        "sample_values": [
+          "true",
+          "false"
+        ]
+      },
+      {
+        "field_name": "launch_timeline_days",
+        "sensitivity": "internal",
+        "allowed_in_model_context": true,
+        "requires_redaction": false,
+        "rationale": "Field name matched an operational metadata heuristic. Treat as internal workflow data.",
+        "sample_values": [
+          "45",
+          "60",
+          "30"
+        ]
+      },
+      {
+        "field_name": "account_owner",
+        "sensitivity": "pii",
+        "allowed_in_model_context": false,
+        "requires_redaction": true,
+        "rationale": "Field name matched a conservative PII heuristic. Treat as blocked from model context until reviewed.",
+        "sample_values": [
+          "Avery Lee",
+          "Jordan Smith",
+          "Morgan Patel"
+        ]
+      },
+      {
+        "field_name": "onboarding_status",
+        "sensitivity": "internal",
+        "allowed_in_model_context": true,
+        "requires_redaction": false,
+        "rationale": "Field name matched an operational metadata heuristic. Treat as internal workflow data.",
+        "sample_values": [
+          "Intake Review",
+          "Kickoff Scheduled",
+          "Supervisor Review"
+        ]
+      },
+      {
+        "field_name": "requires_supervisor_review",
+        "sensitivity": "internal",
+        "allowed_in_model_context": true,
+        "requires_redaction": false,
+        "rationale": "Supervisor review requirement is internal control metadata.",
+        "sample_values": [
+          "true",
+          "false"
+        ]
+      },
+      {
+        "field_name": "notes",
+        "sensitivity": "internal",
+        "allowed_in_model_context": true,
+        "requires_redaction": true,
+        "rationale": "Free-text notes may contain sensitive data and should be reviewed or redacted.",
+        "sample_values": [
+          "Customer requests accelerated onboarding and SSO integration",
+          "Standard onboarding path",
+          "Custom integration and compressed timeline"
+        ]
+      }
+    ],
+    "unknown_fields": [],
+    "summary": {
+      "classified_field_count": 12,
+      "unknown_field_count": 0,
+      "blocked_from_model_context": [
+        "customer_identifier",
+        "customer_name",
+        "contract_tier",
+        "implementation_scope",
+        "requested_integrations",
+        "contains_sensitive_data",
+        "account_owner"
+      ],
+      "requires_redaction": [
+        "customer_identifier",
+        "customer_name",
+        "contract_tier",
+        "implementation_scope",
+        "requested_integrations",
+        "contains_sensitive_data",
+        "account_owner",
+        "notes"
+      ],
+      "financial_fields": []
+    },
+    "generation_mode": "deterministic_skeleton"
+  },
+  "created_at": "2026-07-17T18:03:38.328593Z"
+}
