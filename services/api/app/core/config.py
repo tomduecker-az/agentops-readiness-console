@@ -1,6 +1,10 @@
 from functools import lru_cache
+from pathlib import Path
+
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
+ROOT_DIR = Path(__file__).resolve().parents[4]
+ROOT_ENV_FILE = ROOT_DIR / ".env"
 
 class Settings(BaseSettings):
     app_env: str = "development"
@@ -22,7 +26,7 @@ class Settings(BaseSettings):
     require_human_approval_for_writes: bool = True
 
     model_config = SettingsConfigDict(
-        env_file=".env",
+        env_file=ROOT_ENV_FILE,
         env_file_encoding="utf-8",
         extra="ignore",
     )
