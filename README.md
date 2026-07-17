@@ -6,6 +6,45 @@ A governed multi-agent MCP application for enterprise workflow analysis.
 
 AgentOps Readiness Console analyzes an enterprise workflow, identifies risk and control requirements, designs human-in-the-loop approval patterns, and creates implementation backlog issues only after explicit human approval.
 
+## What This Project Demonstrates
+
+AgentOps Readiness Console demonstrates a governed approach to evaluating business workflows before applying AI or agentic automation.
+
+The system takes a workflow packet and produces:
+
+```text
+workflow_map
+data_sensitivity_report
+risk_control_matrix
+hitl_design
+implementation_backlog
+```
+
+It then supports an approval-gated write action:
+
+```text
+implementation backlog item
+  ↓
+human approval
+  ↓
+policy check
+  ↓
+project-management issue creation
+  ↓
+audit trail
+```
+
+The first successful real write-action test created GitHub issue #1 from an approved backlog item.
+
+See:
+
+```text
+docs/governed_execution_flow.md
+docs/github_write_action_test.md
+docs/workflow_packet_format.md
+docs/local_test_plan.md
+```
+
 ## MVP Outputs
 
 1. Workflow map
