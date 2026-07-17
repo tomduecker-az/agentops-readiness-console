@@ -1,0 +1,208 @@
+{
+  "artifact_id": "artifact_4970940f46274217938b1f50a543eaab",
+  "run_id": "run_11bb34d8f12b49479f4923ae552a9642",
+  "artifact_type": "implementation_backlog",
+  "status": "ready_for_review",
+  "content": {
+    "workflow_id": "payment_reconciliation",
+    "title": "Implementation Backlog",
+    "source_artifacts": {
+      "risk_control_matrix": "Risk / Control Matrix",
+      "hitl_design": "Human-in-the-Loop Design"
+    },
+    "write_action_policy": {
+      "target_tool_name": "project_mgmt_server.create_issue",
+      "requesting_agent_name": "implementation_planner",
+      "decision_without_approval": "require_approval",
+      "requires_human_approval": true,
+      "rationale": "Tool 'project_mgmt_server.create_issue' is write-capable and requires human approval."
+    },
+    "backlog_items": [
+      {
+        "backlog_id": "BACKLOG-DATA-001",
+        "title": "Add sensitive-data redaction and model-context gate",
+        "description": "Prevent fields requiring redaction or blocked from model context from being sent to the LLM without approved handling.",
+        "priority": "high",
+        "implementation_type": "data_governance_control",
+        "recommended_owner": "Data steward / AI platform owner",
+        "source_risk_ids": [
+          "RISK-DATA-001"
+        ],
+        "source_control_ids": [
+          "CTRL-HITL-002",
+          "CTRL-AUDIT-002"
+        ],
+        "requires_human_approval_before_execution": true,
+        "write_permission_decision_without_approval": "require_approval",
+        "status": "approved",
+        "github_issue_created": false,
+        "additional_context": {},
+        "approval_reference": "approval_example_export_001",
+        "approved_by": "example_export_reviewer",
+        "dry_run": true,
+        "issue_creation_result": {
+          "status": "dry_run",
+          "title": "Add sensitive-data redaction and model-context gate",
+          "issue_number": null,
+          "issue_url": null,
+          "dry_run": true,
+          "approval_reference": "approval_example_export_001",
+          "message": "Dry run succeeded. No GitHub issue was created."
+        }
+      },
+      {
+        "backlog_id": "BACKLOG-HITL-001",
+        "title": "Add supervisor approval gate for threshold exceptions",
+        "description": "Require supervisor approval before exceptions above threshold can be advanced, closed, or marked resolved.",
+        "priority": "high",
+        "implementation_type": "workflow_approval_gate",
+        "recommended_owner": "Operations / Process owner",
+        "source_risk_ids": [
+          "RISK-APPROVAL-001"
+        ],
+        "source_control_ids": [
+          "CTRL-HITL-001",
+          "CTRL-AUDIT-001"
+        ],
+        "requires_human_approval_before_execution": true,
+        "write_permission_decision_without_approval": "require_approval",
+        "status": "proposed",
+        "github_issue_created": false,
+        "additional_context": {}
+      },
+      {
+        "backlog_id": "BACKLOG-WRITE-001",
+        "title": "Block write actions until approval is recorded",
+        "description": "Ensure financial or operational status updates remain draft-only until an approved human decision is present.",
+        "priority": "high",
+        "implementation_type": "write_action_guardrail",
+        "recommended_owner": "Engineering / AI platform owner",
+        "source_risk_ids": [
+          "RISK-WRITE-001"
+        ],
+        "source_control_ids": [
+          "CTRL-HITL-001",
+          "CTRL-AUDIT-001"
+        ],
+        "requires_human_approval_before_execution": true,
+        "write_permission_decision_without_approval": "require_approval",
+        "status": "proposed",
+        "github_issue_created": false,
+        "additional_context": {}
+      },
+      {
+        "backlog_id": "BACKLOG-SOURCE-001",
+        "title": "Validate source-system identifiers before resolution",
+        "description": "Prevent auto-resolution or closure when source-system identifiers are missing, ambiguous, or conflicting.",
+        "priority": "high",
+        "implementation_type": "data_quality_validation",
+        "recommended_owner": "Operations / Data owner",
+        "source_risk_ids": [
+          "RISK-SOURCE-001"
+        ],
+        "source_control_ids": [
+          "CTRL-VALID-001"
+        ],
+        "requires_human_approval_before_execution": true,
+        "write_permission_decision_without_approval": "require_approval",
+        "status": "proposed",
+        "github_issue_created": false,
+        "additional_context": {}
+      },
+      {
+        "backlog_id": "BACKLOG-QUEUE-001",
+        "title": "Create review queue for high-risk workflow steps",
+        "description": "Route high-risk exceptions to a review queue with required evidence, recommended reviewer, and approval status.",
+        "priority": "medium",
+        "implementation_type": "review_workflow",
+        "recommended_owner": "Product / Operations",
+        "source_risk_ids": [
+          "RISK-APPROVAL-001",
+          "RISK-DATA-001",
+          "RISK-DECISION-001",
+          "RISK-SOURCE-001",
+          "RISK-WRITE-001"
+        ],
+        "source_control_ids": [
+          "CTRL-AUDIT-001",
+          "CTRL-AUDIT-002",
+          "CTRL-HITL-001",
+          "CTRL-HITL-002",
+          "CTRL-VALID-001"
+        ],
+        "requires_human_approval_before_execution": true,
+        "write_permission_decision_without_approval": "require_approval",
+        "status": "proposed",
+        "github_issue_created": false,
+        "additional_context": {
+          "review_queue_count": 9
+        }
+      },
+      {
+        "backlog_id": "BACKLOG-ESCALATION-001",
+        "title": "Implement escalation rules for blocked or high-risk cases",
+        "description": "Escalate records that meet high-risk conditions such as missing source identifiers or approval-threshold exceptions.",
+        "priority": "medium",
+        "implementation_type": "escalation_rule",
+        "recommended_owner": "Operations / Process owner",
+        "source_risk_ids": [
+          "RISK-APPROVAL-001",
+          "RISK-DATA-001",
+          "RISK-DECISION-001",
+          "RISK-SOURCE-001",
+          "RISK-WRITE-001"
+        ],
+        "source_control_ids": [
+          "CTRL-AUDIT-001",
+          "CTRL-AUDIT-002",
+          "CTRL-HITL-001",
+          "CTRL-HITL-002",
+          "CTRL-VALID-001"
+        ],
+        "requires_human_approval_before_execution": true,
+        "write_permission_decision_without_approval": "require_approval",
+        "status": "proposed",
+        "github_issue_created": false,
+        "additional_context": {
+          "escalation_rule_count": 3
+        }
+      },
+      {
+        "backlog_id": "BACKLOG-AUDIT-001",
+        "title": "Persist approval and write-action audit events",
+        "description": "Move audit records for approvals, policy checks, and write actions from the MVP in-memory store to a durable append-only store.",
+        "priority": "medium",
+        "implementation_type": "audit_persistence",
+        "recommended_owner": "Engineering / Security",
+        "source_risk_ids": [
+          "RISK-APPROVAL-001",
+          "RISK-DATA-001",
+          "RISK-DECISION-001",
+          "RISK-SOURCE-001",
+          "RISK-WRITE-001"
+        ],
+        "source_control_ids": [
+          "CTRL-AUDIT-001",
+          "CTRL-AUDIT-002",
+          "CTRL-HITL-001",
+          "CTRL-HITL-002",
+          "CTRL-VALID-001"
+        ],
+        "requires_human_approval_before_execution": true,
+        "write_permission_decision_without_approval": "require_approval",
+        "status": "proposed",
+        "github_issue_created": false,
+        "additional_context": {}
+      }
+    ],
+    "summary": {
+      "backlog_item_count": 7,
+      "high_priority_count": 4,
+      "approval_required_count": 7,
+      "approved_count": 1,
+      "github_issues_created": 0
+    },
+    "generation_mode": "deterministic_skeleton"
+  },
+  "created_at": "2026-07-17T17:22:17.517654Z"
+}

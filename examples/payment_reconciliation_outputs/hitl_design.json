@@ -1,0 +1,442 @@
+{
+  "artifact_id": "artifact_06d7ec93555040019326a853a85c55bf",
+  "run_id": "run_11bb34d8f12b49479f4923ae552a9642",
+  "artifact_type": "hitl_design",
+  "status": "ready_for_review",
+  "content": {
+    "workflow_id": "payment_reconciliation",
+    "title": "Human-in-the-Loop Design",
+    "source_artifacts": {
+      "risk_control_matrix": "Risk / Control Matrix"
+    },
+    "approval_gates": [
+      {
+        "gate_id": "HITL-GATE-DATA-001",
+        "name": "Sensitive-data review before model context use",
+        "trigger": "Input includes fields blocked from model context or requiring redaction.",
+        "human_reviewer": "Data steward or process owner",
+        "agent_allowed_action": "Request redacted context or classify fields",
+        "blocked_action_without_approval": "Send sensitive or unredacted data to model context",
+        "source_step_id": "step_1",
+        "source_risk_id": "RISK-DATA-001",
+        "affected_fields": {
+          "blocked_from_model_context": [],
+          "requires_redaction": [
+            "notes"
+          ]
+        }
+      },
+      {
+        "gate_id": "HITL-GATE-DATA-001",
+        "name": "Sensitive-data review before model context use",
+        "trigger": "Input includes fields blocked from model context or requiring redaction.",
+        "human_reviewer": "Data steward or process owner",
+        "agent_allowed_action": "Request redacted context or classify fields",
+        "blocked_action_without_approval": "Send sensitive or unredacted data to model context",
+        "source_step_id": "step_2",
+        "source_risk_id": "RISK-DATA-001",
+        "affected_fields": {
+          "blocked_from_model_context": [],
+          "requires_redaction": [
+            "notes"
+          ]
+        }
+      },
+      {
+        "gate_id": "HITL-GATE-DATA-001",
+        "name": "Sensitive-data review before model context use",
+        "trigger": "Input includes fields blocked from model context or requiring redaction.",
+        "human_reviewer": "Data steward or process owner",
+        "agent_allowed_action": "Request redacted context or classify fields",
+        "blocked_action_without_approval": "Send sensitive or unredacted data to model context",
+        "source_step_id": "step_3",
+        "source_risk_id": "RISK-DATA-001",
+        "affected_fields": {
+          "blocked_from_model_context": [],
+          "requires_redaction": [
+            "notes"
+          ]
+        }
+      },
+      {
+        "gate_id": "HITL-GATE-DATA-001",
+        "name": "Sensitive-data review before model context use",
+        "trigger": "Input includes fields blocked from model context or requiring redaction.",
+        "human_reviewer": "Data steward or process owner",
+        "agent_allowed_action": "Request redacted context or classify fields",
+        "blocked_action_without_approval": "Send sensitive or unredacted data to model context",
+        "source_step_id": "step_4",
+        "source_risk_id": "RISK-DATA-001",
+        "affected_fields": {
+          "blocked_from_model_context": [],
+          "requires_redaction": [
+            "notes"
+          ]
+        }
+      },
+      {
+        "gate_id": "HITL-GATE-WRITE-001",
+        "name": "Human approval before financial or operational status update",
+        "trigger": "Agent recommendation would change workflow status, notes, resolution, or financial handling.",
+        "human_reviewer": "Process owner or authorized operations reviewer",
+        "agent_allowed_action": "Prepare draft update with rationale",
+        "blocked_action_without_approval": "Execute write action",
+        "source_step_id": "step_5",
+        "source_risk_id": "RISK-WRITE-001"
+      },
+      {
+        "gate_id": "HITL-GATE-DATA-001",
+        "name": "Sensitive-data review before model context use",
+        "trigger": "Input includes fields blocked from model context or requiring redaction.",
+        "human_reviewer": "Data steward or process owner",
+        "agent_allowed_action": "Request redacted context or classify fields",
+        "blocked_action_without_approval": "Send sensitive or unredacted data to model context",
+        "source_step_id": "step_5",
+        "source_risk_id": "RISK-DATA-001",
+        "affected_fields": {
+          "blocked_from_model_context": [],
+          "requires_redaction": [
+            "notes"
+          ]
+        }
+      },
+      {
+        "gate_id": "HITL-GATE-APPROVAL-001",
+        "name": "Supervisor approval before exception advancement",
+        "trigger": "Workflow item is above approval threshold or requires supervisor review.",
+        "human_reviewer": "Supervisor",
+        "agent_allowed_action": "Draft recommendation only",
+        "blocked_action_without_approval": "Advance, close, or mark exception as resolved",
+        "source_step_id": "step_6",
+        "source_risk_id": "RISK-APPROVAL-001"
+      },
+      {
+        "gate_id": "HITL-GATE-DATA-001",
+        "name": "Sensitive-data review before model context use",
+        "trigger": "Input includes fields blocked from model context or requiring redaction.",
+        "human_reviewer": "Data steward or process owner",
+        "agent_allowed_action": "Request redacted context or classify fields",
+        "blocked_action_without_approval": "Send sensitive or unredacted data to model context",
+        "source_step_id": "step_6",
+        "source_risk_id": "RISK-DATA-001",
+        "affected_fields": {
+          "blocked_from_model_context": [],
+          "requires_redaction": [
+            "notes"
+          ]
+        }
+      },
+      {
+        "gate_id": "HITL-GATE-APPROVAL-001",
+        "name": "Supervisor approval before exception advancement",
+        "trigger": "Workflow item is above approval threshold or requires supervisor review.",
+        "human_reviewer": "Supervisor",
+        "agent_allowed_action": "Draft recommendation only",
+        "blocked_action_without_approval": "Advance, close, or mark exception as resolved",
+        "source_step_id": "step_7",
+        "source_risk_id": "RISK-APPROVAL-001"
+      },
+      {
+        "gate_id": "HITL-GATE-WRITE-001",
+        "name": "Human approval before financial or operational status update",
+        "trigger": "Agent recommendation would change workflow status, notes, resolution, or financial handling.",
+        "human_reviewer": "Process owner or authorized operations reviewer",
+        "agent_allowed_action": "Prepare draft update with rationale",
+        "blocked_action_without_approval": "Execute write action",
+        "source_step_id": "step_7",
+        "source_risk_id": "RISK-WRITE-001"
+      },
+      {
+        "gate_id": "HITL-GATE-DATA-001",
+        "name": "Sensitive-data review before model context use",
+        "trigger": "Input includes fields blocked from model context or requiring redaction.",
+        "human_reviewer": "Data steward or process owner",
+        "agent_allowed_action": "Request redacted context or classify fields",
+        "blocked_action_without_approval": "Send sensitive or unredacted data to model context",
+        "source_step_id": "step_7",
+        "source_risk_id": "RISK-DATA-001",
+        "affected_fields": {
+          "blocked_from_model_context": [],
+          "requires_redaction": [
+            "notes"
+          ]
+        }
+      },
+      {
+        "gate_id": "HITL-GATE-WRITE-001",
+        "name": "Human approval before financial or operational status update",
+        "trigger": "Agent recommendation would change workflow status, notes, resolution, or financial handling.",
+        "human_reviewer": "Process owner or authorized operations reviewer",
+        "agent_allowed_action": "Prepare draft update with rationale",
+        "blocked_action_without_approval": "Execute write action",
+        "source_step_id": "step_8",
+        "source_risk_id": "RISK-WRITE-001"
+      },
+      {
+        "gate_id": "HITL-GATE-DATA-001",
+        "name": "Sensitive-data review before model context use",
+        "trigger": "Input includes fields blocked from model context or requiring redaction.",
+        "human_reviewer": "Data steward or process owner",
+        "agent_allowed_action": "Request redacted context or classify fields",
+        "blocked_action_without_approval": "Send sensitive or unredacted data to model context",
+        "source_step_id": "step_8",
+        "source_risk_id": "RISK-DATA-001",
+        "affected_fields": {
+          "blocked_from_model_context": [],
+          "requires_redaction": [
+            "notes"
+          ]
+        }
+      },
+      {
+        "gate_id": "HITL-GATE-DATA-001",
+        "name": "Sensitive-data review before model context use",
+        "trigger": "Input includes fields blocked from model context or requiring redaction.",
+        "human_reviewer": "Data steward or process owner",
+        "agent_allowed_action": "Request redacted context or classify fields",
+        "blocked_action_without_approval": "Send sensitive or unredacted data to model context",
+        "source_step_id": "step_9",
+        "source_risk_id": "RISK-DATA-001",
+        "affected_fields": {
+          "blocked_from_model_context": [],
+          "requires_redaction": [
+            "notes"
+          ]
+        }
+      }
+    ],
+    "review_queue_design": [
+      {
+        "queue_id": "REVIEW-step_1",
+        "workflow_step": "Analyst receives or identifies an unmatched payment record.",
+        "routing_reason": "One or more high-severity risks were identified for this step.",
+        "recommended_reviewer": "Process owner",
+        "risk_ids": [
+          "RISK-DATA-001"
+        ],
+        "minimum_required_evidence": [
+          "source record reference",
+          "agent recommendation",
+          "policy/control rationale",
+          "human approval decision"
+        ]
+      },
+      {
+        "queue_id": "REVIEW-step_2",
+        "workflow_step": "Analyst checks the source system for matching transaction details.",
+        "routing_reason": "One or more high-severity risks were identified for this step.",
+        "recommended_reviewer": "Process owner",
+        "risk_ids": [
+          "RISK-SOURCE-001",
+          "RISK-DATA-001"
+        ],
+        "minimum_required_evidence": [
+          "source record reference",
+          "agent recommendation",
+          "policy/control rationale",
+          "human approval decision"
+        ]
+      },
+      {
+        "queue_id": "REVIEW-step_3",
+        "workflow_step": "Analyst compares the record against an off-system tracking spreadsheet.",
+        "routing_reason": "One or more high-severity risks were identified for this step.",
+        "recommended_reviewer": "Process owner",
+        "risk_ids": [
+          "RISK-DATA-001"
+        ],
+        "minimum_required_evidence": [
+          "source record reference",
+          "agent recommendation",
+          "policy/control rationale",
+          "human approval decision"
+        ]
+      },
+      {
+        "queue_id": "REVIEW-step_4",
+        "workflow_step": "Analyst determines the exception type.",
+        "routing_reason": "One or more high-severity risks were identified for this step.",
+        "recommended_reviewer": "Process owner",
+        "risk_ids": [
+          "RISK-DATA-001"
+        ],
+        "minimum_required_evidence": [
+          "source record reference",
+          "agent recommendation",
+          "policy/control rationale",
+          "human approval decision"
+        ]
+      },
+      {
+        "queue_id": "REVIEW-step_5",
+        "workflow_step": "Analyst updates status and notes.",
+        "routing_reason": "One or more high-severity risks were identified for this step.",
+        "recommended_reviewer": "Process owner",
+        "risk_ids": [
+          "RISK-WRITE-001",
+          "RISK-DATA-001"
+        ],
+        "minimum_required_evidence": [
+          "source record reference",
+          "agent recommendation",
+          "policy/control rationale",
+          "human approval decision"
+        ]
+      },
+      {
+        "queue_id": "REVIEW-step_6",
+        "workflow_step": "Items above the approval threshold are routed to a supervisor.",
+        "routing_reason": "One or more high-severity risks were identified for this step.",
+        "recommended_reviewer": "Supervisor",
+        "risk_ids": [
+          "RISK-APPROVAL-001",
+          "RISK-DATA-001"
+        ],
+        "minimum_required_evidence": [
+          "source record reference",
+          "agent recommendation",
+          "policy/control rationale",
+          "human approval decision"
+        ]
+      },
+      {
+        "queue_id": "REVIEW-step_7",
+        "workflow_step": "Supervisor reviews and approves or rejects the proposed resolution.",
+        "routing_reason": "One or more high-severity risks were identified for this step.",
+        "recommended_reviewer": "Supervisor",
+        "risk_ids": [
+          "RISK-APPROVAL-001",
+          "RISK-WRITE-001",
+          "RISK-DATA-001"
+        ],
+        "minimum_required_evidence": [
+          "source record reference",
+          "agent recommendation",
+          "policy/control rationale",
+          "human approval decision"
+        ]
+      },
+      {
+        "queue_id": "REVIEW-step_8",
+        "workflow_step": "Analyst completes the resolution update.",
+        "routing_reason": "One or more high-severity risks were identified for this step.",
+        "recommended_reviewer": "Process owner",
+        "risk_ids": [
+          "RISK-WRITE-001",
+          "RISK-DATA-001"
+        ],
+        "minimum_required_evidence": [
+          "source record reference",
+          "agent recommendation",
+          "policy/control rationale",
+          "human approval decision"
+        ]
+      },
+      {
+        "queue_id": "REVIEW-step_9",
+        "workflow_step": "Weekly exception report is prepared.",
+        "routing_reason": "One or more high-severity risks were identified for this step.",
+        "recommended_reviewer": "Process owner",
+        "risk_ids": [
+          "RISK-DATA-001"
+        ],
+        "minimum_required_evidence": [
+          "source record reference",
+          "agent recommendation",
+          "policy/control rationale",
+          "human approval decision"
+        ]
+      }
+    ],
+    "autonomy_recommendations": [
+      {
+        "step_id": "step_1",
+        "workflow_step": "Analyst receives or identifies an unmatched payment record.",
+        "recommended_autonomy_level": "recommend_only",
+        "rationale": "High-severity risks are present; the agent should draft recommendations but not execute actions."
+      },
+      {
+        "step_id": "step_2",
+        "workflow_step": "Analyst checks the source system for matching transaction details.",
+        "recommended_autonomy_level": "recommend_only",
+        "rationale": "High-severity risks are present; the agent should draft recommendations but not execute actions."
+      },
+      {
+        "step_id": "step_3",
+        "workflow_step": "Analyst compares the record against an off-system tracking spreadsheet.",
+        "recommended_autonomy_level": "recommend_only",
+        "rationale": "High-severity risks are present; the agent should draft recommendations but not execute actions."
+      },
+      {
+        "step_id": "step_4",
+        "workflow_step": "Analyst determines the exception type.",
+        "recommended_autonomy_level": "recommend_only",
+        "rationale": "High-severity risks are present; the agent should draft recommendations but not execute actions."
+      },
+      {
+        "step_id": "step_5",
+        "workflow_step": "Analyst updates status and notes.",
+        "recommended_autonomy_level": "recommend_only",
+        "rationale": "High-severity risks are present; the agent should draft recommendations but not execute actions."
+      },
+      {
+        "step_id": "step_6",
+        "workflow_step": "Items above the approval threshold are routed to a supervisor.",
+        "recommended_autonomy_level": "recommend_only",
+        "rationale": "High-severity risks are present; the agent should draft recommendations but not execute actions."
+      },
+      {
+        "step_id": "step_7",
+        "workflow_step": "Supervisor reviews and approves or rejects the proposed resolution.",
+        "recommended_autonomy_level": "recommend_only",
+        "rationale": "High-severity risks are present; the agent should draft recommendations but not execute actions."
+      },
+      {
+        "step_id": "step_8",
+        "workflow_step": "Analyst completes the resolution update.",
+        "recommended_autonomy_level": "recommend_only",
+        "rationale": "High-severity risks are present; the agent should draft recommendations but not execute actions."
+      },
+      {
+        "step_id": "step_9",
+        "workflow_step": "Weekly exception report is prepared.",
+        "recommended_autonomy_level": "recommend_only",
+        "rationale": "High-severity risks are present; the agent should draft recommendations but not execute actions."
+      }
+    ],
+    "escalation_rules": [
+      {
+        "rule_id": "ESC-SOURCE-001",
+        "name": "Escalate records missing source-system identifiers",
+        "condition": "Source-system identifier is missing, ambiguous, or conflicting.",
+        "escalation_target": "Operations supervisor",
+        "required_action": "Manual review before closure or resolution.",
+        "source_step_id": "step_2"
+      },
+      {
+        "rule_id": "ESC-APPROVAL-001",
+        "name": "Escalate approval-threshold exceptions",
+        "condition": "Exception exceeds threshold or requires supervisor approval.",
+        "escalation_target": "Supervisor",
+        "required_action": "Supervisor must approve or reject recommended resolution.",
+        "source_step_id": "step_6"
+      },
+      {
+        "rule_id": "ESC-APPROVAL-001",
+        "name": "Escalate approval-threshold exceptions",
+        "condition": "Exception exceeds threshold or requires supervisor approval.",
+        "escalation_target": "Supervisor",
+        "required_action": "Supervisor must approve or reject recommended resolution.",
+        "source_step_id": "step_7"
+      }
+    ],
+    "summary": {
+      "approval_gate_count": 14,
+      "review_queue_count": 9,
+      "autonomy_recommendation_count": 9,
+      "escalation_rule_count": 3
+    },
+    "generation_mode": "deterministic_skeleton"
+  },
+  "created_at": "2026-07-17T17:22:17.516150Z"
+}

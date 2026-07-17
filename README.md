@@ -52,6 +52,23 @@ docs/local_test_plan.md
 3. Human-in-the-loop design
 4. Implementation backlog with approval-gated GitHub issue creation
 
+## Example Outputs
+
+Example generated outputs are available under:
+
+```text
+examples/payment_reconciliation_outputs/
+```
+
+These files show the artifacts and audit trail produced by the demo payment reconciliation workflow, including a dry-run approval-gated project-management write action.
+
+To regenerate them locally:
+
+```bash
+source services/api/.venv/bin/activate
+PYTHONPATH=services/api python -m scripts.export_payment_reconciliation_example_outputs
+```
+
 ## Architecture Themes
 
 - Multi-agent orchestration

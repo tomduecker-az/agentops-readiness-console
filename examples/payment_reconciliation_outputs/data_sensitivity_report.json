@@ -1,0 +1,146 @@
+{
+  "artifact_id": "artifact_443f5f270efc40c5803802ba029c6b8c",
+  "run_id": "run_11bb34d8f12b49479f4923ae552a9642",
+  "artifact_type": "data_sensitivity_report",
+  "status": "ready_for_review",
+  "content": {
+    "workflow_id": "payment_reconciliation",
+    "title": "Data Sensitivity Report",
+    "source_document": "sample_records",
+    "field_count": 10,
+    "classified_fields": [
+      {
+        "field_name": "record_id",
+        "sensitivity": "internal",
+        "allowed_in_model_context": true,
+        "requires_redaction": false,
+        "rationale": "Synthetic/internal record identifiers are allowed in the demo context.",
+        "sample_values": [
+          "REC-001",
+          "REC-002",
+          "REC-003"
+        ]
+      },
+      {
+        "field_name": "payment_date",
+        "sensitivity": "financial_internal",
+        "allowed_in_model_context": true,
+        "requires_redaction": false,
+        "rationale": "Payment dates are financial transaction metadata and should be handled as internal financial data.",
+        "sample_values": [
+          "2026-01-03",
+          "2026-01-04",
+          "2026-01-05"
+        ]
+      },
+      {
+        "field_name": "payment_amount",
+        "sensitivity": "financial_internal",
+        "allowed_in_model_context": true,
+        "requires_redaction": false,
+        "rationale": "Payment amounts are financial data and require care, but synthetic demo values may be used.",
+        "sample_values": [
+          "245.50",
+          "8200.00",
+          "155.25"
+        ]
+      },
+      {
+        "field_name": "source_system",
+        "sensitivity": "internal",
+        "allowed_in_model_context": true,
+        "requires_redaction": false,
+        "rationale": "Source-system labels are internal operational metadata.",
+        "sample_values": [
+          "SystemA",
+          "SystemB",
+          "SystemC"
+        ]
+      },
+      {
+        "field_name": "exception_type",
+        "sensitivity": "internal",
+        "allowed_in_model_context": true,
+        "requires_redaction": false,
+        "rationale": "Exception type is internal operational metadata.",
+        "sample_values": [
+          "Missing Reference",
+          "Amount Mismatch",
+          "Duplicate Indicator"
+        ]
+      },
+      {
+        "field_name": "status",
+        "sensitivity": "internal",
+        "allowed_in_model_context": true,
+        "requires_redaction": false,
+        "rationale": "Workflow status is internal operational metadata.",
+        "sample_values": [
+          "Open",
+          "Pending Review"
+        ]
+      },
+      {
+        "field_name": "assigned_role",
+        "sensitivity": "internal",
+        "allowed_in_model_context": true,
+        "requires_redaction": false,
+        "rationale": "Assigned role is internal process metadata and does not identify an individual in the demo workflow.",
+        "sample_values": [
+          "Analyst",
+          "Supervisor"
+        ]
+      },
+      {
+        "field_name": "days_open",
+        "sensitivity": "internal",
+        "allowed_in_model_context": true,
+        "requires_redaction": false,
+        "rationale": "Days open is internal process-aging metadata.",
+        "sample_values": [
+          "3",
+          "7",
+          "2"
+        ]
+      },
+      {
+        "field_name": "requires_supervisor_review",
+        "sensitivity": "internal",
+        "allowed_in_model_context": true,
+        "requires_redaction": false,
+        "rationale": "Supervisor review requirement is internal control metadata.",
+        "sample_values": [
+          "false",
+          "true"
+        ]
+      },
+      {
+        "field_name": "notes",
+        "sensitivity": "internal",
+        "allowed_in_model_context": true,
+        "requires_redaction": true,
+        "rationale": "Free-text notes may contain sensitive data and should be reviewed or redacted.",
+        "sample_values": [
+          "Missing source reference",
+          "Amount exceeds approval threshold",
+          "Possible duplicate payment"
+        ]
+      }
+    ],
+    "unknown_fields": [],
+    "summary": {
+      "classified_field_count": 10,
+      "unknown_field_count": 0,
+      "blocked_from_model_context": [],
+      "requires_redaction": [
+        "notes"
+      ],
+      "financial_fields": [
+        "payment_date",
+        "payment_amount"
+      ]
+    },
+    "generation_mode": "deterministic_skeleton"
+  },
+  "created_at": "2026-07-17T17:22:17.514847Z"
+}

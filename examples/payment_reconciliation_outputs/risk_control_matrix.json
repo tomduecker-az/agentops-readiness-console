@@ -1,0 +1,724 @@
+{
+  "artifact_id": "artifact_ae3e73f0ee5345f6ba6bea70051a9aa5",
+  "run_id": "run_11bb34d8f12b49479f4923ae552a9642",
+  "artifact_type": "risk_control_matrix",
+  "status": "ready_for_review",
+  "content": {
+    "workflow_id": "payment_reconciliation",
+    "title": "Risk / Control Matrix",
+    "source_artifacts": {
+      "workflow_map": "Workflow Map",
+      "data_sensitivity_report": "Data Sensitivity Report"
+    },
+    "matrix_rows": [
+      {
+        "step_id": "step_1",
+        "sequence": 1,
+        "description": "Analyst receives or identifies an unmatched payment record.",
+        "actor": "Analyst",
+        "decision_point": false,
+        "identified_risks": [
+          {
+            "risk_id": "RISK-DATA-001",
+            "risk_name": "Sensitive data may enter model context",
+            "risk_description": "Fields requiring redaction or blocked from model context must be controlled before LLM use.",
+            "severity": "high",
+            "control_lookup_key": "implementation_backlog_write",
+            "affected_fields": {
+              "blocked_from_model_context": [],
+              "requires_redaction": [
+                "notes"
+              ]
+            }
+          }
+        ],
+        "required_control_groups": [
+          {
+            "risk_id": "RISK-DATA-001",
+            "control_lookup_key": "implementation_backlog_write",
+            "controls": [
+              {
+                "control_id": "CTRL-HITL-002",
+                "name": "Human approval before backlog creation",
+                "description": "Backlog items may be proposed by the agent, but real issue creation requires approval.",
+                "applies_to": [
+                  "project_mgmt_server.create_issue"
+                ]
+              },
+              {
+                "control_id": "CTRL-AUDIT-002",
+                "name": "Audit project-management write action",
+                "description": "Issue creation must be logged with approval reference and created issue URL.",
+                "applies_to": [
+                  "project_mgmt_server.create_issue"
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "step_id": "step_2",
+        "sequence": 2,
+        "description": "Analyst checks the source system for matching transaction details.",
+        "actor": "Analyst",
+        "decision_point": false,
+        "identified_risks": [
+          {
+            "risk_id": "RISK-SOURCE-001",
+            "risk_name": "Missing source-system identifier",
+            "risk_description": "Records missing source-system identifiers cannot be safely auto-resolved.",
+            "severity": "high",
+            "control_lookup_key": "missing_source_identifier"
+          },
+          {
+            "risk_id": "RISK-DATA-001",
+            "risk_name": "Sensitive data may enter model context",
+            "risk_description": "Fields requiring redaction or blocked from model context must be controlled before LLM use.",
+            "severity": "high",
+            "control_lookup_key": "implementation_backlog_write",
+            "affected_fields": {
+              "blocked_from_model_context": [],
+              "requires_redaction": [
+                "notes"
+              ]
+            }
+          }
+        ],
+        "required_control_groups": [
+          {
+            "risk_id": "RISK-SOURCE-001",
+            "control_lookup_key": "missing_source_identifier",
+            "controls": [
+              {
+                "control_id": "CTRL-VALID-001",
+                "name": "Block automatic closure when source identifier is missing",
+                "description": "Records missing source-system identifiers cannot be auto-closed.",
+                "applies_to": [
+                  "source_system",
+                  "record_id"
+                ]
+              }
+            ]
+          },
+          {
+            "risk_id": "RISK-DATA-001",
+            "control_lookup_key": "implementation_backlog_write",
+            "controls": [
+              {
+                "control_id": "CTRL-HITL-002",
+                "name": "Human approval before backlog creation",
+                "description": "Backlog items may be proposed by the agent, but real issue creation requires approval.",
+                "applies_to": [
+                  "project_mgmt_server.create_issue"
+                ]
+              },
+              {
+                "control_id": "CTRL-AUDIT-002",
+                "name": "Audit project-management write action",
+                "description": "Issue creation must be logged with approval reference and created issue URL.",
+                "applies_to": [
+                  "project_mgmt_server.create_issue"
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "step_id": "step_3",
+        "sequence": 3,
+        "description": "Analyst compares the record against an off-system tracking spreadsheet.",
+        "actor": "Analyst",
+        "decision_point": false,
+        "identified_risks": [
+          {
+            "risk_id": "RISK-DATA-001",
+            "risk_name": "Sensitive data may enter model context",
+            "risk_description": "Fields requiring redaction or blocked from model context must be controlled before LLM use.",
+            "severity": "high",
+            "control_lookup_key": "implementation_backlog_write",
+            "affected_fields": {
+              "blocked_from_model_context": [],
+              "requires_redaction": [
+                "notes"
+              ]
+            }
+          }
+        ],
+        "required_control_groups": [
+          {
+            "risk_id": "RISK-DATA-001",
+            "control_lookup_key": "implementation_backlog_write",
+            "controls": [
+              {
+                "control_id": "CTRL-HITL-002",
+                "name": "Human approval before backlog creation",
+                "description": "Backlog items may be proposed by the agent, but real issue creation requires approval.",
+                "applies_to": [
+                  "project_mgmt_server.create_issue"
+                ]
+              },
+              {
+                "control_id": "CTRL-AUDIT-002",
+                "name": "Audit project-management write action",
+                "description": "Issue creation must be logged with approval reference and created issue URL.",
+                "applies_to": [
+                  "project_mgmt_server.create_issue"
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "step_id": "step_4",
+        "sequence": 4,
+        "description": "Analyst determines the exception type.",
+        "actor": "Analyst",
+        "decision_point": true,
+        "identified_risks": [
+          {
+            "risk_id": "RISK-DECISION-001",
+            "risk_name": "Decision logic may be applied inconsistently",
+            "risk_description": "Decision points require clear criteria, traceability, and review expectations.",
+            "severity": "medium",
+            "control_lookup_key": "financial_status_adjustment"
+          },
+          {
+            "risk_id": "RISK-DATA-001",
+            "risk_name": "Sensitive data may enter model context",
+            "risk_description": "Fields requiring redaction or blocked from model context must be controlled before LLM use.",
+            "severity": "high",
+            "control_lookup_key": "implementation_backlog_write",
+            "affected_fields": {
+              "blocked_from_model_context": [],
+              "requires_redaction": [
+                "notes"
+              ]
+            }
+          }
+        ],
+        "required_control_groups": [
+          {
+            "risk_id": "RISK-DECISION-001",
+            "control_lookup_key": "financial_status_adjustment",
+            "controls": [
+              {
+                "control_id": "CTRL-HITL-001",
+                "name": "Human approval before financial write action",
+                "description": "Any action that changes financial status requires human approval before execution.",
+                "applies_to": [
+                  "payment_amount",
+                  "status",
+                  "adjustment"
+                ]
+              },
+              {
+                "control_id": "CTRL-AUDIT-001",
+                "name": "Audit log for financial decision",
+                "description": "Financial decisions and write actions must be logged with run ID, actor, timestamp, and rationale.",
+                "applies_to": [
+                  "payment_amount",
+                  "status",
+                  "approval"
+                ]
+              }
+            ]
+          },
+          {
+            "risk_id": "RISK-DATA-001",
+            "control_lookup_key": "implementation_backlog_write",
+            "controls": [
+              {
+                "control_id": "CTRL-HITL-002",
+                "name": "Human approval before backlog creation",
+                "description": "Backlog items may be proposed by the agent, but real issue creation requires approval.",
+                "applies_to": [
+                  "project_mgmt_server.create_issue"
+                ]
+              },
+              {
+                "control_id": "CTRL-AUDIT-002",
+                "name": "Audit project-management write action",
+                "description": "Issue creation must be logged with approval reference and created issue URL.",
+                "applies_to": [
+                  "project_mgmt_server.create_issue"
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "step_id": "step_5",
+        "sequence": 5,
+        "description": "Analyst updates status and notes.",
+        "actor": "Analyst",
+        "decision_point": false,
+        "identified_risks": [
+          {
+            "risk_id": "RISK-WRITE-001",
+            "risk_name": "Financial or operational status may be changed without control",
+            "risk_description": "Status-changing actions require audit logging and appropriate human approval.",
+            "severity": "high",
+            "control_lookup_key": "financial_status_adjustment"
+          },
+          {
+            "risk_id": "RISK-DATA-001",
+            "risk_name": "Sensitive data may enter model context",
+            "risk_description": "Fields requiring redaction or blocked from model context must be controlled before LLM use.",
+            "severity": "high",
+            "control_lookup_key": "implementation_backlog_write",
+            "affected_fields": {
+              "blocked_from_model_context": [],
+              "requires_redaction": [
+                "notes"
+              ]
+            }
+          }
+        ],
+        "required_control_groups": [
+          {
+            "risk_id": "RISK-WRITE-001",
+            "control_lookup_key": "financial_status_adjustment",
+            "controls": [
+              {
+                "control_id": "CTRL-HITL-001",
+                "name": "Human approval before financial write action",
+                "description": "Any action that changes financial status requires human approval before execution.",
+                "applies_to": [
+                  "payment_amount",
+                  "status",
+                  "adjustment"
+                ]
+              },
+              {
+                "control_id": "CTRL-AUDIT-001",
+                "name": "Audit log for financial decision",
+                "description": "Financial decisions and write actions must be logged with run ID, actor, timestamp, and rationale.",
+                "applies_to": [
+                  "payment_amount",
+                  "status",
+                  "approval"
+                ]
+              }
+            ]
+          },
+          {
+            "risk_id": "RISK-DATA-001",
+            "control_lookup_key": "implementation_backlog_write",
+            "controls": [
+              {
+                "control_id": "CTRL-HITL-002",
+                "name": "Human approval before backlog creation",
+                "description": "Backlog items may be proposed by the agent, but real issue creation requires approval.",
+                "applies_to": [
+                  "project_mgmt_server.create_issue"
+                ]
+              },
+              {
+                "control_id": "CTRL-AUDIT-002",
+                "name": "Audit project-management write action",
+                "description": "Issue creation must be logged with approval reference and created issue URL.",
+                "applies_to": [
+                  "project_mgmt_server.create_issue"
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "step_id": "step_6",
+        "sequence": 6,
+        "description": "Items above the approval threshold are routed to a supervisor.",
+        "actor": "Supervisor",
+        "decision_point": true,
+        "identified_risks": [
+          {
+            "risk_id": "RISK-DECISION-001",
+            "risk_name": "Decision logic may be applied inconsistently",
+            "risk_description": "Decision points require clear criteria, traceability, and review expectations.",
+            "severity": "medium",
+            "control_lookup_key": "financial_status_adjustment"
+          },
+          {
+            "risk_id": "RISK-APPROVAL-001",
+            "risk_name": "Approval requirement may be bypassed",
+            "risk_description": "Items requiring approval must not be auto-closed or advanced without supervisor review.",
+            "severity": "high",
+            "control_lookup_key": "financial_status_adjustment"
+          },
+          {
+            "risk_id": "RISK-DATA-001",
+            "risk_name": "Sensitive data may enter model context",
+            "risk_description": "Fields requiring redaction or blocked from model context must be controlled before LLM use.",
+            "severity": "high",
+            "control_lookup_key": "implementation_backlog_write",
+            "affected_fields": {
+              "blocked_from_model_context": [],
+              "requires_redaction": [
+                "notes"
+              ]
+            }
+          }
+        ],
+        "required_control_groups": [
+          {
+            "risk_id": "RISK-DECISION-001",
+            "control_lookup_key": "financial_status_adjustment",
+            "controls": [
+              {
+                "control_id": "CTRL-HITL-001",
+                "name": "Human approval before financial write action",
+                "description": "Any action that changes financial status requires human approval before execution.",
+                "applies_to": [
+                  "payment_amount",
+                  "status",
+                  "adjustment"
+                ]
+              },
+              {
+                "control_id": "CTRL-AUDIT-001",
+                "name": "Audit log for financial decision",
+                "description": "Financial decisions and write actions must be logged with run ID, actor, timestamp, and rationale.",
+                "applies_to": [
+                  "payment_amount",
+                  "status",
+                  "approval"
+                ]
+              }
+            ]
+          },
+          {
+            "risk_id": "RISK-APPROVAL-001",
+            "control_lookup_key": "financial_status_adjustment",
+            "controls": [
+              {
+                "control_id": "CTRL-HITL-001",
+                "name": "Human approval before financial write action",
+                "description": "Any action that changes financial status requires human approval before execution.",
+                "applies_to": [
+                  "payment_amount",
+                  "status",
+                  "adjustment"
+                ]
+              },
+              {
+                "control_id": "CTRL-AUDIT-001",
+                "name": "Audit log for financial decision",
+                "description": "Financial decisions and write actions must be logged with run ID, actor, timestamp, and rationale.",
+                "applies_to": [
+                  "payment_amount",
+                  "status",
+                  "approval"
+                ]
+              }
+            ]
+          },
+          {
+            "risk_id": "RISK-DATA-001",
+            "control_lookup_key": "implementation_backlog_write",
+            "controls": [
+              {
+                "control_id": "CTRL-HITL-002",
+                "name": "Human approval before backlog creation",
+                "description": "Backlog items may be proposed by the agent, but real issue creation requires approval.",
+                "applies_to": [
+                  "project_mgmt_server.create_issue"
+                ]
+              },
+              {
+                "control_id": "CTRL-AUDIT-002",
+                "name": "Audit project-management write action",
+                "description": "Issue creation must be logged with approval reference and created issue URL.",
+                "applies_to": [
+                  "project_mgmt_server.create_issue"
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "step_id": "step_7",
+        "sequence": 7,
+        "description": "Supervisor reviews and approves or rejects the proposed resolution.",
+        "actor": "Supervisor",
+        "decision_point": true,
+        "identified_risks": [
+          {
+            "risk_id": "RISK-DECISION-001",
+            "risk_name": "Decision logic may be applied inconsistently",
+            "risk_description": "Decision points require clear criteria, traceability, and review expectations.",
+            "severity": "medium",
+            "control_lookup_key": "financial_status_adjustment"
+          },
+          {
+            "risk_id": "RISK-APPROVAL-001",
+            "risk_name": "Approval requirement may be bypassed",
+            "risk_description": "Items requiring approval must not be auto-closed or advanced without supervisor review.",
+            "severity": "high",
+            "control_lookup_key": "financial_status_adjustment"
+          },
+          {
+            "risk_id": "RISK-WRITE-001",
+            "risk_name": "Financial or operational status may be changed without control",
+            "risk_description": "Status-changing actions require audit logging and appropriate human approval.",
+            "severity": "high",
+            "control_lookup_key": "financial_status_adjustment"
+          },
+          {
+            "risk_id": "RISK-DATA-001",
+            "risk_name": "Sensitive data may enter model context",
+            "risk_description": "Fields requiring redaction or blocked from model context must be controlled before LLM use.",
+            "severity": "high",
+            "control_lookup_key": "implementation_backlog_write",
+            "affected_fields": {
+              "blocked_from_model_context": [],
+              "requires_redaction": [
+                "notes"
+              ]
+            }
+          }
+        ],
+        "required_control_groups": [
+          {
+            "risk_id": "RISK-DECISION-001",
+            "control_lookup_key": "financial_status_adjustment",
+            "controls": [
+              {
+                "control_id": "CTRL-HITL-001",
+                "name": "Human approval before financial write action",
+                "description": "Any action that changes financial status requires human approval before execution.",
+                "applies_to": [
+                  "payment_amount",
+                  "status",
+                  "adjustment"
+                ]
+              },
+              {
+                "control_id": "CTRL-AUDIT-001",
+                "name": "Audit log for financial decision",
+                "description": "Financial decisions and write actions must be logged with run ID, actor, timestamp, and rationale.",
+                "applies_to": [
+                  "payment_amount",
+                  "status",
+                  "approval"
+                ]
+              }
+            ]
+          },
+          {
+            "risk_id": "RISK-APPROVAL-001",
+            "control_lookup_key": "financial_status_adjustment",
+            "controls": [
+              {
+                "control_id": "CTRL-HITL-001",
+                "name": "Human approval before financial write action",
+                "description": "Any action that changes financial status requires human approval before execution.",
+                "applies_to": [
+                  "payment_amount",
+                  "status",
+                  "adjustment"
+                ]
+              },
+              {
+                "control_id": "CTRL-AUDIT-001",
+                "name": "Audit log for financial decision",
+                "description": "Financial decisions and write actions must be logged with run ID, actor, timestamp, and rationale.",
+                "applies_to": [
+                  "payment_amount",
+                  "status",
+                  "approval"
+                ]
+              }
+            ]
+          },
+          {
+            "risk_id": "RISK-WRITE-001",
+            "control_lookup_key": "financial_status_adjustment",
+            "controls": [
+              {
+                "control_id": "CTRL-HITL-001",
+                "name": "Human approval before financial write action",
+                "description": "Any action that changes financial status requires human approval before execution.",
+                "applies_to": [
+                  "payment_amount",
+                  "status",
+                  "adjustment"
+                ]
+              },
+              {
+                "control_id": "CTRL-AUDIT-001",
+                "name": "Audit log for financial decision",
+                "description": "Financial decisions and write actions must be logged with run ID, actor, timestamp, and rationale.",
+                "applies_to": [
+                  "payment_amount",
+                  "status",
+                  "approval"
+                ]
+              }
+            ]
+          },
+          {
+            "risk_id": "RISK-DATA-001",
+            "control_lookup_key": "implementation_backlog_write",
+            "controls": [
+              {
+                "control_id": "CTRL-HITL-002",
+                "name": "Human approval before backlog creation",
+                "description": "Backlog items may be proposed by the agent, but real issue creation requires approval.",
+                "applies_to": [
+                  "project_mgmt_server.create_issue"
+                ]
+              },
+              {
+                "control_id": "CTRL-AUDIT-002",
+                "name": "Audit project-management write action",
+                "description": "Issue creation must be logged with approval reference and created issue URL.",
+                "applies_to": [
+                  "project_mgmt_server.create_issue"
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "step_id": "step_8",
+        "sequence": 8,
+        "description": "Analyst completes the resolution update.",
+        "actor": "Analyst",
+        "decision_point": false,
+        "identified_risks": [
+          {
+            "risk_id": "RISK-WRITE-001",
+            "risk_name": "Financial or operational status may be changed without control",
+            "risk_description": "Status-changing actions require audit logging and appropriate human approval.",
+            "severity": "high",
+            "control_lookup_key": "financial_status_adjustment"
+          },
+          {
+            "risk_id": "RISK-DATA-001",
+            "risk_name": "Sensitive data may enter model context",
+            "risk_description": "Fields requiring redaction or blocked from model context must be controlled before LLM use.",
+            "severity": "high",
+            "control_lookup_key": "implementation_backlog_write",
+            "affected_fields": {
+              "blocked_from_model_context": [],
+              "requires_redaction": [
+                "notes"
+              ]
+            }
+          }
+        ],
+        "required_control_groups": [
+          {
+            "risk_id": "RISK-WRITE-001",
+            "control_lookup_key": "financial_status_adjustment",
+            "controls": [
+              {
+                "control_id": "CTRL-HITL-001",
+                "name": "Human approval before financial write action",
+                "description": "Any action that changes financial status requires human approval before execution.",
+                "applies_to": [
+                  "payment_amount",
+                  "status",
+                  "adjustment"
+                ]
+              },
+              {
+                "control_id": "CTRL-AUDIT-001",
+                "name": "Audit log for financial decision",
+                "description": "Financial decisions and write actions must be logged with run ID, actor, timestamp, and rationale.",
+                "applies_to": [
+                  "payment_amount",
+                  "status",
+                  "approval"
+                ]
+              }
+            ]
+          },
+          {
+            "risk_id": "RISK-DATA-001",
+            "control_lookup_key": "implementation_backlog_write",
+            "controls": [
+              {
+                "control_id": "CTRL-HITL-002",
+                "name": "Human approval before backlog creation",
+                "description": "Backlog items may be proposed by the agent, but real issue creation requires approval.",
+                "applies_to": [
+                  "project_mgmt_server.create_issue"
+                ]
+              },
+              {
+                "control_id": "CTRL-AUDIT-002",
+                "name": "Audit project-management write action",
+                "description": "Issue creation must be logged with approval reference and created issue URL.",
+                "applies_to": [
+                  "project_mgmt_server.create_issue"
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "step_id": "step_9",
+        "sequence": 9,
+        "description": "Weekly exception report is prepared.",
+        "actor": "Unspecified",
+        "decision_point": false,
+        "identified_risks": [
+          {
+            "risk_id": "RISK-DATA-001",
+            "risk_name": "Sensitive data may enter model context",
+            "risk_description": "Fields requiring redaction or blocked from model context must be controlled before LLM use.",
+            "severity": "high",
+            "control_lookup_key": "implementation_backlog_write",
+            "affected_fields": {
+              "blocked_from_model_context": [],
+              "requires_redaction": [
+                "notes"
+              ]
+            }
+          }
+        ],
+        "required_control_groups": [
+          {
+            "risk_id": "RISK-DATA-001",
+            "control_lookup_key": "implementation_backlog_write",
+            "controls": [
+              {
+                "control_id": "CTRL-HITL-002",
+                "name": "Human approval before backlog creation",
+                "description": "Backlog items may be proposed by the agent, but real issue creation requires approval.",
+                "applies_to": [
+                  "project_mgmt_server.create_issue"
+                ]
+              },
+              {
+                "control_id": "CTRL-AUDIT-002",
+                "name": "Audit project-management write action",
+                "description": "Issue creation must be logged with approval reference and created issue URL.",
+                "applies_to": [
+                  "project_mgmt_server.create_issue"
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "summary": {
+      "row_count": 9,
+      "risk_count": 18,
+      "high_severity_risk_count": 15,
+      "control_count": 35
+    },
+    "generation_mode": "deterministic_skeleton"
+  },
+  "created_at": "2026-07-17T17:22:17.515852Z"
+}
