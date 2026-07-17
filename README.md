@@ -77,6 +77,11 @@ PYTHONPATH=services/api python -m scripts.validate_example_outputs
 
 This verifies that the exported artifacts include audit evidence, dry-run approval behavior, and workflow-specific output for the customer onboarding example.
 
+A human-readable comparison of the checked-in workflow examples is available at:
+
+```text
+examples/README.md
+
 ## Architecture Themes
 
 - Multi-agent orchestration
