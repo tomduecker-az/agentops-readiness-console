@@ -1,9 +1,12 @@
 from uuid import uuid4
 
 from app.schemas.artifacts import AnalysisArtifact, ArtifactStatus, ArtifactType
-
-
-_ARTIFACTS: list[AnalysisArtifact] = []
+from app.storage.supabase_store import (
+    get_artifact_for_run_by_type_from_db,
+    get_artifacts_for_run_from_db,
+    save_artifact,
+    update_artifact_content_in_db,
+)
 
 
 def create_artifact(
@@ -20,24 +23,21 @@ def create_artifact(
         content=content,
     )
 
-    _ARTIFACTS.append(artifact)
-
-    return artifact
+    return save_artifact(artifact)
 
 
 def get_artifacts_for_run(run_id: str) -> list[AnalysisArtifact]:
-    return [artifact for artifact in _ARTIFACTS if artifact.run_id == run_id]
+    return get_artifacts_for_run_from_db(run_id)
 
 
 def get_artifact_for_run_by_type(
     run_id: str,
     artifact_type: ArtifactType,
 ) -> AnalysisArtifact | None:
-    for artifact in _ARTIFACTS:
-        if artifact.run_id == run_id and artifact.artifact_type == artifact_type:
-            return artifact
-
-    return None
+    return get_artifact_for_run_by_type_from_db(
+        run_id=run_id,
+        artifact_type=artifact_type,
+    )
 
 
 def update_artifact_content(
@@ -45,17 +45,18 @@ def update_artifact_content(
     content: dict,
     status: ArtifactStatus | None = None,
 ) -> AnalysisArtifact:
-    for artifact in _ARTIFACTS:
-        if artifact.artifact_id == artifact_id:
-            artifact.content = content
-
-            if status is not None:
-                artifact.status = status
-
-            return artifact
-
-    raise ValueError(f"Artifact '{artifact_id}' was not found.")
+    return update_artifact_content_in_db(
+        artifact_id=artifact_id,
+        content=content,
+        status=status,
+    )
 
 
 def clear_artifacts() -> None:
-    _ARTIFACTS.clear()
+    """
+    Kept for backwards compatibility with older scripts.
+
+    Supabase-backed storage is persistent, so this intentionally does not delete
+    shared database rows.
+    """
+    return None
