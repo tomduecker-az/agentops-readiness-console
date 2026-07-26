@@ -302,4 +302,47 @@ CONTROL_CATALOG: dict[str, list[RequiredControl]] = {
             applies_to=["timeline", "approval", "commitment"],
         ),
     ],
+    "external_commitment_review": [
+        RequiredControl(
+            control_id="CTRL-HITL-001",
+            name="Human review before external commitment",
+            description="External communications, commitments, timelines, scope statements, or customer/vendor-facing language require authorized review before release.",
+            applies_to=["external_communication", "commitment", "timeline", "scope", "customer_message", "vendor_message"],
+        ),
+        RequiredControl(
+            control_id="CTRL-AUDIT-001",
+            name="Audit external commitment approval",
+            description="External commitment approvals must be logged with reviewer, rationale, approved version, and affected workflow item.",
+            applies_to=["external_communication", "commitment", "approval"],
+        ),
+    ],
+    "scope_change_review": [
+        RequiredControl(
+            control_id="CTRL-HITL-001",
+            name="Human review before scope or requirement change",
+            description="Scope changes, custom requirements, contract terms, or implementation changes require approval before finalization.",
+            applies_to=["scope", "requirements", "contract_terms", "implementation_plan", "change_request"],
+        ),
+        RequiredControl(
+            control_id="CTRL-AUDIT-001",
+            name="Audit scope or requirement decision",
+            description="Scope-related decisions must be traceable to reviewer, rationale, and source evidence.",
+            applies_to=["scope", "requirements", "approval"],
+        ),
+    ],
+    "timeline_or_sla_review": [
+        RequiredControl(
+            control_id="CTRL-HITL-001",
+            name="Human review before timeline or SLA commitment",
+            description="Compressed timelines, deadlines, launch dates, SLAs, or delivery commitments require review before being communicated or finalized.",
+            applies_to=["timeline", "deadline", "launch_date", "sla", "capacity", "commitment"],
+        ),
+        RequiredControl(
+            control_id="CTRL-AUDIT-001",
+            name="Audit timeline or SLA approval",
+            description="Timeline and SLA approvals must be logged with reviewer, rationale, and accepted risk.",
+            applies_to=["timeline", "sla", "approval", "commitment"],
+        ),
+    ],
+
 }

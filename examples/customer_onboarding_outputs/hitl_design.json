@@ -1,6 +1,6 @@
 {
-  "artifact_id": "artifact_1acacecbb7d34f93b2ef170d2153c7f3",
-  "run_id": "run_6a91439e1c75426b830c1422589db38a",
+  "artifact_id": "artifact_b80abebedc934442af2149425de1cf2d",
+  "run_id": "run_3461e509aa6947fa8204733309068ab0",
   "artifact_type": "hitl_design",
   "status": "ready_for_review",
   "content": {
@@ -10,6 +10,39 @@
       "risk_control_matrix": "Risk / Control Matrix"
     },
     "approval_gates": [
+      {
+        "gate_id": "HITL-GATE-WRITE-001",
+        "name": "Human approval before operational write action",
+        "trigger": "Agent recommendation would update workflow state, task assignments, customer-facing language, or system-of-record data.",
+        "human_reviewer": "Process owner or authorized operations reviewer",
+        "agent_allowed_action": "Prepare draft update with rationale",
+        "blocked_action_without_approval": "Execute write action or update system of record",
+        "source_risk_ids": [
+          "RISK-WRITE-001"
+        ],
+        "applies_to_steps": [
+          {
+            "step_id": "step_1",
+            "workflow_step": "Sales marks the customer as closed-won and submits the onboarding handoff form."
+          },
+          {
+            "step_id": "step_8",
+            "workflow_step": "The onboarding coordinator schedules the kickoff meeting and assigns internal owners."
+          },
+          {
+            "step_id": "step_10",
+            "workflow_step": "Customer success reviews customer-facing commitments before they are sent externally."
+          },
+          {
+            "step_id": "step_11",
+            "workflow_step": "The onboarding plan is shared with the customer."
+          },
+          {
+            "step_id": "step_12",
+            "workflow_step": "Weekly onboarding status is tracked until launch."
+          }
+        ]
+      },
       {
         "gate_id": "HITL-GATE-DATA-001",
         "name": "Sensitive-data review before model context use",
@@ -122,39 +155,6 @@
           {
             "step_id": "step_10",
             "workflow_step": "Customer success reviews customer-facing commitments before they are sent externally."
-          },
-          {
-            "step_id": "step_11",
-            "workflow_step": "The onboarding plan is shared with the customer."
-          }
-        ]
-      },
-      {
-        "gate_id": "HITL-GATE-WRITE-001",
-        "name": "Human approval before operational write action",
-        "trigger": "Agent recommendation would update workflow state, task assignments, customer-facing language, or system-of-record data.",
-        "human_reviewer": "Process owner or authorized operations reviewer",
-        "agent_allowed_action": "Prepare draft update with rationale",
-        "blocked_action_without_approval": "Execute write action or update system of record",
-        "source_risk_ids": [
-          "RISK-WRITE-001"
-        ],
-        "applies_to_steps": [
-          {
-            "step_id": "step_8",
-            "workflow_step": "The onboarding coordinator schedules the kickoff meeting and assigns internal owners."
-          },
-          {
-            "step_id": "step_10",
-            "workflow_step": "Customer success reviews customer-facing commitments before they are sent externally."
-          },
-          {
-            "step_id": "step_11",
-            "workflow_step": "The onboarding plan is shared with the customer."
-          },
-          {
-            "step_id": "step_12",
-            "workflow_step": "Weekly onboarding status is tracked until launch."
           }
         ]
       }
@@ -167,6 +167,8 @@
         "recommended_reviewer": "Process owner",
         "risk_ids": [
           "RISK-SOURCE-001",
+          "RISK-WRITE-001",
+          "RISK-SCOPE-001",
           "RISK-DATA-001"
         ],
         "minimum_required_evidence": [
@@ -232,6 +234,7 @@
         "recommended_reviewer": "Supervisor or process owner",
         "risk_ids": [
           "RISK-APPROVAL-001",
+          "RISK-SCOPE-001",
           "RISK-INTEGRATION-001",
           "RISK-DATA-001"
         ],
@@ -267,7 +270,6 @@
         "recommended_reviewer": "Supervisor",
         "risk_ids": [
           "RISK-APPROVAL-001",
-          "RISK-SCOPE-001",
           "RISK-DATA-001"
         ],
         "minimum_required_evidence": [
@@ -317,6 +319,7 @@
           "RISK-APPROVAL-001",
           "RISK-WRITE-001",
           "RISK-COMMITMENT-001",
+          "RISK-SCOPE-001",
           "RISK-DATA-001"
         ],
         "minimum_required_evidence": [
@@ -332,7 +335,6 @@
         "routing_reason": "One or more high-severity risks were identified for this step.",
         "recommended_reviewer": "Process owner",
         "risk_ids": [
-          "RISK-APPROVAL-001",
           "RISK-WRITE-001",
           "RISK-COMMITMENT-001",
           "RISK-SCOPE-001",
@@ -366,8 +368,8 @@
       {
         "step_id": "step_1",
         "workflow_step": "Sales marks the customer as closed-won and submits the onboarding handoff form.",
-        "recommended_autonomy_level": "assistive_with_redacted_context",
-        "rationale": "This step may include sensitive data; the agent may assist only with approved or redacted context."
+        "recommended_autonomy_level": "approval_required",
+        "rationale": "This step may update workflow status, assignments, external language, or system-of-record data; the agent should prepare a draft only until human approval is recorded."
       },
       {
         "step_id": "step_2",
@@ -484,10 +486,6 @@
           {
             "step_id": "step_10",
             "workflow_step": "Customer success reviews customer-facing commitments before they are sent externally."
-          },
-          {
-            "step_id": "step_11",
-            "workflow_step": "The onboarding plan is shared with the customer."
           }
         ]
       }
@@ -500,5 +498,5 @@
     },
     "generation_mode": "deterministic_skeleton"
   },
-  "created_at": "2026-07-17T18:17:51.592400Z"
+  "created_at": "2026-07-26T16:06:24.040067Z"
 }

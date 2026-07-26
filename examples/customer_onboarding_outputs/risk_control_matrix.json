@@ -1,6 +1,6 @@
 {
-  "artifact_id": "artifact_59656d57dfc9429abc25db52b1f60d4d",
-  "run_id": "run_6a91439e1c75426b830c1422589db38a",
+  "artifact_id": "artifact_29ae3fd90a8d40759906236eeca9d5c1",
+  "run_id": "run_3461e509aa6947fa8204733309068ab0",
   "artifact_type": "risk_control_matrix",
   "status": "ready_for_review",
   "content": {
@@ -20,17 +20,55 @@
         "identified_risks": [
           {
             "risk_id": "RISK-SOURCE-001",
-            "risk_name": "Missing or unclear onboarding intake information",
-            "risk_description": "Onboarding plans should not be finalized when intake fields, contract context, integration details, or handoff information are missing or unclear.",
+            "risk_name": "Required source or intake information may be missing",
+            "risk_description": "Workflow items should not be finalized when required source, intake, handoff, or reference information is missing, unclear, ambiguous, or conflicting.",
             "severity": "high",
-            "control_lookup_key": "source_record_validation"
+            "control_lookup_key": "source_record_validation",
+            "matched_terms": [
+              "close",
+              "closed",
+              "custom",
+              "handoff"
+            ]
+          },
+          {
+            "risk_id": "RISK-WRITE-001",
+            "risk_name": "Operational write action may occur without control",
+            "risk_description": "Workflow state changes, assignments, external language, or system-of-record updates require approval and auditability.",
+            "severity": "high",
+            "control_lookup_key": "operational_write_action",
+            "matched_terms": [
+              "close",
+              "closed",
+              "custom",
+              "handoff"
+            ]
+          },
+          {
+            "risk_id": "RISK-SCOPE-001",
+            "risk_name": "Scope, requirement, or commitment boundary may change without approval",
+            "risk_description": "Scope, requirements, terms, or implementation expectations must be reviewed before the workflow item is finalized or communicated externally.",
+            "severity": "high",
+            "control_lookup_key": "scope_change_review",
+            "matched_terms": [
+              "close",
+              "closed",
+              "custom",
+              "handoff"
+            ]
           },
           {
             "risk_id": "RISK-HANDOFF-001",
-            "risk_name": "Incomplete intake or handoff may lead to incorrect planning",
-            "risk_description": "Missing or unclear handoff information can cause incorrect plans, missed dependencies, or premature customer communication.",
+            "risk_name": "Incomplete handoff may lead to incorrect workflow execution",
+            "risk_description": "Missing, unclear, or incomplete handoff information can cause incorrect actions, missed dependencies, or premature communication.",
             "severity": "medium",
-            "control_lookup_key": "intake_handoff_quality"
+            "control_lookup_key": "intake_handoff_quality",
+            "matched_terms": [
+              "close",
+              "closed",
+              "custom",
+              "handoff"
+            ]
           },
           {
             "risk_id": "RISK-DATA-001",
@@ -75,6 +113,62 @@
                   "intake",
                   "record_id",
                   "required_fields"
+                ]
+              }
+            ]
+          },
+          {
+            "risk_id": "RISK-WRITE-001",
+            "control_lookup_key": "operational_write_action",
+            "controls": [
+              {
+                "control_id": "CTRL-HITL-001",
+                "name": "Human approval before operational write action",
+                "description": "Workflow status, assignments, customer-facing language, or system-of-record updates require approval before execution.",
+                "applies_to": [
+                  "status",
+                  "assignment",
+                  "external_message",
+                  "system_of_record"
+                ]
+              },
+              {
+                "control_id": "CTRL-AUDIT-001",
+                "name": "Audit log for operational write action",
+                "description": "Operational write actions must be logged with approval reference, actor, timestamp, and affected record.",
+                "applies_to": [
+                  "write_action",
+                  "status",
+                  "assignment",
+                  "system_of_record"
+                ]
+              }
+            ]
+          },
+          {
+            "risk_id": "RISK-SCOPE-001",
+            "control_lookup_key": "scope_change_review",
+            "controls": [
+              {
+                "control_id": "CTRL-HITL-001",
+                "name": "Human review before scope or requirement change",
+                "description": "Scope changes, custom requirements, contract terms, or implementation changes require approval before finalization.",
+                "applies_to": [
+                  "scope",
+                  "requirements",
+                  "contract_terms",
+                  "implementation_plan",
+                  "change_request"
+                ]
+              },
+              {
+                "control_id": "CTRL-AUDIT-001",
+                "name": "Audit scope or requirement decision",
+                "description": "Scope-related decisions must be traceable to reviewer, rationale, and source evidence.",
+                "applies_to": [
+                  "scope",
+                  "requirements",
+                  "approval"
                 ]
               }
             ]
@@ -129,17 +223,29 @@
         "identified_risks": [
           {
             "risk_id": "RISK-APPROVAL-001",
-            "risk_name": "Governed approval requirement may be bypassed",
-            "risk_description": "Onboarding plans involving sensitive data, custom integrations, enterprise terms, customer-facing commitments, or supervisor review must not advance without approval.",
+            "risk_name": "Required approval may be bypassed",
+            "risk_description": "Workflow items that meet approval, review, or authorization conditions must not advance without a recorded human decision.",
             "severity": "high",
-            "control_lookup_key": "governed_workflow_decision"
+            "control_lookup_key": "governed_workflow_decision",
+            "matched_terms": [
+              "custom",
+              "implementation scope",
+              "review",
+              "scope"
+            ]
           },
           {
             "risk_id": "RISK-SCOPE-001",
-            "risk_name": "Implementation scope may change without approval",
-            "risk_description": "Scope, enterprise terms, or custom implementation requirements must be reviewed before the onboarding plan is finalized.",
+            "risk_name": "Scope, requirement, or commitment boundary may change without approval",
+            "risk_description": "Scope, requirements, terms, or implementation expectations must be reviewed before the workflow item is finalized or communicated externally.",
             "severity": "high",
-            "control_lookup_key": "implementation_scope_change"
+            "control_lookup_key": "scope_change_review",
+            "matched_terms": [
+              "custom",
+              "implementation scope",
+              "review",
+              "scope"
+            ]
           },
           {
             "risk_id": "RISK-DATA-001",
@@ -200,26 +306,27 @@
           },
           {
             "risk_id": "RISK-SCOPE-001",
-            "control_lookup_key": "implementation_scope_change",
+            "control_lookup_key": "scope_change_review",
             "controls": [
               {
                 "control_id": "CTRL-HITL-001",
-                "name": "Human review before implementation scope change",
-                "description": "Implementation scope, custom integration, or enterprise-term changes require approval before finalization.",
+                "name": "Human review before scope or requirement change",
+                "description": "Scope changes, custom requirements, contract terms, or implementation changes require approval before finalization.",
                 "applies_to": [
                   "scope",
-                  "integration",
-                  "enterprise_terms",
-                  "implementation_plan"
+                  "requirements",
+                  "contract_terms",
+                  "implementation_plan",
+                  "change_request"
                 ]
               },
               {
                 "control_id": "CTRL-AUDIT-001",
-                "name": "Audit implementation scope decision",
+                "name": "Audit scope or requirement decision",
                 "description": "Scope-related decisions must be traceable to reviewer, rationale, and source evidence.",
                 "applies_to": [
                   "scope",
-                  "integration",
+                  "requirements",
                   "approval"
                 ]
               }
@@ -258,17 +365,25 @@
         "identified_risks": [
           {
             "risk_id": "RISK-SOURCE-001",
-            "risk_name": "Missing or unclear onboarding intake information",
-            "risk_description": "Onboarding plans should not be finalized when intake fields, contract context, integration details, or handoff information are missing or unclear.",
+            "risk_name": "Required source or intake information may be missing",
+            "risk_description": "Workflow items should not be finalized when required source, intake, handoff, or reference information is missing, unclear, ambiguous, or conflicting.",
             "severity": "high",
-            "control_lookup_key": "source_record_validation"
+            "control_lookup_key": "source_record_validation",
+            "matched_terms": [
+              "intake",
+              "required intake"
+            ]
           },
           {
             "risk_id": "RISK-HANDOFF-001",
-            "risk_name": "Incomplete intake or handoff may lead to incorrect planning",
-            "risk_description": "Missing or unclear handoff information can cause incorrect plans, missed dependencies, or premature customer communication.",
+            "risk_name": "Incomplete handoff may lead to incorrect workflow execution",
+            "risk_description": "Missing, unclear, or incomplete handoff information can cause incorrect actions, missed dependencies, or premature communication.",
             "severity": "medium",
-            "control_lookup_key": "intake_handoff_quality"
+            "control_lookup_key": "intake_handoff_quality",
+            "matched_terms": [
+              "intake",
+              "required intake"
+            ]
           },
           {
             "risk_id": "RISK-DATA-001",
@@ -367,17 +482,29 @@
         "identified_risks": [
           {
             "risk_id": "RISK-SOURCE-001",
-            "risk_name": "Missing or unclear onboarding intake information",
-            "risk_description": "Onboarding plans should not be finalized when intake fields, contract context, integration details, or handoff information are missing or unclear.",
+            "risk_name": "Required source or intake information may be missing",
+            "risk_description": "Workflow items should not be finalized when required source, intake, handoff, or reference information is missing, unclear, ambiguous, or conflicting.",
             "severity": "high",
-            "control_lookup_key": "source_record_validation"
+            "control_lookup_key": "source_record_validation",
+            "matched_terms": [
+              "intake",
+              "missing",
+              "routed back",
+              "unclear"
+            ]
           },
           {
             "risk_id": "RISK-HANDOFF-001",
-            "risk_name": "Incomplete intake or handoff may lead to incorrect planning",
-            "risk_description": "Missing or unclear handoff information can cause incorrect plans, missed dependencies, or premature customer communication.",
+            "risk_name": "Incomplete handoff may lead to incorrect workflow execution",
+            "risk_description": "Missing, unclear, or incomplete handoff information can cause incorrect actions, missed dependencies, or premature communication.",
             "severity": "medium",
-            "control_lookup_key": "intake_handoff_quality"
+            "control_lookup_key": "intake_handoff_quality",
+            "matched_terms": [
+              "intake",
+              "missing",
+              "routed back",
+              "unclear"
+            ]
           },
           {
             "risk_id": "RISK-DATA-001",
@@ -476,17 +603,51 @@
         "identified_risks": [
           {
             "risk_id": "RISK-APPROVAL-001",
-            "risk_name": "Governed approval requirement may be bypassed",
-            "risk_description": "Onboarding plans involving sensitive data, custom integrations, enterprise terms, customer-facing commitments, or supervisor review must not advance without approval.",
+            "risk_name": "Required approval may be bypassed",
+            "risk_description": "Workflow items that meet approval, review, or authorization conditions must not advance without a recorded human decision.",
             "severity": "high",
-            "control_lookup_key": "governed_workflow_decision"
+            "control_lookup_key": "governed_workflow_decision",
+            "matched_terms": [
+              "integration",
+              "integrations",
+              "requirement",
+              "requirements",
+              "review",
+              "technical requirement",
+              "technical requirements"
+            ]
+          },
+          {
+            "risk_id": "RISK-SCOPE-001",
+            "risk_name": "Scope, requirement, or commitment boundary may change without approval",
+            "risk_description": "Scope, requirements, terms, or implementation expectations must be reviewed before the workflow item is finalized or communicated externally.",
+            "severity": "high",
+            "control_lookup_key": "scope_change_review",
+            "matched_terms": [
+              "integration",
+              "integrations",
+              "requirement",
+              "requirements",
+              "review",
+              "technical requirement",
+              "technical requirements"
+            ]
           },
           {
             "risk_id": "RISK-INTEGRATION-001",
-            "risk_name": "Sensitive integration or security requirement may be mishandled",
-            "risk_description": "Sensitive data, custom integrations, SSO, or security-related requirements need technical review before planning or execution.",
+            "risk_name": "Technical, integration, or security requirement may be mishandled",
+            "risk_description": "Technical integrations, security-related requirements, credentials, APIs, or system-access dependencies require appropriate technical or security review.",
             "severity": "high",
-            "control_lookup_key": "sensitive_integration_review"
+            "control_lookup_key": "sensitive_integration_review",
+            "matched_terms": [
+              "integration",
+              "integrations",
+              "requirement",
+              "requirements",
+              "review",
+              "technical requirement",
+              "technical requirements"
+            ]
           },
           {
             "risk_id": "RISK-DATA-001",
@@ -541,6 +702,34 @@
                   "approval",
                   "decision",
                   "review"
+                ]
+              }
+            ]
+          },
+          {
+            "risk_id": "RISK-SCOPE-001",
+            "control_lookup_key": "scope_change_review",
+            "controls": [
+              {
+                "control_id": "CTRL-HITL-001",
+                "name": "Human review before scope or requirement change",
+                "description": "Scope changes, custom requirements, contract terms, or implementation changes require approval before finalization.",
+                "applies_to": [
+                  "scope",
+                  "requirements",
+                  "contract_terms",
+                  "implementation_plan",
+                  "change_request"
+                ]
+              },
+              {
+                "control_id": "CTRL-AUDIT-001",
+                "name": "Audit scope or requirement decision",
+                "description": "Scope-related decisions must be traceable to reviewer, rationale, and source evidence.",
+                "applies_to": [
+                  "scope",
+                  "requirements",
+                  "approval"
                 ]
               }
             ]
@@ -606,24 +795,54 @@
         "identified_risks": [
           {
             "risk_id": "RISK-APPROVAL-001",
-            "risk_name": "Governed approval requirement may be bypassed",
-            "risk_description": "Onboarding plans involving sensitive data, custom integrations, enterprise terms, customer-facing commitments, or supervisor review must not advance without approval.",
+            "risk_name": "Required approval may be bypassed",
+            "risk_description": "Workflow items that meet approval, review, or authorization conditions must not advance without a recorded human decision.",
             "severity": "high",
-            "control_lookup_key": "governed_workflow_decision"
+            "control_lookup_key": "governed_workflow_decision",
+            "matched_terms": [
+              "custom",
+              "custom integration",
+              "custom integrations",
+              "integration",
+              "integrations",
+              "review",
+              "supervisor",
+              "terms"
+            ]
           },
           {
             "risk_id": "RISK-SCOPE-001",
-            "risk_name": "Implementation scope may change without approval",
-            "risk_description": "Scope, enterprise terms, or custom implementation requirements must be reviewed before the onboarding plan is finalized.",
+            "risk_name": "Scope, requirement, or commitment boundary may change without approval",
+            "risk_description": "Scope, requirements, terms, or implementation expectations must be reviewed before the workflow item is finalized or communicated externally.",
             "severity": "high",
-            "control_lookup_key": "implementation_scope_change"
+            "control_lookup_key": "scope_change_review",
+            "matched_terms": [
+              "custom",
+              "custom integration",
+              "custom integrations",
+              "integration",
+              "integrations",
+              "review",
+              "supervisor",
+              "terms"
+            ]
           },
           {
             "risk_id": "RISK-INTEGRATION-001",
-            "risk_name": "Sensitive integration or security requirement may be mishandled",
-            "risk_description": "Sensitive data, custom integrations, SSO, or security-related requirements need technical review before planning or execution.",
+            "risk_name": "Technical, integration, or security requirement may be mishandled",
+            "risk_description": "Technical integrations, security-related requirements, credentials, APIs, or system-access dependencies require appropriate technical or security review.",
             "severity": "high",
-            "control_lookup_key": "sensitive_integration_review"
+            "control_lookup_key": "sensitive_integration_review",
+            "matched_terms": [
+              "custom",
+              "custom integration",
+              "custom integrations",
+              "integration",
+              "integrations",
+              "review",
+              "supervisor",
+              "terms"
+            ]
           },
           {
             "risk_id": "RISK-DATA-001",
@@ -684,26 +903,27 @@
           },
           {
             "risk_id": "RISK-SCOPE-001",
-            "control_lookup_key": "implementation_scope_change",
+            "control_lookup_key": "scope_change_review",
             "controls": [
               {
                 "control_id": "CTRL-HITL-001",
-                "name": "Human review before implementation scope change",
-                "description": "Implementation scope, custom integration, or enterprise-term changes require approval before finalization.",
+                "name": "Human review before scope or requirement change",
+                "description": "Scope changes, custom requirements, contract terms, or implementation changes require approval before finalization.",
                 "applies_to": [
                   "scope",
-                  "integration",
-                  "enterprise_terms",
-                  "implementation_plan"
+                  "requirements",
+                  "contract_terms",
+                  "implementation_plan",
+                  "change_request"
                 ]
               },
               {
                 "control_id": "CTRL-AUDIT-001",
-                "name": "Audit implementation scope decision",
+                "name": "Audit scope or requirement decision",
                 "description": "Scope-related decisions must be traceable to reviewer, rationale, and source evidence.",
                 "applies_to": [
                   "scope",
-                  "integration",
+                  "requirements",
                   "approval"
                 ]
               }
@@ -773,21 +993,45 @@
             "risk_name": "Workflow decision may be applied inconsistently",
             "risk_description": "Decision points require clear criteria, traceability, and review expectations.",
             "severity": "medium",
-            "control_lookup_key": "governed_workflow_decision"
+            "control_lookup_key": "governed_workflow_decision",
+            "matched_terms": [
+              "approve",
+              "approves",
+              "clarification",
+              "reject",
+              "rejects",
+              "supervisor"
+            ]
           },
           {
             "risk_id": "RISK-APPROVAL-001",
-            "risk_name": "Governed approval requirement may be bypassed",
-            "risk_description": "Onboarding plans involving sensitive data, custom integrations, enterprise terms, customer-facing commitments, or supervisor review must not advance without approval.",
+            "risk_name": "Required approval may be bypassed",
+            "risk_description": "Workflow items that meet approval, review, or authorization conditions must not advance without a recorded human decision.",
             "severity": "high",
-            "control_lookup_key": "governed_workflow_decision"
+            "control_lookup_key": "governed_workflow_decision",
+            "matched_terms": [
+              "approve",
+              "approves",
+              "clarification",
+              "reject",
+              "rejects",
+              "supervisor"
+            ]
           },
           {
-            "risk_id": "RISK-SCOPE-001",
-            "risk_name": "Implementation scope may change without approval",
-            "risk_description": "Scope, enterprise terms, or custom implementation requirements must be reviewed before the onboarding plan is finalized.",
-            "severity": "high",
-            "control_lookup_key": "implementation_scope_change"
+            "risk_id": "RISK-HANDOFF-001",
+            "risk_name": "Incomplete handoff may lead to incorrect workflow execution",
+            "risk_description": "Missing, unclear, or incomplete handoff information can cause incorrect actions, missed dependencies, or premature communication.",
+            "severity": "medium",
+            "control_lookup_key": "intake_handoff_quality",
+            "matched_terms": [
+              "approve",
+              "approves",
+              "clarification",
+              "reject",
+              "rejects",
+              "supervisor"
+            ]
           },
           {
             "risk_id": "RISK-DATA-001",
@@ -874,28 +1118,18 @@
             ]
           },
           {
-            "risk_id": "RISK-SCOPE-001",
-            "control_lookup_key": "implementation_scope_change",
+            "risk_id": "RISK-HANDOFF-001",
+            "control_lookup_key": "intake_handoff_quality",
             "controls": [
               {
-                "control_id": "CTRL-HITL-001",
-                "name": "Human review before implementation scope change",
-                "description": "Implementation scope, custom integration, or enterprise-term changes require approval before finalization.",
+                "control_id": "CTRL-VALID-001",
+                "name": "Validate intake and handoff completeness",
+                "description": "Missing or unclear intake information must be routed for clarification before planning or customer communication.",
                 "applies_to": [
-                  "scope",
-                  "integration",
-                  "enterprise_terms",
-                  "implementation_plan"
-                ]
-              },
-              {
-                "control_id": "CTRL-AUDIT-001",
-                "name": "Audit implementation scope decision",
-                "description": "Scope-related decisions must be traceable to reviewer, rationale, and source evidence.",
-                "applies_to": [
-                  "scope",
-                  "integration",
-                  "approval"
+                  "intake",
+                  "handoff",
+                  "required_fields",
+                  "clarification"
                 ]
               }
             ]
@@ -936,7 +1170,13 @@
             "risk_name": "Operational write action may occur without control",
             "risk_description": "Workflow state changes, assignments, external language, or system-of-record updates require approval and auditability.",
             "severity": "high",
-            "control_lookup_key": "operational_write_action"
+            "control_lookup_key": "operational_write_action",
+            "matched_terms": [
+              "assign",
+              "assigns",
+              "schedule",
+              "schedules"
+            ]
           },
           {
             "risk_id": "RISK-DATA-001",
@@ -1090,24 +1330,71 @@
         "identified_risks": [
           {
             "risk_id": "RISK-APPROVAL-001",
-            "risk_name": "Governed approval requirement may be bypassed",
-            "risk_description": "Onboarding plans involving sensitive data, custom integrations, enterprise terms, customer-facing commitments, or supervisor review must not advance without approval.",
+            "risk_name": "Required approval may be bypassed",
+            "risk_description": "Workflow items that meet approval, review, or authorization conditions must not advance without a recorded human decision.",
             "severity": "high",
-            "control_lookup_key": "governed_workflow_decision"
+            "control_lookup_key": "governed_workflow_decision",
+            "matched_terms": [
+              "commitment",
+              "commitments",
+              "custom",
+              "customer-facing",
+              "external",
+              "review",
+              "sent",
+              "sent externally"
+            ]
           },
           {
             "risk_id": "RISK-WRITE-001",
             "risk_name": "Operational write action may occur without control",
             "risk_description": "Workflow state changes, assignments, external language, or system-of-record updates require approval and auditability.",
             "severity": "high",
-            "control_lookup_key": "operational_write_action"
+            "control_lookup_key": "operational_write_action",
+            "matched_terms": [
+              "commitment",
+              "commitments",
+              "custom",
+              "customer-facing",
+              "external",
+              "review",
+              "sent",
+              "sent externally"
+            ]
           },
           {
             "risk_id": "RISK-COMMITMENT-001",
-            "risk_name": "Customer-facing commitment may be made without review",
-            "risk_description": "Customer-facing timelines, scope, or commitments should not be finalized from agent output without authorized review.",
+            "risk_name": "External commitment or communication may be released without review",
+            "risk_description": "External communications, timelines, scope statements, or commitments should not be finalized from agent output without authorized review.",
             "severity": "high",
-            "control_lookup_key": "customer_facing_commitment"
+            "control_lookup_key": "external_commitment_review",
+            "matched_terms": [
+              "commitment",
+              "commitments",
+              "custom",
+              "customer-facing",
+              "external",
+              "review",
+              "sent",
+              "sent externally"
+            ]
+          },
+          {
+            "risk_id": "RISK-SCOPE-001",
+            "risk_name": "Scope, requirement, or commitment boundary may change without approval",
+            "risk_description": "Scope, requirements, terms, or implementation expectations must be reviewed before the workflow item is finalized or communicated externally.",
+            "severity": "high",
+            "control_lookup_key": "scope_change_review",
+            "matched_terms": [
+              "commitment",
+              "commitments",
+              "custom",
+              "customer-facing",
+              "external",
+              "review",
+              "sent",
+              "sent externally"
+            ]
           },
           {
             "risk_id": "RISK-DATA-001",
@@ -1196,26 +1483,56 @@
           },
           {
             "risk_id": "RISK-COMMITMENT-001",
-            "control_lookup_key": "customer_facing_commitment",
+            "control_lookup_key": "external_commitment_review",
             "controls": [
               {
                 "control_id": "CTRL-HITL-001",
-                "name": "Human review before customer-facing commitment",
-                "description": "Customer-facing commitments, timelines, and external language require authorized review before release.",
+                "name": "Human review before external commitment",
+                "description": "External communications, commitments, timelines, scope statements, or customer/vendor-facing language require authorized review before release.",
                 "applies_to": [
-                  "customer_message",
+                  "external_communication",
                   "commitment",
                   "timeline",
-                  "external_communication"
+                  "scope",
+                  "customer_message",
+                  "vendor_message"
                 ]
               },
               {
                 "control_id": "CTRL-AUDIT-001",
-                "name": "Audit customer-facing commitment approval",
-                "description": "Customer-facing approvals must be logged with reviewer, rationale, and approved version.",
+                "name": "Audit external commitment approval",
+                "description": "External commitment approvals must be logged with reviewer, rationale, approved version, and affected workflow item.",
                 "applies_to": [
-                  "customer_message",
+                  "external_communication",
                   "commitment",
+                  "approval"
+                ]
+              }
+            ]
+          },
+          {
+            "risk_id": "RISK-SCOPE-001",
+            "control_lookup_key": "scope_change_review",
+            "controls": [
+              {
+                "control_id": "CTRL-HITL-001",
+                "name": "Human review before scope or requirement change",
+                "description": "Scope changes, custom requirements, contract terms, or implementation changes require approval before finalization.",
+                "applies_to": [
+                  "scope",
+                  "requirements",
+                  "contract_terms",
+                  "implementation_plan",
+                  "change_request"
+                ]
+              },
+              {
+                "control_id": "CTRL-AUDIT-001",
+                "name": "Audit scope or requirement decision",
+                "description": "Scope-related decisions must be traceable to reviewer, rationale, and source evidence.",
+                "applies_to": [
+                  "scope",
+                  "requirements",
                   "approval"
                 ]
               }
@@ -1253,32 +1570,40 @@
         "decision_point": false,
         "identified_risks": [
           {
-            "risk_id": "RISK-APPROVAL-001",
-            "risk_name": "Governed approval requirement may be bypassed",
-            "risk_description": "Onboarding plans involving sensitive data, custom integrations, enterprise terms, customer-facing commitments, or supervisor review must not advance without approval.",
-            "severity": "high",
-            "control_lookup_key": "governed_workflow_decision"
-          },
-          {
             "risk_id": "RISK-WRITE-001",
             "risk_name": "Operational write action may occur without control",
             "risk_description": "Workflow state changes, assignments, external language, or system-of-record updates require approval and auditability.",
             "severity": "high",
-            "control_lookup_key": "operational_write_action"
+            "control_lookup_key": "operational_write_action",
+            "matched_terms": [
+              "custom",
+              "shared",
+              "shared with"
+            ]
           },
           {
             "risk_id": "RISK-COMMITMENT-001",
-            "risk_name": "Customer-facing commitment may be made without review",
-            "risk_description": "Customer-facing timelines, scope, or commitments should not be finalized from agent output without authorized review.",
+            "risk_name": "External commitment or communication may be released without review",
+            "risk_description": "External communications, timelines, scope statements, or commitments should not be finalized from agent output without authorized review.",
             "severity": "high",
-            "control_lookup_key": "customer_facing_commitment"
+            "control_lookup_key": "external_commitment_review",
+            "matched_terms": [
+              "custom",
+              "shared",
+              "shared with"
+            ]
           },
           {
             "risk_id": "RISK-SCOPE-001",
-            "risk_name": "Implementation scope may change without approval",
-            "risk_description": "Scope, enterprise terms, or custom implementation requirements must be reviewed before the onboarding plan is finalized.",
+            "risk_name": "Scope, requirement, or commitment boundary may change without approval",
+            "risk_description": "Scope, requirements, terms, or implementation expectations must be reviewed before the workflow item is finalized or communicated externally.",
             "severity": "high",
-            "control_lookup_key": "implementation_scope_change"
+            "control_lookup_key": "scope_change_review",
+            "matched_terms": [
+              "custom",
+              "shared",
+              "shared with"
+            ]
           },
           {
             "risk_id": "RISK-DATA-001",
@@ -1311,33 +1636,6 @@
         ],
         "required_control_groups": [
           {
-            "risk_id": "RISK-APPROVAL-001",
-            "control_lookup_key": "governed_workflow_decision",
-            "controls": [
-              {
-                "control_id": "CTRL-HITL-001",
-                "name": "Human approval before governed decision",
-                "description": "Policy-defined approval decisions must be reviewed before the workflow item advances.",
-                "applies_to": [
-                  "approval",
-                  "review",
-                  "decision",
-                  "workflow_advancement"
-                ]
-              },
-              {
-                "control_id": "CTRL-AUDIT-001",
-                "name": "Audit log for governed decision",
-                "description": "Approval decisions must be logged with run ID, actor, timestamp, and rationale.",
-                "applies_to": [
-                  "approval",
-                  "decision",
-                  "review"
-                ]
-              }
-            ]
-          },
-          {
             "risk_id": "RISK-WRITE-001",
             "control_lookup_key": "operational_write_action",
             "controls": [
@@ -1367,25 +1665,27 @@
           },
           {
             "risk_id": "RISK-COMMITMENT-001",
-            "control_lookup_key": "customer_facing_commitment",
+            "control_lookup_key": "external_commitment_review",
             "controls": [
               {
                 "control_id": "CTRL-HITL-001",
-                "name": "Human review before customer-facing commitment",
-                "description": "Customer-facing commitments, timelines, and external language require authorized review before release.",
+                "name": "Human review before external commitment",
+                "description": "External communications, commitments, timelines, scope statements, or customer/vendor-facing language require authorized review before release.",
                 "applies_to": [
-                  "customer_message",
+                  "external_communication",
                   "commitment",
                   "timeline",
-                  "external_communication"
+                  "scope",
+                  "customer_message",
+                  "vendor_message"
                 ]
               },
               {
                 "control_id": "CTRL-AUDIT-001",
-                "name": "Audit customer-facing commitment approval",
-                "description": "Customer-facing approvals must be logged with reviewer, rationale, and approved version.",
+                "name": "Audit external commitment approval",
+                "description": "External commitment approvals must be logged with reviewer, rationale, approved version, and affected workflow item.",
                 "applies_to": [
-                  "customer_message",
+                  "external_communication",
                   "commitment",
                   "approval"
                 ]
@@ -1394,26 +1694,27 @@
           },
           {
             "risk_id": "RISK-SCOPE-001",
-            "control_lookup_key": "implementation_scope_change",
+            "control_lookup_key": "scope_change_review",
             "controls": [
               {
                 "control_id": "CTRL-HITL-001",
-                "name": "Human review before implementation scope change",
-                "description": "Implementation scope, custom integration, or enterprise-term changes require approval before finalization.",
+                "name": "Human review before scope or requirement change",
+                "description": "Scope changes, custom requirements, contract terms, or implementation changes require approval before finalization.",
                 "applies_to": [
                   "scope",
-                  "integration",
-                  "enterprise_terms",
-                  "implementation_plan"
+                  "requirements",
+                  "contract_terms",
+                  "implementation_plan",
+                  "change_request"
                 ]
               },
               {
                 "control_id": "CTRL-AUDIT-001",
-                "name": "Audit implementation scope decision",
+                "name": "Audit scope or requirement decision",
                 "description": "Scope-related decisions must be traceable to reviewer, rationale, and source evidence.",
                 "applies_to": [
                   "scope",
-                  "integration",
+                  "requirements",
                   "approval"
                 ]
               }
@@ -1455,7 +1756,22 @@
             "risk_name": "Operational write action may occur without control",
             "risk_description": "Workflow state changes, assignments, external language, or system-of-record updates require approval and auditability.",
             "severity": "high",
-            "control_lookup_key": "operational_write_action"
+            "control_lookup_key": "operational_write_action",
+            "matched_terms": [
+              "launch",
+              "status"
+            ]
+          },
+          {
+            "risk_id": "RISK-TIMELINE-001",
+            "risk_name": "Compressed timeline or SLA pressure may create execution risk",
+            "risk_description": "Accelerated timelines, deadlines, SLAs, or launch commitments require review before capacity, dates, or delivery commitments are finalized.",
+            "severity": "medium",
+            "control_lookup_key": "timeline_or_sla_review",
+            "matched_terms": [
+              "launch",
+              "status"
+            ]
           },
           {
             "risk_id": "RISK-DATA-001",
@@ -1516,6 +1832,36 @@
             ]
           },
           {
+            "risk_id": "RISK-TIMELINE-001",
+            "control_lookup_key": "timeline_or_sla_review",
+            "controls": [
+              {
+                "control_id": "CTRL-HITL-001",
+                "name": "Human review before timeline or SLA commitment",
+                "description": "Compressed timelines, deadlines, launch dates, SLAs, or delivery commitments require review before being communicated or finalized.",
+                "applies_to": [
+                  "timeline",
+                  "deadline",
+                  "launch_date",
+                  "sla",
+                  "capacity",
+                  "commitment"
+                ]
+              },
+              {
+                "control_id": "CTRL-AUDIT-001",
+                "name": "Audit timeline or SLA approval",
+                "description": "Timeline and SLA approvals must be logged with reviewer, rationale, and accepted risk.",
+                "applies_to": [
+                  "timeline",
+                  "sla",
+                  "approval",
+                  "commitment"
+                ]
+              }
+            ]
+          },
+          {
             "risk_id": "RISK-DATA-001",
             "control_lookup_key": "implementation_backlog_write",
             "controls": [
@@ -1542,11 +1888,11 @@
     ],
     "summary": {
       "row_count": 12,
-      "risk_count": 37,
-      "high_severity_risk_count": 33,
-      "control_count": 68
+      "risk_count": 41,
+      "high_severity_risk_count": 35,
+      "control_count": 75
     },
     "generation_mode": "deterministic_skeleton"
   },
-  "created_at": "2026-07-17T18:17:51.591806Z"
+  "created_at": "2026-07-26T16:06:24.039183Z"
 }

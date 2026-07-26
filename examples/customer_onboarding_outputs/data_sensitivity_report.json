@@ -1,6 +1,6 @@
 {
-  "artifact_id": "artifact_c10fee5ffa664c73b3fc6137c6414af7",
-  "run_id": "run_6a91439e1c75426b830c1422589db38a",
+  "artifact_id": "artifact_2625b15cae0e4c03a9f1936be86aaa4c",
+  "run_id": "run_3461e509aa6947fa8204733309068ab0",
   "artifact_type": "data_sensitivity_report",
   "status": "ready_for_review",
   "content": {
@@ -179,5 +179,5 @@
     },
     "generation_mode": "deterministic_skeleton"
   },
-  "created_at": "2026-07-17T18:17:51.590376Z"
+  "created_at": "2026-07-26T16:06:24.036488Z"
 }

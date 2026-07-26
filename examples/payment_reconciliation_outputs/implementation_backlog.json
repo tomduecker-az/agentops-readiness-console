@@ -1,6 +1,6 @@
 {
-  "artifact_id": "artifact_98a85ebbc3e5484c94a2431c49ae8e61",
-  "run_id": "run_625607f4dc22422a926f1f063d4c31c6",
+  "artifact_id": "artifact_6c701076aac343bc814754e60f332957",
+  "run_id": "run_0318330d780b42599a01ec08ebeb065a",
   "artifact_type": "implementation_backlog",
   "status": "ready_for_review",
   "content": {
@@ -206,5 +206,5 @@
     },
     "generation_mode": "deterministic_skeleton"
   },
-  "created_at": "2026-07-17T18:18:05.557361Z"
+  "created_at": "2026-07-26T16:09:51.533885Z"
 }

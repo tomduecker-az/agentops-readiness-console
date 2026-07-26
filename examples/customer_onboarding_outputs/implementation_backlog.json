@@ -1,6 +1,6 @@
 {
-  "artifact_id": "artifact_597e92c8a7cc43258323c4871298f160",
-  "run_id": "run_6a91439e1c75426b830c1422589db38a",
+  "artifact_id": "artifact_56fd8b26ccd8496a81bef47ebece155f",
+  "run_id": "run_3461e509aa6947fa8204733309068ab0",
   "artifact_type": "implementation_backlog",
   "status": "ready_for_review",
   "content": {
@@ -125,6 +125,7 @@
           "RISK-INTEGRATION-001",
           "RISK-SCOPE-001",
           "RISK-SOURCE-001",
+          "RISK-TIMELINE-001",
           "RISK-WRITE-001"
         ],
         "source_control_ids": [
@@ -159,6 +160,7 @@
           "RISK-INTEGRATION-001",
           "RISK-SCOPE-001",
           "RISK-SOURCE-001",
+          "RISK-TIMELINE-001",
           "RISK-WRITE-001"
         ],
         "source_control_ids": [
@@ -193,6 +195,7 @@
           "RISK-INTEGRATION-001",
           "RISK-SCOPE-001",
           "RISK-SOURCE-001",
+          "RISK-TIMELINE-001",
           "RISK-WRITE-001"
         ],
         "source_control_ids": [
@@ -218,5 +221,5 @@
     },
     "generation_mode": "deterministic_skeleton"
   },
-  "created_at": "2026-07-17T18:17:51.592632Z"
+  "created_at": "2026-07-26T16:06:24.040303Z"
 }
