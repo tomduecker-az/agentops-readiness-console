@@ -1,6 +1,6 @@
 {
-  "artifact_id": "artifact_42e65135b4d94b45b588871bf772f5a4",
-  "run_id": "run_0318330d780b42599a01ec08ebeb065a",
+  "artifact_id": "artifact_8f414ec72027492b9fa1ed359b1ffbb1",
+  "run_id": "run_c38c52b37cbf4ad9bcefa1e07aab590b",
   "artifact_type": "hitl_design",
   "status": "ready_for_review",
   "content": {
@@ -351,5 +351,5 @@
     },
     "generation_mode": "deterministic_skeleton"
   },
-  "created_at": "2026-07-26T16:09:51.533588Z"
+  "created_at": "2026-07-26T16:32:31.232611Z"
 }

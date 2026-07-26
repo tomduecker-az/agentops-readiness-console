@@ -126,16 +126,34 @@ def validate_customer_onboarding_specific_output(output_dir: Path) -> None:
         )
 
     implementation_backlog = _read_json(output_dir / "implementation_backlog.json")
-    backlog_titles = [
-        item["title"]
-        for item in implementation_backlog["content"]["backlog_items"]
+    backlog_risk_ids = set()
+
+    for item in implementation_backlog["content"]["backlog_items"]:
+        backlog_risk_ids.update(item.get("source_risk_ids", []))
+
+    missing_backlog_risks = CUSTOMER_ONBOARDING_REQUIRED_RISKS - backlog_risk_ids
+    if missing_backlog_risks:
+        raise AssertionError(
+            "Customer onboarding backlog is missing expected risk-pattern coverage: "
+            + ", ".join(sorted(missing_backlog_risks))
+        )
+
+    backlog_text = (output_dir / "implementation_backlog.json").read_text(
+        encoding="utf-8"
+    ).lower()
+
+    required_generic_fragments = [
+        "external commitments",
+        "scope, requirement, or term changes",
+        "technical and security review",
+        "handoff completeness",
     ]
 
-    expected_title_fragment = "onboarding"
-    if not any(expected_title_fragment in title.lower() for title in backlog_titles):
-        raise AssertionError(
-            "Customer onboarding backlog does not appear workflow-specific."
-        )
+    for fragment in required_generic_fragments:
+        if fragment not in backlog_text:
+            raise AssertionError(
+                f"Customer onboarding backlog is missing generic risk-pattern language: {fragment}"
+            )
 
 
 def _collect_risk_ids(risk_control_matrix: dict[str, Any]) -> set[str]:

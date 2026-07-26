@@ -1,7 +1,7 @@
 [
   {
-    "artifact_id": "artifact_b2fb3734807d404ab2bd5fad2b9e576a",
-    "run_id": "run_0318330d780b42599a01ec08ebeb065a",
+    "artifact_id": "artifact_d52fcf8f68de49c88abce82edab20aaf",
+    "run_id": "run_c38c52b37cbf4ad9bcefa1e07aab590b",
     "artifact_type": "workflow_map",
     "status": "ready_for_review",
     "content": {
@@ -168,11 +168,11 @@
       ],
       "generation_mode": "deterministic_skeleton"
     },
-    "created_at": "2026-07-26T16:09:51.528325Z"
+    "created_at": "2026-07-26T16:32:31.225088Z"
   },
   {
-    "artifact_id": "artifact_66345ab5b4f34440925e49aed2a86fff",
-    "run_id": "run_0318330d780b42599a01ec08ebeb065a",
+    "artifact_id": "artifact_0caed5a7f5b54da0b0a7ed66f5b8ed67",
+    "run_id": "run_c38c52b37cbf4ad9bcefa1e07aab590b",
     "artifact_type": "data_sensitivity_report",
     "status": "ready_for_review",
     "content": {
@@ -314,11 +314,11 @@
       },
       "generation_mode": "deterministic_skeleton"
     },
-    "created_at": "2026-07-26T16:09:51.532202Z"
+    "created_at": "2026-07-26T16:32:31.231056Z"
   },
   {
-    "artifact_id": "artifact_e187f59ff5374d788f04c1bbb4a4245a",
-    "run_id": "run_0318330d780b42599a01ec08ebeb065a",
+    "artifact_id": "artifact_cc4c7b4e7c914829a6ee718e92eb9bf4",
+    "run_id": "run_c38c52b37cbf4ad9bcefa1e07aab590b",
     "artifact_type": "risk_control_matrix",
     "status": "ready_for_review",
     "content": {
@@ -1099,11 +1099,11 @@
       },
       "generation_mode": "deterministic_skeleton"
     },
-    "created_at": "2026-07-26T16:09:51.533240Z"
+    "created_at": "2026-07-26T16:32:31.232227Z"
   },
   {
-    "artifact_id": "artifact_42e65135b4d94b45b588871bf772f5a4",
-    "run_id": "run_0318330d780b42599a01ec08ebeb065a",
+    "artifact_id": "artifact_8f414ec72027492b9fa1ed359b1ffbb1",
+    "run_id": "run_c38c52b37cbf4ad9bcefa1e07aab590b",
     "artifact_type": "hitl_design",
     "status": "ready_for_review",
     "content": {
@@ -1454,11 +1454,11 @@
       },
       "generation_mode": "deterministic_skeleton"
     },
-    "created_at": "2026-07-26T16:09:51.533588Z"
+    "created_at": "2026-07-26T16:32:31.232611Z"
   },
   {
-    "artifact_id": "artifact_6c701076aac343bc814754e60f332957",
-    "run_id": "run_0318330d780b42599a01ec08ebeb065a",
+    "artifact_id": "artifact_607b36f71dbc4c33840d5a6490b92462",
+    "run_id": "run_c38c52b37cbf4ad9bcefa1e07aab590b",
     "artifact_type": "implementation_backlog",
     "status": "ready_for_review",
     "content": {
@@ -1494,7 +1494,26 @@
           "write_permission_decision_without_approval": "require_approval",
           "status": "approved",
           "github_issue_created": false,
-          "additional_context": {},
+          "additional_context": {
+            "source_step_examples": [
+              {
+                "step_id": "step_1",
+                "description": "Analyst receives or identifies an unmatched payment record.",
+                "matched_terms": []
+              },
+              {
+                "step_id": "step_2",
+                "description": "Analyst checks the source system for matching transaction details.",
+                "matched_terms": []
+              },
+              {
+                "step_id": "step_3",
+                "description": "Analyst compares the record against an off-system tracking spreadsheet.",
+                "matched_terms": []
+              }
+            ],
+            "generation_basis": "risk_pattern"
+          },
           "approval_reference": "approval_example_export_payment_reconciliation_001",
           "approved_by": "example_export_reviewer",
           "dry_run": true,
@@ -1510,8 +1529,8 @@
         },
         {
           "backlog_id": "BACKLOG-HITL-001",
-          "title": "Add approval gate for governed operational decisions",
-          "description": "Require authorized review before workflow items that meet policy-defined approval conditions are advanced, closed, or finalized.",
+          "title": "Add approval gate for governed workflow decisions",
+          "description": "Require authorized review before workflow items that meet approval, review, or authorization conditions are advanced, finalized, or communicated externally.",
           "priority": "high",
           "implementation_type": "workflow_approval_gate",
           "recommended_owner": "Operations / Process owner",
@@ -1526,7 +1545,32 @@
           "write_permission_decision_without_approval": "require_approval",
           "status": "proposed",
           "github_issue_created": false,
-          "additional_context": {}
+          "additional_context": {
+            "source_step_examples": [
+              {
+                "step_id": "step_6",
+                "description": "Items above the approval threshold are routed to a supervisor.",
+                "matched_terms": [
+                  "approval",
+                  "supervisor"
+                ]
+              },
+              {
+                "step_id": "step_7",
+                "description": "Supervisor reviews and approves or rejects the proposed resolution.",
+                "matched_terms": [
+                  "approve",
+                  "approves",
+                  "reject",
+                  "rejects",
+                  "resolution",
+                  "review",
+                  "supervisor"
+                ]
+              }
+            ],
+            "generation_basis": "risk_pattern"
+          }
         },
         {
           "backlog_id": "BACKLOG-WRITE-001",
@@ -1546,12 +1590,46 @@
           "write_permission_decision_without_approval": "require_approval",
           "status": "proposed",
           "github_issue_created": false,
-          "additional_context": {}
+          "additional_context": {
+            "source_step_examples": [
+              {
+                "step_id": "step_5",
+                "description": "Analyst updates status and notes.",
+                "matched_terms": [
+                  "status",
+                  "update",
+                  "updates"
+                ]
+              },
+              {
+                "step_id": "step_7",
+                "description": "Supervisor reviews and approves or rejects the proposed resolution.",
+                "matched_terms": [
+                  "approve",
+                  "approves",
+                  "reject",
+                  "rejects",
+                  "resolution",
+                  "review",
+                  "supervisor"
+                ]
+              },
+              {
+                "step_id": "step_8",
+                "description": "Analyst completes the resolution update.",
+                "matched_terms": [
+                  "resolution",
+                  "update"
+                ]
+              }
+            ],
+            "generation_basis": "risk_pattern"
+          }
         },
         {
           "backlog_id": "BACKLOG-SOURCE-001",
-          "title": "Validate source records before workflow finalization",
-          "description": "Prevent workflow items from being finalized when required source information is missing, ambiguous, or conflicting.",
+          "title": "Validate source, intake, and reference information before finalization",
+          "description": "Prevent workflow items from being finalized when required source records, intake fields, handoff details, or reference information are missing, ambiguous, or conflicting.",
           "priority": "high",
           "implementation_type": "data_quality_validation",
           "recommended_owner": "Operations / Data owner",
@@ -1565,12 +1643,23 @@
           "write_permission_decision_without_approval": "require_approval",
           "status": "proposed",
           "github_issue_created": false,
-          "additional_context": {}
+          "additional_context": {
+            "source_step_examples": [
+              {
+                "step_id": "step_2",
+                "description": "Analyst checks the source system for matching transaction details.",
+                "matched_terms": [
+                  "source system"
+                ]
+              }
+            ],
+            "generation_basis": "risk_pattern"
+          }
         },
         {
           "backlog_id": "BACKLOG-QUEUE-001",
           "title": "Create review queue for high-risk workflow items",
-          "description": "Route high-risk workflow items to a review queue with required evidence, recommended reviewer, and approval status.",
+          "description": "Route workflow items with approval, data, handoff, timeline, scope, integration, or external-commitment risks to a review queue with required evidence, reviewer, approval status, and audit context.",
           "priority": "medium",
           "implementation_type": "review_workflow",
           "recommended_owner": "Product / Operations",
@@ -1594,13 +1683,13 @@
           "github_issue_created": false,
           "additional_context": {
             "review_queue_count": 9,
-            "workflow_context": "financial_operations"
+            "generation_basis": "hitl_design"
           }
         },
         {
           "backlog_id": "BACKLOG-ESCALATION-001",
           "title": "Implement escalation rules for blocked or high-risk workflow items",
-          "description": "Escalate workflow items that meet high-risk conditions such as missing source information, required approval, sensitive data handling, or policy review.",
+          "description": "Escalate workflow items when required information is missing, approval is absent, sensitive data handling is unresolved, external commitments are blocked, or policy review is required before advancement.",
           "priority": "medium",
           "implementation_type": "escalation_rule",
           "recommended_owner": "Operations / Process owner",
@@ -1624,7 +1713,7 @@
           "github_issue_created": false,
           "additional_context": {
             "escalation_rule_count": 2,
-            "workflow_context": "financial_operations"
+            "generation_basis": "hitl_design"
           }
         },
         {
@@ -1652,7 +1741,9 @@
           "write_permission_decision_without_approval": "require_approval",
           "status": "proposed",
           "github_issue_created": false,
-          "additional_context": {}
+          "additional_context": {
+            "generation_basis": "approval_gate_presence"
+          }
         }
       ],
       "summary": {
@@ -1664,6 +1755,6 @@
       },
       "generation_mode": "deterministic_skeleton"
     },
-    "created_at": "2026-07-26T16:09:51.533885Z"
+    "created_at": "2026-07-26T16:32:31.232952Z"
   }
 ]

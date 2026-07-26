@@ -1,7 +1,7 @@
 [
   {
-    "event_id": "audit_0d840bdff5bd4befb6794d98f5818a44",
-    "run_id": "run_3461e509aa6947fa8204733309068ab0",
+    "event_id": "audit_2a77d8d609f74ae0b98c157fea1b8d59",
+    "run_id": "run_9bbf07076ece460194bb4cdeaf2f97ea",
     "event_type": "run_started",
     "actor": "system",
     "details": {
@@ -9,32 +9,32 @@
       "workflow_display_name": "SaaS Customer Onboarding",
       "packet_path": "data/workflows/customer_onboarding"
     },
-    "created_at": "2026-07-26T16:06:24.013119Z"
+    "created_at": "2026-07-26T16:32:21.519025Z"
   },
   {
-    "event_id": "audit_6af56c61ae4440a48e53dd37c3eaf2c1",
-    "run_id": "run_3461e509aa6947fa8204733309068ab0",
+    "event_id": "audit_2418618321394cf28612e8568763b63d",
+    "run_id": "run_9bbf07076ece460194bb4cdeaf2f97ea",
     "event_type": "agent_started",
     "actor": "coordinator",
     "details": {
       "workflow_id": "customer_onboarding",
       "phase": "initial_analysis"
     },
-    "created_at": "2026-07-26T16:06:24.013143Z"
+    "created_at": "2026-07-26T16:32:21.519049Z"
   },
   {
-    "event_id": "audit_c8fbeedb29fc46c3b501e372a2a82597",
-    "run_id": "run_3461e509aa6947fa8204733309068ab0",
+    "event_id": "audit_74094ebf985741cd951b9867fce195dc",
+    "run_id": "run_9bbf07076ece460194bb4cdeaf2f97ea",
     "event_type": "agent_started",
     "actor": "workflow_mapper",
     "details": {
       "workflow_id": "customer_onboarding"
     },
-    "created_at": "2026-07-26T16:06:24.013152Z"
+    "created_at": "2026-07-26T16:32:21.519059Z"
   },
   {
-    "event_id": "audit_4398adfd2be448c092bfebf368d2f62c",
-    "run_id": "run_3461e509aa6947fa8204733309068ab0",
+    "event_id": "audit_f56e4dcc369b4d7d8fc5c22781d78926",
+    "run_id": "run_9bbf07076ece460194bb4cdeaf2f97ea",
     "event_type": "policy_checked",
     "actor": "tool_policy_guardian",
     "details": {
@@ -44,22 +44,22 @@
       "requires_human_approval": false,
       "rationale": "Listing registered document metadata is read-only."
     },
-    "created_at": "2026-07-26T16:06:24.013180Z"
+    "created_at": "2026-07-26T16:32:21.519084Z"
   },
   {
-    "event_id": "audit_6f302ccf71c843aab8dc8d88b6368b08",
-    "run_id": "run_3461e509aa6947fa8204733309068ab0",
+    "event_id": "audit_accf99fd1a50442bba957d0eedc9f132",
+    "run_id": "run_9bbf07076ece460194bb4cdeaf2f97ea",
     "event_type": "tool_called",
     "actor": "workflow_mapper",
     "details": {
       "tool_name": "document_server.list_documents",
       "workflow_id": "customer_onboarding"
     },
-    "created_at": "2026-07-26T16:06:24.013190Z"
+    "created_at": "2026-07-26T16:32:21.519093Z"
   },
   {
-    "event_id": "audit_be7469657f3a41f990942ee0310052f1",
-    "run_id": "run_3461e509aa6947fa8204733309068ab0",
+    "event_id": "audit_ba0398e63b6a4781b6b2650f5e2ead91",
+    "run_id": "run_9bbf07076ece460194bb4cdeaf2f97ea",
     "event_type": "policy_checked",
     "actor": "tool_policy_guardian",
     "details": {
@@ -69,11 +69,11 @@
       "requires_human_approval": false,
       "rationale": "Reading registered workflow documents is allowed for analysis agents."
     },
-    "created_at": "2026-07-26T16:06:24.014330Z"
+    "created_at": "2026-07-26T16:32:21.520204Z"
   },
   {
-    "event_id": "audit_b04c26fe29fe4cd49cfc275992012a0e",
-    "run_id": "run_3461e509aa6947fa8204733309068ab0",
+    "event_id": "audit_45c83332bc334b438ecee131f060231a",
+    "run_id": "run_9bbf07076ece460194bb4cdeaf2f97ea",
     "event_type": "tool_called",
     "actor": "workflow_mapper",
     "details": {
@@ -81,11 +81,11 @@
       "workflow_id": "customer_onboarding",
       "document_id": "current_workflow_steps"
     },
-    "created_at": "2026-07-26T16:06:24.014343Z"
+    "created_at": "2026-07-26T16:32:21.520218Z"
   },
   {
-    "event_id": "audit_6d82bf2a4c184c089cc4fe3e4a3dedcb",
-    "run_id": "run_3461e509aa6947fa8204733309068ab0",
+    "event_id": "audit_5c18c836691c4537b931baaf4f053065",
+    "run_id": "run_9bbf07076ece460194bb4cdeaf2f97ea",
     "event_type": "policy_checked",
     "actor": "tool_policy_guardian",
     "details": {
@@ -95,11 +95,11 @@
       "requires_human_approval": false,
       "rationale": "Reading registered workflow documents is allowed for analysis agents."
     },
-    "created_at": "2026-07-26T16:06:24.017642Z"
+    "created_at": "2026-07-26T16:32:21.522427Z"
   },
   {
-    "event_id": "audit_2ef5aa2f419c4eca82b9b9f8a8b55a8b",
-    "run_id": "run_3461e509aa6947fa8204733309068ab0",
+    "event_id": "audit_bb600653c17f4fe69fd4905559cb5fba",
+    "run_id": "run_9bbf07076ece460194bb4cdeaf2f97ea",
     "event_type": "tool_called",
     "actor": "workflow_mapper",
     "details": {
@@ -107,11 +107,11 @@
       "workflow_id": "customer_onboarding",
       "document_id": "process_narrative"
     },
-    "created_at": "2026-07-26T16:06:24.017655Z"
+    "created_at": "2026-07-26T16:32:21.522441Z"
   },
   {
-    "event_id": "audit_62d12f5b81954856a2ad775d2dd5c657",
-    "run_id": "run_3461e509aa6947fa8204733309068ab0",
+    "event_id": "audit_bb960131b5fd4ec183c2cb0275d8b7be",
+    "run_id": "run_9bbf07076ece460194bb4cdeaf2f97ea",
     "event_type": "policy_checked",
     "actor": "tool_policy_guardian",
     "details": {
@@ -121,11 +121,11 @@
       "requires_human_approval": false,
       "rationale": "Searching registered workflow documents is read-only."
     },
-    "created_at": "2026-07-26T16:06:24.020819Z"
+    "created_at": "2026-07-26T16:32:21.525236Z"
   },
   {
-    "event_id": "audit_83aeb76998b745f694e144f6ec53b228",
-    "run_id": "run_3461e509aa6947fa8204733309068ab0",
+    "event_id": "audit_80ae313e4317468598d4e742a355d4e1",
+    "run_id": "run_9bbf07076ece460194bb4cdeaf2f97ea",
     "event_type": "tool_called",
     "actor": "workflow_mapper",
     "details": {
@@ -133,33 +133,33 @@
       "workflow_id": "customer_onboarding",
       "query": "approval"
     },
-    "created_at": "2026-07-26T16:06:24.020835Z"
+    "created_at": "2026-07-26T16:32:21.525259Z"
   },
   {
-    "event_id": "audit_c8ff24ce3bad474aa1f687c309c0739c",
-    "run_id": "run_3461e509aa6947fa8204733309068ab0",
+    "event_id": "audit_532d9d6f84d246149d5d041281887bc8",
+    "run_id": "run_9bbf07076ece460194bb4cdeaf2f97ea",
     "event_type": "agent_completed",
     "actor": "workflow_mapper",
     "details": {
-      "artifact_id": "artifact_bbb14dd21e194117992d8e140b5949af",
+      "artifact_id": "artifact_842292e6f1b54e6e94f73b942b398587",
       "artifact_type": "workflow_map",
       "step_count": 12
     },
-    "created_at": "2026-07-26T16:06:24.031941Z"
+    "created_at": "2026-07-26T16:32:21.538132Z"
   },
   {
-    "event_id": "audit_31f179e95593402792ba55368bd7fd01",
-    "run_id": "run_3461e509aa6947fa8204733309068ab0",
+    "event_id": "audit_6b21415ee382484d9b5fafecf54ef678",
+    "run_id": "run_9bbf07076ece460194bb4cdeaf2f97ea",
     "event_type": "agent_started",
     "actor": "data_sensitivity_classifier",
     "details": {
       "workflow_id": "customer_onboarding"
     },
-    "created_at": "2026-07-26T16:06:24.032027Z"
+    "created_at": "2026-07-26T16:32:21.538237Z"
   },
   {
-    "event_id": "audit_ba3c154e6d6a49458380926a6be302bc",
-    "run_id": "run_3461e509aa6947fa8204733309068ab0",
+    "event_id": "audit_70b71edacdb64d4290f9d07db92548f6",
+    "run_id": "run_9bbf07076ece460194bb4cdeaf2f97ea",
     "event_type": "policy_checked",
     "actor": "tool_policy_guardian",
     "details": {
@@ -169,11 +169,11 @@
       "requires_human_approval": false,
       "rationale": "Reading registered workflow documents is allowed for analysis agents."
     },
-    "created_at": "2026-07-26T16:06:24.032050Z"
+    "created_at": "2026-07-26T16:32:21.538264Z"
   },
   {
-    "event_id": "audit_c8acb5873b5846cfbe573c7f21d76e48",
-    "run_id": "run_3461e509aa6947fa8204733309068ab0",
+    "event_id": "audit_87ab239128c4469587350fb6bfa2918e",
+    "run_id": "run_9bbf07076ece460194bb4cdeaf2f97ea",
     "event_type": "tool_called",
     "actor": "data_sensitivity_classifier",
     "details": {
@@ -181,11 +181,11 @@
       "workflow_id": "customer_onboarding",
       "document_id": "sample_records"
     },
-    "created_at": "2026-07-26T16:06:24.032059Z"
+    "created_at": "2026-07-26T16:32:21.538275Z"
   },
   {
-    "event_id": "audit_cf54da48f53e407c930c7730cf102325",
-    "run_id": "run_3461e509aa6947fa8204733309068ab0",
+    "event_id": "audit_8b4d7545a86040b5a0e1d7ba55e21242",
+    "run_id": "run_9bbf07076ece460194bb4cdeaf2f97ea",
     "event_type": "policy_checked",
     "actor": "tool_policy_guardian",
     "details": {
@@ -195,22 +195,22 @@
       "requires_human_approval": false,
       "rationale": "Data classification policy checks are read-only governance operations."
     },
-    "created_at": "2026-07-26T16:06:24.034454Z"
+    "created_at": "2026-07-26T16:32:21.541020Z"
   },
   {
-    "event_id": "audit_7827eef8cb3a40818825f749ae6e9acd",
-    "run_id": "run_3461e509aa6947fa8204733309068ab0",
+    "event_id": "audit_1538a17fd7514a96916e38e085cf980c",
+    "run_id": "run_9bbf07076ece460194bb4cdeaf2f97ea",
     "event_type": "tool_called",
     "actor": "data_sensitivity_classifier",
     "details": {
       "tool_name": "policy_server.classify_data",
       "data_element": "record_id"
     },
-    "created_at": "2026-07-26T16:06:24.034468Z"
+    "created_at": "2026-07-26T16:32:21.541034Z"
   },
   {
-    "event_id": "audit_e5852e9d37ef4397b869656455c75933",
-    "run_id": "run_3461e509aa6947fa8204733309068ab0",
+    "event_id": "audit_0258241f5b664134929e39e988efa9eb",
+    "run_id": "run_9bbf07076ece460194bb4cdeaf2f97ea",
     "event_type": "policy_checked",
     "actor": "tool_policy_guardian",
     "details": {
@@ -220,22 +220,22 @@
       "requires_human_approval": false,
       "rationale": "Data classification policy checks are read-only governance operations."
     },
-    "created_at": "2026-07-26T16:06:24.034504Z"
+    "created_at": "2026-07-26T16:32:21.541074Z"
   },
   {
-    "event_id": "audit_21d2efdac8384fec996c5a6b139e9eac",
-    "run_id": "run_3461e509aa6947fa8204733309068ab0",
+    "event_id": "audit_cbf96b7a86e04f5eaad53be201a73bf5",
+    "run_id": "run_9bbf07076ece460194bb4cdeaf2f97ea",
     "event_type": "tool_called",
     "actor": "data_sensitivity_classifier",
     "details": {
       "tool_name": "policy_server.classify_data",
       "data_element": "customer_identifier"
     },
-    "created_at": "2026-07-26T16:06:24.034511Z"
+    "created_at": "2026-07-26T16:32:21.541083Z"
   },
   {
-    "event_id": "audit_8e8f5d1823784e18876a73c36d847fb5",
-    "run_id": "run_3461e509aa6947fa8204733309068ab0",
+    "event_id": "audit_ea0ecd0c1f3c4eaf832b17b798283d23",
+    "run_id": "run_9bbf07076ece460194bb4cdeaf2f97ea",
     "event_type": "policy_checked",
     "actor": "tool_policy_guardian",
     "details": {
@@ -245,22 +245,22 @@
       "requires_human_approval": false,
       "rationale": "Data classification policy checks are read-only governance operations."
     },
-    "created_at": "2026-07-26T16:06:24.034530Z"
+    "created_at": "2026-07-26T16:32:21.541113Z"
   },
   {
-    "event_id": "audit_f89dc3ea10014421a80955e0ea77b934",
-    "run_id": "run_3461e509aa6947fa8204733309068ab0",
+    "event_id": "audit_436c0ac1165f4d1899433f79d5bf7e54",
+    "run_id": "run_9bbf07076ece460194bb4cdeaf2f97ea",
     "event_type": "tool_called",
     "actor": "data_sensitivity_classifier",
     "details": {
       "tool_name": "policy_server.classify_data",
       "data_element": "customer_name"
     },
-    "created_at": "2026-07-26T16:06:24.034537Z"
+    "created_at": "2026-07-26T16:32:21.541123Z"
   },
   {
-    "event_id": "audit_133f6b6988ad418baef640e932d77b7a",
-    "run_id": "run_3461e509aa6947fa8204733309068ab0",
+    "event_id": "audit_faa2d9da4f604d688d4c92db5fc78fce",
+    "run_id": "run_9bbf07076ece460194bb4cdeaf2f97ea",
     "event_type": "policy_checked",
     "actor": "tool_policy_guardian",
     "details": {
@@ -270,22 +270,22 @@
       "requires_human_approval": false,
       "rationale": "Data classification policy checks are read-only governance operations."
     },
-    "created_at": "2026-07-26T16:06:24.034558Z"
+    "created_at": "2026-07-26T16:32:21.541147Z"
   },
   {
-    "event_id": "audit_513d89f105b046d787f416879dc50060",
-    "run_id": "run_3461e509aa6947fa8204733309068ab0",
+    "event_id": "audit_5bd32fe94b324ad4a100d5bfa8da36e7",
+    "run_id": "run_9bbf07076ece460194bb4cdeaf2f97ea",
     "event_type": "tool_called",
     "actor": "data_sensitivity_classifier",
     "details": {
       "tool_name": "policy_server.classify_data",
       "data_element": "contract_tier"
     },
-    "created_at": "2026-07-26T16:06:24.034564Z"
+    "created_at": "2026-07-26T16:32:21.541159Z"
   },
   {
-    "event_id": "audit_4c4015d183ea43319de88e82ecab4cba",
-    "run_id": "run_3461e509aa6947fa8204733309068ab0",
+    "event_id": "audit_7bed600b6c514b10adc77f896e05a2f5",
+    "run_id": "run_9bbf07076ece460194bb4cdeaf2f97ea",
     "event_type": "policy_checked",
     "actor": "tool_policy_guardian",
     "details": {
@@ -295,22 +295,22 @@
       "requires_human_approval": false,
       "rationale": "Data classification policy checks are read-only governance operations."
     },
-    "created_at": "2026-07-26T16:06:24.034585Z"
+    "created_at": "2026-07-26T16:32:21.541187Z"
   },
   {
-    "event_id": "audit_62e8e672007f4d559514f80e3f6a2aa1",
-    "run_id": "run_3461e509aa6947fa8204733309068ab0",
+    "event_id": "audit_53ab8108036543bf91c3317a7ccf5497",
+    "run_id": "run_9bbf07076ece460194bb4cdeaf2f97ea",
     "event_type": "tool_called",
     "actor": "data_sensitivity_classifier",
     "details": {
       "tool_name": "policy_server.classify_data",
       "data_element": "implementation_scope"
     },
-    "created_at": "2026-07-26T16:06:24.034593Z"
+    "created_at": "2026-07-26T16:32:21.541196Z"
   },
   {
-    "event_id": "audit_45fed1361f784408bd15d1a9c82aa723",
-    "run_id": "run_3461e509aa6947fa8204733309068ab0",
+    "event_id": "audit_fbd40a931cf14961a8fedfbf2379136e",
+    "run_id": "run_9bbf07076ece460194bb4cdeaf2f97ea",
     "event_type": "policy_checked",
     "actor": "tool_policy_guardian",
     "details": {
@@ -320,22 +320,22 @@
       "requires_human_approval": false,
       "rationale": "Data classification policy checks are read-only governance operations."
     },
-    "created_at": "2026-07-26T16:06:24.034616Z"
+    "created_at": "2026-07-26T16:32:21.541221Z"
   },
   {
-    "event_id": "audit_7596544b42314d538f99503ac3f43197",
-    "run_id": "run_3461e509aa6947fa8204733309068ab0",
+    "event_id": "audit_7de88c65f4904fb4b014f077f0426cff",
+    "run_id": "run_9bbf07076ece460194bb4cdeaf2f97ea",
     "event_type": "tool_called",
     "actor": "data_sensitivity_classifier",
     "details": {
       "tool_name": "policy_server.classify_data",
       "data_element": "requested_integrations"
     },
-    "created_at": "2026-07-26T16:06:24.034622Z"
+    "created_at": "2026-07-26T16:32:21.541229Z"
   },
   {
-    "event_id": "audit_1d8f5ca1e0bd435cbc7c57961210ca13",
-    "run_id": "run_3461e509aa6947fa8204733309068ab0",
+    "event_id": "audit_27e03dd40c3643509448249338bf1e02",
+    "run_id": "run_9bbf07076ece460194bb4cdeaf2f97ea",
     "event_type": "policy_checked",
     "actor": "tool_policy_guardian",
     "details": {
@@ -345,22 +345,22 @@
       "requires_human_approval": false,
       "rationale": "Data classification policy checks are read-only governance operations."
     },
-    "created_at": "2026-07-26T16:06:24.034641Z"
+    "created_at": "2026-07-26T16:32:21.541251Z"
   },
   {
-    "event_id": "audit_40138f7a64c347e5826b96b37c5417af",
-    "run_id": "run_3461e509aa6947fa8204733309068ab0",
+    "event_id": "audit_2901cf35128e4fd2b290c9f2a44496ee",
+    "run_id": "run_9bbf07076ece460194bb4cdeaf2f97ea",
     "event_type": "tool_called",
     "actor": "data_sensitivity_classifier",
     "details": {
       "tool_name": "policy_server.classify_data",
       "data_element": "contains_sensitive_data"
     },
-    "created_at": "2026-07-26T16:06:24.034646Z"
+    "created_at": "2026-07-26T16:32:21.541259Z"
   },
   {
-    "event_id": "audit_4adb166a393d4266af015fe9db897357",
-    "run_id": "run_3461e509aa6947fa8204733309068ab0",
+    "event_id": "audit_846c8cb1d82c4c14b2b831d2a2ee0e72",
+    "run_id": "run_9bbf07076ece460194bb4cdeaf2f97ea",
     "event_type": "policy_checked",
     "actor": "tool_policy_guardian",
     "details": {
@@ -370,22 +370,22 @@
       "requires_human_approval": false,
       "rationale": "Data classification policy checks are read-only governance operations."
     },
-    "created_at": "2026-07-26T16:06:24.034665Z"
+    "created_at": "2026-07-26T16:32:21.541282Z"
   },
   {
-    "event_id": "audit_5279dd5649924336bc899a660568b8a2",
-    "run_id": "run_3461e509aa6947fa8204733309068ab0",
+    "event_id": "audit_5aa0f733518c4f9aa2c569768e1e7a76",
+    "run_id": "run_9bbf07076ece460194bb4cdeaf2f97ea",
     "event_type": "tool_called",
     "actor": "data_sensitivity_classifier",
     "details": {
       "tool_name": "policy_server.classify_data",
       "data_element": "launch_timeline_days"
     },
-    "created_at": "2026-07-26T16:06:24.034670Z"
+    "created_at": "2026-07-26T16:32:21.541290Z"
   },
   {
-    "event_id": "audit_e92a3b3f35204788834c8308ca48a91a",
-    "run_id": "run_3461e509aa6947fa8204733309068ab0",
+    "event_id": "audit_c9f24729e92f4d1b9805aeb678021fed",
+    "run_id": "run_9bbf07076ece460194bb4cdeaf2f97ea",
     "event_type": "policy_checked",
     "actor": "tool_policy_guardian",
     "details": {
@@ -395,22 +395,22 @@
       "requires_human_approval": false,
       "rationale": "Data classification policy checks are read-only governance operations."
     },
-    "created_at": "2026-07-26T16:06:24.034688Z"
+    "created_at": "2026-07-26T16:32:21.541315Z"
   },
   {
-    "event_id": "audit_a7cf8432ad6b4cb7b0dabce33a24071a",
-    "run_id": "run_3461e509aa6947fa8204733309068ab0",
+    "event_id": "audit_3d27d82e42014a078b208bf2968f3055",
+    "run_id": "run_9bbf07076ece460194bb4cdeaf2f97ea",
     "event_type": "tool_called",
     "actor": "data_sensitivity_classifier",
     "details": {
       "tool_name": "policy_server.classify_data",
       "data_element": "account_owner"
     },
-    "created_at": "2026-07-26T16:06:24.034694Z"
+    "created_at": "2026-07-26T16:32:21.541322Z"
   },
   {
-    "event_id": "audit_18e57f452e654ac4a321c72fc9f46874",
-    "run_id": "run_3461e509aa6947fa8204733309068ab0",
+    "event_id": "audit_35b691eca87c45bcba0bb50732456be2",
+    "run_id": "run_9bbf07076ece460194bb4cdeaf2f97ea",
     "event_type": "policy_checked",
     "actor": "tool_policy_guardian",
     "details": {
@@ -420,22 +420,22 @@
       "requires_human_approval": false,
       "rationale": "Data classification policy checks are read-only governance operations."
     },
-    "created_at": "2026-07-26T16:06:24.034708Z"
+    "created_at": "2026-07-26T16:32:21.541340Z"
   },
   {
-    "event_id": "audit_6d368698913a49ff9894b2d657d5746f",
-    "run_id": "run_3461e509aa6947fa8204733309068ab0",
+    "event_id": "audit_4543bc8f573541a9b6fd29e19a82e4d3",
+    "run_id": "run_9bbf07076ece460194bb4cdeaf2f97ea",
     "event_type": "tool_called",
     "actor": "data_sensitivity_classifier",
     "details": {
       "tool_name": "policy_server.classify_data",
       "data_element": "onboarding_status"
     },
-    "created_at": "2026-07-26T16:06:24.034714Z"
+    "created_at": "2026-07-26T16:32:21.541347Z"
   },
   {
-    "event_id": "audit_e42d700b26cd44e18fa97579a005e4ed",
-    "run_id": "run_3461e509aa6947fa8204733309068ab0",
+    "event_id": "audit_00109005ce9d4de8a5f951af53e36cb7",
+    "run_id": "run_9bbf07076ece460194bb4cdeaf2f97ea",
     "event_type": "policy_checked",
     "actor": "tool_policy_guardian",
     "details": {
@@ -445,22 +445,22 @@
       "requires_human_approval": false,
       "rationale": "Data classification policy checks are read-only governance operations."
     },
-    "created_at": "2026-07-26T16:06:24.036404Z"
+    "created_at": "2026-07-26T16:32:21.542848Z"
   },
   {
-    "event_id": "audit_b205a25fc43b415fac6c8135982166aa",
-    "run_id": "run_3461e509aa6947fa8204733309068ab0",
+    "event_id": "audit_c5272c837f0241608461f7a372e74b21",
+    "run_id": "run_9bbf07076ece460194bb4cdeaf2f97ea",
     "event_type": "tool_called",
     "actor": "data_sensitivity_classifier",
     "details": {
       "tool_name": "policy_server.classify_data",
       "data_element": "requires_supervisor_review"
     },
-    "created_at": "2026-07-26T16:06:24.036418Z"
+    "created_at": "2026-07-26T16:32:21.542864Z"
   },
   {
-    "event_id": "audit_ffc8f73d370148d8bde7a5562cdf9ebf",
-    "run_id": "run_3461e509aa6947fa8204733309068ab0",
+    "event_id": "audit_88cc642657aa45f89450c734a7f6483c",
+    "run_id": "run_9bbf07076ece460194bb4cdeaf2f97ea",
     "event_type": "policy_checked",
     "actor": "tool_policy_guardian",
     "details": {
@@ -470,45 +470,45 @@
       "requires_human_approval": false,
       "rationale": "Data classification policy checks are read-only governance operations."
     },
-    "created_at": "2026-07-26T16:06:24.036453Z"
+    "created_at": "2026-07-26T16:32:21.542891Z"
   },
   {
-    "event_id": "audit_94d4e0c7ab6b4ccab8eab186a9865aa8",
-    "run_id": "run_3461e509aa6947fa8204733309068ab0",
+    "event_id": "audit_2693b1a231d44a4ba768dad2e4528313",
+    "run_id": "run_9bbf07076ece460194bb4cdeaf2f97ea",
     "event_type": "tool_called",
     "actor": "data_sensitivity_classifier",
     "details": {
       "tool_name": "policy_server.classify_data",
       "data_element": "notes"
     },
-    "created_at": "2026-07-26T16:06:24.036460Z"
+    "created_at": "2026-07-26T16:32:21.542912Z"
   },
   {
-    "event_id": "audit_a8bfebceab6e4c9383d34238213709c1",
-    "run_id": "run_3461e509aa6947fa8204733309068ab0",
+    "event_id": "audit_ff66b3779a00401d9ffcb38d05cd4f85",
+    "run_id": "run_9bbf07076ece460194bb4cdeaf2f97ea",
     "event_type": "agent_completed",
     "actor": "data_sensitivity_classifier",
     "details": {
-      "artifact_id": "artifact_2625b15cae0e4c03a9f1936be86aaa4c",
+      "artifact_id": "artifact_b786e5c15d974fe7af113a50d64c05ba",
       "artifact_type": "data_sensitivity_report",
       "field_count": 12,
       "unknown_field_count": 0
     },
-    "created_at": "2026-07-26T16:06:24.036498Z"
+    "created_at": "2026-07-26T16:32:21.542956Z"
   },
   {
-    "event_id": "audit_cda7f1a209ef42db89e891cd01a60f42",
-    "run_id": "run_3461e509aa6947fa8204733309068ab0",
+    "event_id": "audit_b3426dbe82ba47b2ab8f739b82509e26",
+    "run_id": "run_9bbf07076ece460194bb4cdeaf2f97ea",
     "event_type": "agent_started",
     "actor": "risk_control_designer",
     "details": {
       "workflow_id": "customer_onboarding"
     },
-    "created_at": "2026-07-26T16:06:24.036562Z"
+    "created_at": "2026-07-26T16:32:21.543047Z"
   },
   {
-    "event_id": "audit_64f10e1372fd4aa78d459af5e4e11f06",
-    "run_id": "run_3461e509aa6947fa8204733309068ab0",
+    "event_id": "audit_74d8407c64074b6b85d96ee7e4393607",
+    "run_id": "run_9bbf07076ece460194bb4cdeaf2f97ea",
     "event_type": "policy_checked",
     "actor": "tool_policy_guardian",
     "details": {
@@ -518,22 +518,22 @@
       "requires_human_approval": false,
       "rationale": "Control lookup is a read-only governance operation."
     },
-    "created_at": "2026-07-26T16:06:24.036669Z"
+    "created_at": "2026-07-26T16:32:21.543174Z"
   },
   {
-    "event_id": "audit_6ca81ffa2b794a5da162a0523479b395",
-    "run_id": "run_3461e509aa6947fa8204733309068ab0",
+    "event_id": "audit_983874ff476c40ad8cfdbf25e39e6d9b",
+    "run_id": "run_9bbf07076ece460194bb4cdeaf2f97ea",
     "event_type": "tool_called",
     "actor": "risk_control_designer",
     "details": {
       "tool_name": "policy_server.get_required_controls",
       "workflow_step": "source_record_validation"
     },
-    "created_at": "2026-07-26T16:06:24.036676Z"
+    "created_at": "2026-07-26T16:32:21.543283Z"
   },
   {
-    "event_id": "audit_763d2c226d6648e682fdddff61458b1c",
-    "run_id": "run_3461e509aa6947fa8204733309068ab0",
+    "event_id": "audit_14d6278f8f3e4fa7ac6edb161a901af0",
+    "run_id": "run_9bbf07076ece460194bb4cdeaf2f97ea",
     "event_type": "policy_checked",
     "actor": "tool_policy_guardian",
     "details": {
@@ -543,22 +543,22 @@
       "requires_human_approval": false,
       "rationale": "Control lookup is a read-only governance operation."
     },
-    "created_at": "2026-07-26T16:06:24.036867Z"
+    "created_at": "2026-07-26T16:32:21.543323Z"
   },
   {
-    "event_id": "audit_e2b5640339b74221af31e6a7af843d1d",
-    "run_id": "run_3461e509aa6947fa8204733309068ab0",
+    "event_id": "audit_052d28f831d44de3bfa37a2d162d7a53",
+    "run_id": "run_9bbf07076ece460194bb4cdeaf2f97ea",
     "event_type": "tool_called",
     "actor": "risk_control_designer",
     "details": {
       "tool_name": "policy_server.get_required_controls",
       "workflow_step": "operational_write_action"
     },
-    "created_at": "2026-07-26T16:06:24.036912Z"
+    "created_at": "2026-07-26T16:32:21.543334Z"
   },
   {
-    "event_id": "audit_2b6ca7b2010b4c6cb611d30bc68cb783",
-    "run_id": "run_3461e509aa6947fa8204733309068ab0",
+    "event_id": "audit_ce171c3a203f4a4dad8fd13f14c11006",
+    "run_id": "run_9bbf07076ece460194bb4cdeaf2f97ea",
     "event_type": "policy_checked",
     "actor": "tool_policy_guardian",
     "details": {
@@ -568,22 +568,22 @@
       "requires_human_approval": false,
       "rationale": "Control lookup is a read-only governance operation."
     },
-    "created_at": "2026-07-26T16:06:24.036956Z"
+    "created_at": "2026-07-26T16:32:21.543362Z"
   },
   {
-    "event_id": "audit_262da17afb5a43db99ebc69ddd3a7206",
-    "run_id": "run_3461e509aa6947fa8204733309068ab0",
+    "event_id": "audit_b097352d05ce426c94395ec1c7cf0461",
+    "run_id": "run_9bbf07076ece460194bb4cdeaf2f97ea",
     "event_type": "tool_called",
     "actor": "risk_control_designer",
     "details": {
       "tool_name": "policy_server.get_required_controls",
       "workflow_step": "scope_change_review"
     },
-    "created_at": "2026-07-26T16:06:24.036964Z"
+    "created_at": "2026-07-26T16:32:21.543372Z"
   },
   {
-    "event_id": "audit_6e575e480bcc4602aac6a30b04814daa",
-    "run_id": "run_3461e509aa6947fa8204733309068ab0",
+    "event_id": "audit_499e63fed7634e23aad503f093195ad7",
+    "run_id": "run_9bbf07076ece460194bb4cdeaf2f97ea",
     "event_type": "policy_checked",
     "actor": "tool_policy_guardian",
     "details": {
@@ -593,22 +593,22 @@
       "requires_human_approval": false,
       "rationale": "Control lookup is a read-only governance operation."
     },
-    "created_at": "2026-07-26T16:06:24.037046Z"
+    "created_at": "2026-07-26T16:32:21.543399Z"
   },
   {
-    "event_id": "audit_2e31d1de5c1e44ef8d6f512736e1ef53",
-    "run_id": "run_3461e509aa6947fa8204733309068ab0",
+    "event_id": "audit_ba569a82066446b784e56b41d325cfa5",
+    "run_id": "run_9bbf07076ece460194bb4cdeaf2f97ea",
     "event_type": "tool_called",
     "actor": "risk_control_designer",
     "details": {
       "tool_name": "policy_server.get_required_controls",
       "workflow_step": "intake_handoff_quality"
     },
-    "created_at": "2026-07-26T16:06:24.037059Z"
+    "created_at": "2026-07-26T16:32:21.543407Z"
   },
   {
-    "event_id": "audit_4a6dd8433a78414e8e2d1e055befac72",
-    "run_id": "run_3461e509aa6947fa8204733309068ab0",
+    "event_id": "audit_376960b751e749a1ad1b2891fa312d05",
+    "run_id": "run_9bbf07076ece460194bb4cdeaf2f97ea",
     "event_type": "policy_checked",
     "actor": "tool_policy_guardian",
     "details": {
@@ -618,22 +618,22 @@
       "requires_human_approval": false,
       "rationale": "Control lookup is a read-only governance operation."
     },
-    "created_at": "2026-07-26T16:06:24.037082Z"
+    "created_at": "2026-07-26T16:32:21.543424Z"
   },
   {
-    "event_id": "audit_6095168e6b0c4063a2592535671bf8bf",
-    "run_id": "run_3461e509aa6947fa8204733309068ab0",
+    "event_id": "audit_0f43f48c368b423fb6e31784467b6b97",
+    "run_id": "run_9bbf07076ece460194bb4cdeaf2f97ea",
     "event_type": "tool_called",
     "actor": "risk_control_designer",
     "details": {
       "tool_name": "policy_server.get_required_controls",
       "workflow_step": "implementation_backlog_write"
     },
-    "created_at": "2026-07-26T16:06:24.037090Z"
+    "created_at": "2026-07-26T16:32:21.543436Z"
   },
   {
-    "event_id": "audit_11dae18ac0f04cc48c13beb84f37c042",
-    "run_id": "run_3461e509aa6947fa8204733309068ab0",
+    "event_id": "audit_a4c4a817e1044a2d8d6530f6eb81d138",
+    "run_id": "run_9bbf07076ece460194bb4cdeaf2f97ea",
     "event_type": "policy_checked",
     "actor": "tool_policy_guardian",
     "details": {
@@ -643,22 +643,22 @@
       "requires_human_approval": false,
       "rationale": "Control lookup is a read-only governance operation."
     },
-    "created_at": "2026-07-26T16:06:24.037182Z"
+    "created_at": "2026-07-26T16:32:21.543535Z"
   },
   {
-    "event_id": "audit_5054caa3f27d4b8983d8a233b66d7429",
-    "run_id": "run_3461e509aa6947fa8204733309068ab0",
+    "event_id": "audit_591c0c94e1494ac5943734b4823fc83b",
+    "run_id": "run_9bbf07076ece460194bb4cdeaf2f97ea",
     "event_type": "tool_called",
     "actor": "risk_control_designer",
     "details": {
       "tool_name": "policy_server.get_required_controls",
       "workflow_step": "governed_workflow_decision"
     },
-    "created_at": "2026-07-26T16:06:24.037189Z"
+    "created_at": "2026-07-26T16:32:21.543569Z"
   },
   {
-    "event_id": "audit_ba5f47eb47d04c859b447d90582af604",
-    "run_id": "run_3461e509aa6947fa8204733309068ab0",
+    "event_id": "audit_9ca2044918c14ba8b2f605273db94186",
+    "run_id": "run_9bbf07076ece460194bb4cdeaf2f97ea",
     "event_type": "policy_checked",
     "actor": "tool_policy_guardian",
     "details": {
@@ -668,22 +668,22 @@
       "requires_human_approval": false,
       "rationale": "Control lookup is a read-only governance operation."
     },
-    "created_at": "2026-07-26T16:06:24.037205Z"
+    "created_at": "2026-07-26T16:32:21.543607Z"
   },
   {
-    "event_id": "audit_2fb711077cac4b428e0a95ab860b8707",
-    "run_id": "run_3461e509aa6947fa8204733309068ab0",
+    "event_id": "audit_964252f8b68f4642b238f300ea622e78",
+    "run_id": "run_9bbf07076ece460194bb4cdeaf2f97ea",
     "event_type": "tool_called",
     "actor": "risk_control_designer",
     "details": {
       "tool_name": "policy_server.get_required_controls",
       "workflow_step": "scope_change_review"
     },
-    "created_at": "2026-07-26T16:06:24.037215Z"
+    "created_at": "2026-07-26T16:32:21.543671Z"
   },
   {
-    "event_id": "audit_e94bbcb7e8464b9fbd3b89fb8fa7ac64",
-    "run_id": "run_3461e509aa6947fa8204733309068ab0",
+    "event_id": "audit_97211a8432cc4dbcb10ca9ee5fd839de",
+    "run_id": "run_9bbf07076ece460194bb4cdeaf2f97ea",
     "event_type": "policy_checked",
     "actor": "tool_policy_guardian",
     "details": {
@@ -693,22 +693,22 @@
       "requires_human_approval": false,
       "rationale": "Control lookup is a read-only governance operation."
     },
-    "created_at": "2026-07-26T16:06:24.037229Z"
+    "created_at": "2026-07-26T16:32:21.543695Z"
   },
   {
-    "event_id": "audit_81679ddc8a11402980c7e7bc550f7445",
-    "run_id": "run_3461e509aa6947fa8204733309068ab0",
+    "event_id": "audit_38cad47df2a5498f9f822d4e200aa7d4",
+    "run_id": "run_9bbf07076ece460194bb4cdeaf2f97ea",
     "event_type": "tool_called",
     "actor": "risk_control_designer",
     "details": {
       "tool_name": "policy_server.get_required_controls",
       "workflow_step": "implementation_backlog_write"
     },
-    "created_at": "2026-07-26T16:06:24.037235Z"
+    "created_at": "2026-07-26T16:32:21.543703Z"
   },
   {
-    "event_id": "audit_6c4f8543e76e4c078749b9f31a5de3ba",
-    "run_id": "run_3461e509aa6947fa8204733309068ab0",
+    "event_id": "audit_c2e5f6789a01455a888a543f53f836fd",
+    "run_id": "run_9bbf07076ece460194bb4cdeaf2f97ea",
     "event_type": "policy_checked",
     "actor": "tool_policy_guardian",
     "details": {
@@ -718,22 +718,22 @@
       "requires_human_approval": false,
       "rationale": "Control lookup is a read-only governance operation."
     },
-    "created_at": "2026-07-26T16:06:24.037399Z"
+    "created_at": "2026-07-26T16:32:21.543815Z"
   },
   {
-    "event_id": "audit_04bd775927c54187a10f573297610412",
-    "run_id": "run_3461e509aa6947fa8204733309068ab0",
+    "event_id": "audit_d6ec28674f544ecb99cafa3678adc44f",
+    "run_id": "run_9bbf07076ece460194bb4cdeaf2f97ea",
     "event_type": "tool_called",
     "actor": "risk_control_designer",
     "details": {
       "tool_name": "policy_server.get_required_controls",
       "workflow_step": "source_record_validation"
     },
-    "created_at": "2026-07-26T16:06:24.037408Z"
+    "created_at": "2026-07-26T16:32:21.543826Z"
   },
   {
-    "event_id": "audit_529ae4f6ed8248b189fb5065540a2b9e",
-    "run_id": "run_3461e509aa6947fa8204733309068ab0",
+    "event_id": "audit_0a89bc941f0b45a28b9261ba37384c52",
+    "run_id": "run_9bbf07076ece460194bb4cdeaf2f97ea",
     "event_type": "policy_checked",
     "actor": "tool_policy_guardian",
     "details": {
@@ -743,22 +743,22 @@
       "requires_human_approval": false,
       "rationale": "Control lookup is a read-only governance operation."
     },
-    "created_at": "2026-07-26T16:06:24.037425Z"
+    "created_at": "2026-07-26T16:32:21.543849Z"
   },
   {
-    "event_id": "audit_4f4110bc53734775993fabaaeb707bb0",
-    "run_id": "run_3461e509aa6947fa8204733309068ab0",
+    "event_id": "audit_01c5509162d94f33ba9524aa0384c7b9",
+    "run_id": "run_9bbf07076ece460194bb4cdeaf2f97ea",
     "event_type": "tool_called",
     "actor": "risk_control_designer",
     "details": {
       "tool_name": "policy_server.get_required_controls",
       "workflow_step": "intake_handoff_quality"
     },
-    "created_at": "2026-07-26T16:06:24.037433Z"
+    "created_at": "2026-07-26T16:32:21.543856Z"
   },
   {
-    "event_id": "audit_b9e575a25f1e41b19f4baed1cc8bfe07",
-    "run_id": "run_3461e509aa6947fa8204733309068ab0",
+    "event_id": "audit_154e712ab25d48ad8d78c6d3b5a1df5a",
+    "run_id": "run_9bbf07076ece460194bb4cdeaf2f97ea",
     "event_type": "policy_checked",
     "actor": "tool_policy_guardian",
     "details": {
@@ -768,22 +768,22 @@
       "requires_human_approval": false,
       "rationale": "Control lookup is a read-only governance operation."
     },
-    "created_at": "2026-07-26T16:06:24.037445Z"
+    "created_at": "2026-07-26T16:32:21.543875Z"
   },
   {
-    "event_id": "audit_9b55c8f7a769425daee27daba82b0107",
-    "run_id": "run_3461e509aa6947fa8204733309068ab0",
+    "event_id": "audit_8149bba5bd0d40c289df666475d67cb1",
+    "run_id": "run_9bbf07076ece460194bb4cdeaf2f97ea",
     "event_type": "tool_called",
     "actor": "risk_control_designer",
     "details": {
       "tool_name": "policy_server.get_required_controls",
       "workflow_step": "implementation_backlog_write"
     },
-    "created_at": "2026-07-26T16:06:24.037457Z"
+    "created_at": "2026-07-26T16:32:21.543882Z"
   },
   {
-    "event_id": "audit_b7d54cfeec8f4916abb1e8ee3abf0022",
-    "run_id": "run_3461e509aa6947fa8204733309068ab0",
+    "event_id": "audit_99b47810c1244dc48b48cba3abc16c45",
+    "run_id": "run_9bbf07076ece460194bb4cdeaf2f97ea",
     "event_type": "policy_checked",
     "actor": "tool_policy_guardian",
     "details": {
@@ -793,22 +793,22 @@
       "requires_human_approval": false,
       "rationale": "Control lookup is a read-only governance operation."
     },
-    "created_at": "2026-07-26T16:06:24.037524Z"
+    "created_at": "2026-07-26T16:32:21.543967Z"
   },
   {
-    "event_id": "audit_5dca9b5177904c0eb5cb8235094f317d",
-    "run_id": "run_3461e509aa6947fa8204733309068ab0",
+    "event_id": "audit_cd829a8580694e2682b40c91834b62da",
+    "run_id": "run_9bbf07076ece460194bb4cdeaf2f97ea",
     "event_type": "tool_called",
     "actor": "risk_control_designer",
     "details": {
       "tool_name": "policy_server.get_required_controls",
       "workflow_step": "source_record_validation"
     },
-    "created_at": "2026-07-26T16:06:24.037530Z"
+    "created_at": "2026-07-26T16:32:21.543977Z"
   },
   {
-    "event_id": "audit_b157786b95154c1d872c1c08008cbbcb",
-    "run_id": "run_3461e509aa6947fa8204733309068ab0",
+    "event_id": "audit_9dcde0cb9f0a4f669ac0213e181a992a",
+    "run_id": "run_9bbf07076ece460194bb4cdeaf2f97ea",
     "event_type": "policy_checked",
     "actor": "tool_policy_guardian",
     "details": {
@@ -818,22 +818,22 @@
       "requires_human_approval": false,
       "rationale": "Control lookup is a read-only governance operation."
     },
-    "created_at": "2026-07-26T16:06:24.037544Z"
+    "created_at": "2026-07-26T16:32:21.543994Z"
   },
   {
-    "event_id": "audit_f350a496527d4de0abf15f001ec7d6a7",
-    "run_id": "run_3461e509aa6947fa8204733309068ab0",
+    "event_id": "audit_b3b18390e4224d858301b6e746c856be",
+    "run_id": "run_9bbf07076ece460194bb4cdeaf2f97ea",
     "event_type": "tool_called",
     "actor": "risk_control_designer",
     "details": {
       "tool_name": "policy_server.get_required_controls",
       "workflow_step": "intake_handoff_quality"
     },
-    "created_at": "2026-07-26T16:06:24.037552Z"
+    "created_at": "2026-07-26T16:32:21.544000Z"
   },
   {
-    "event_id": "audit_6b6113090ae84d2a9790e055588174af",
-    "run_id": "run_3461e509aa6947fa8204733309068ab0",
+    "event_id": "audit_b2de27d1797e44eca0c6afa1127ac9bc",
+    "run_id": "run_9bbf07076ece460194bb4cdeaf2f97ea",
     "event_type": "policy_checked",
     "actor": "tool_policy_guardian",
     "details": {
@@ -843,22 +843,22 @@
       "requires_human_approval": false,
       "rationale": "Control lookup is a read-only governance operation."
     },
-    "created_at": "2026-07-26T16:06:24.037567Z"
+    "created_at": "2026-07-26T16:32:21.544015Z"
   },
   {
-    "event_id": "audit_049711c4ae4b4df9918bda50615e502c",
-    "run_id": "run_3461e509aa6947fa8204733309068ab0",
+    "event_id": "audit_6585632e50a9408d983be2f8450d6dc4",
+    "run_id": "run_9bbf07076ece460194bb4cdeaf2f97ea",
     "event_type": "tool_called",
     "actor": "risk_control_designer",
     "details": {
       "tool_name": "policy_server.get_required_controls",
       "workflow_step": "implementation_backlog_write"
     },
-    "created_at": "2026-07-26T16:06:24.037574Z"
+    "created_at": "2026-07-26T16:32:21.544022Z"
   },
   {
-    "event_id": "audit_55e70860b8774834b84d570037ca0ba0",
-    "run_id": "run_3461e509aa6947fa8204733309068ab0",
+    "event_id": "audit_0656c5e0845b438b849dee14b8ff36ba",
+    "run_id": "run_9bbf07076ece460194bb4cdeaf2f97ea",
     "event_type": "policy_checked",
     "actor": "tool_policy_guardian",
     "details": {
@@ -868,22 +868,22 @@
       "requires_human_approval": false,
       "rationale": "Control lookup is a read-only governance operation."
     },
-    "created_at": "2026-07-26T16:06:24.037655Z"
+    "created_at": "2026-07-26T16:32:21.544130Z"
   },
   {
-    "event_id": "audit_8879d9a466704b458d11557b20af41a1",
-    "run_id": "run_3461e509aa6947fa8204733309068ab0",
+    "event_id": "audit_aa2a3ff32a3747e4be1863f6f59ed801",
+    "run_id": "run_9bbf07076ece460194bb4cdeaf2f97ea",
     "event_type": "tool_called",
     "actor": "risk_control_designer",
     "details": {
       "tool_name": "policy_server.get_required_controls",
       "workflow_step": "governed_workflow_decision"
     },
-    "created_at": "2026-07-26T16:06:24.037661Z"
+    "created_at": "2026-07-26T16:32:21.544141Z"
   },
   {
-    "event_id": "audit_f31941478dff4af3b28513423986db7a",
-    "run_id": "run_3461e509aa6947fa8204733309068ab0",
+    "event_id": "audit_d7524c520cb2448188cd79dab589242c",
+    "run_id": "run_9bbf07076ece460194bb4cdeaf2f97ea",
     "event_type": "policy_checked",
     "actor": "tool_policy_guardian",
     "details": {
@@ -893,22 +893,22 @@
       "requires_human_approval": false,
       "rationale": "Control lookup is a read-only governance operation."
     },
-    "created_at": "2026-07-26T16:06:24.037679Z"
+    "created_at": "2026-07-26T16:32:21.544163Z"
   },
   {
-    "event_id": "audit_7e9e933f74ff4cbaa59bbf766b2c380e",
-    "run_id": "run_3461e509aa6947fa8204733309068ab0",
+    "event_id": "audit_1071ba83e1d04ded8e39b4a61b34764c",
+    "run_id": "run_9bbf07076ece460194bb4cdeaf2f97ea",
     "event_type": "tool_called",
     "actor": "risk_control_designer",
     "details": {
       "tool_name": "policy_server.get_required_controls",
       "workflow_step": "scope_change_review"
     },
-    "created_at": "2026-07-26T16:06:24.037684Z"
+    "created_at": "2026-07-26T16:32:21.544171Z"
   },
   {
-    "event_id": "audit_b725c576faca431e916b34f3415b07df",
-    "run_id": "run_3461e509aa6947fa8204733309068ab0",
+    "event_id": "audit_6d4d464580c940b59c56178d0a5a1a7d",
+    "run_id": "run_9bbf07076ece460194bb4cdeaf2f97ea",
     "event_type": "policy_checked",
     "actor": "tool_policy_guardian",
     "details": {
@@ -918,22 +918,22 @@
       "requires_human_approval": false,
       "rationale": "Control lookup is a read-only governance operation."
     },
-    "created_at": "2026-07-26T16:06:24.037698Z"
+    "created_at": "2026-07-26T16:32:21.544189Z"
   },
   {
-    "event_id": "audit_7ed0fcdc057d4b94a7ab4153a4a1d8a7",
-    "run_id": "run_3461e509aa6947fa8204733309068ab0",
+    "event_id": "audit_0867efc30cd24232aa4aa33bcad34815",
+    "run_id": "run_9bbf07076ece460194bb4cdeaf2f97ea",
     "event_type": "tool_called",
     "actor": "risk_control_designer",
     "details": {
       "tool_name": "policy_server.get_required_controls",
       "workflow_step": "sensitive_integration_review"
     },
-    "created_at": "2026-07-26T16:06:24.037704Z"
+    "created_at": "2026-07-26T16:32:21.544196Z"
   },
   {
-    "event_id": "audit_5be1241c53c147ffa082e33cf3f5b4cd",
-    "run_id": "run_3461e509aa6947fa8204733309068ab0",
+    "event_id": "audit_60a02593439b4f7abb95897bc528a792",
+    "run_id": "run_9bbf07076ece460194bb4cdeaf2f97ea",
     "event_type": "policy_checked",
     "actor": "tool_policy_guardian",
     "details": {
@@ -943,22 +943,22 @@
       "requires_human_approval": false,
       "rationale": "Control lookup is a read-only governance operation."
     },
-    "created_at": "2026-07-26T16:06:24.037720Z"
+    "created_at": "2026-07-26T16:32:21.544273Z"
   },
   {
-    "event_id": "audit_61f6dcdf497f4e038a2dfe1d1afabd13",
-    "run_id": "run_3461e509aa6947fa8204733309068ab0",
+    "event_id": "audit_6c54d3dcd3ef40d3ab13378fc6932b68",
+    "run_id": "run_9bbf07076ece460194bb4cdeaf2f97ea",
     "event_type": "tool_called",
     "actor": "risk_control_designer",
     "details": {
       "tool_name": "policy_server.get_required_controls",
       "workflow_step": "implementation_backlog_write"
     },
-    "created_at": "2026-07-26T16:06:24.037726Z"
+    "created_at": "2026-07-26T16:32:21.544291Z"
   },
   {
-    "event_id": "audit_b1712f7237984419abc58ae3808a8108",
-    "run_id": "run_3461e509aa6947fa8204733309068ab0",
+    "event_id": "audit_2a93e861ca1545bcb3e85c4368488a7c",
+    "run_id": "run_9bbf07076ece460194bb4cdeaf2f97ea",
     "event_type": "policy_checked",
     "actor": "tool_policy_guardian",
     "details": {
@@ -968,22 +968,22 @@
       "requires_human_approval": false,
       "rationale": "Control lookup is a read-only governance operation."
     },
-    "created_at": "2026-07-26T16:06:24.037817Z"
+    "created_at": "2026-07-26T16:32:21.544415Z"
   },
   {
-    "event_id": "audit_1068f82b696f4843a2c7a8d01ddafbfa",
-    "run_id": "run_3461e509aa6947fa8204733309068ab0",
+    "event_id": "audit_30972589a5154d5a9578913d4bb98107",
+    "run_id": "run_9bbf07076ece460194bb4cdeaf2f97ea",
     "event_type": "tool_called",
     "actor": "risk_control_designer",
     "details": {
       "tool_name": "policy_server.get_required_controls",
       "workflow_step": "governed_workflow_decision"
     },
-    "created_at": "2026-07-26T16:06:24.037828Z"
+    "created_at": "2026-07-26T16:32:21.544424Z"
   },
   {
-    "event_id": "audit_606fb3b77d804a0f8e0f75f841ea2649",
-    "run_id": "run_3461e509aa6947fa8204733309068ab0",
+    "event_id": "audit_8de51848074e4b36ac42202d8d249117",
+    "run_id": "run_9bbf07076ece460194bb4cdeaf2f97ea",
     "event_type": "policy_checked",
     "actor": "tool_policy_guardian",
     "details": {
@@ -993,22 +993,22 @@
       "requires_human_approval": false,
       "rationale": "Control lookup is a read-only governance operation."
     },
-    "created_at": "2026-07-26T16:06:24.037845Z"
+    "created_at": "2026-07-26T16:32:21.544444Z"
   },
   {
-    "event_id": "audit_ec22e7cc05ee4d1aa724b69a297e1170",
-    "run_id": "run_3461e509aa6947fa8204733309068ab0",
+    "event_id": "audit_24bd6ed2bfba42899fa94733b11e615a",
+    "run_id": "run_9bbf07076ece460194bb4cdeaf2f97ea",
     "event_type": "tool_called",
     "actor": "risk_control_designer",
     "details": {
       "tool_name": "policy_server.get_required_controls",
       "workflow_step": "scope_change_review"
     },
-    "created_at": "2026-07-26T16:06:24.037851Z"
+    "created_at": "2026-07-26T16:32:21.544451Z"
   },
   {
-    "event_id": "audit_a1f35a11767c44cab3b7ab47745d48a3",
-    "run_id": "run_3461e509aa6947fa8204733309068ab0",
+    "event_id": "audit_f2ff78a49e664a8f8f2634b79f5267af",
+    "run_id": "run_9bbf07076ece460194bb4cdeaf2f97ea",
     "event_type": "policy_checked",
     "actor": "tool_policy_guardian",
     "details": {
@@ -1018,22 +1018,22 @@
       "requires_human_approval": false,
       "rationale": "Control lookup is a read-only governance operation."
     },
-    "created_at": "2026-07-26T16:06:24.037866Z"
+    "created_at": "2026-07-26T16:32:21.544469Z"
   },
   {
-    "event_id": "audit_286c5cef93154c82afaf6b51c213e8b2",
-    "run_id": "run_3461e509aa6947fa8204733309068ab0",
+    "event_id": "audit_c6e2eac6ca7d4156a85cb2712ba8316c",
+    "run_id": "run_9bbf07076ece460194bb4cdeaf2f97ea",
     "event_type": "tool_called",
     "actor": "risk_control_designer",
     "details": {
       "tool_name": "policy_server.get_required_controls",
       "workflow_step": "sensitive_integration_review"
     },
-    "created_at": "2026-07-26T16:06:24.037871Z"
+    "created_at": "2026-07-26T16:32:21.544476Z"
   },
   {
-    "event_id": "audit_089186d43d844856a8bec57365273b4a",
-    "run_id": "run_3461e509aa6947fa8204733309068ab0",
+    "event_id": "audit_6c40c2e8d0a14390b385e761a7589004",
+    "run_id": "run_9bbf07076ece460194bb4cdeaf2f97ea",
     "event_type": "policy_checked",
     "actor": "tool_policy_guardian",
     "details": {
@@ -1043,22 +1043,22 @@
       "requires_human_approval": false,
       "rationale": "Control lookup is a read-only governance operation."
     },
-    "created_at": "2026-07-26T16:06:24.037887Z"
+    "created_at": "2026-07-26T16:32:21.544499Z"
   },
   {
-    "event_id": "audit_5ae64f99159c4e6bb2bc31f57a0996d0",
-    "run_id": "run_3461e509aa6947fa8204733309068ab0",
+    "event_id": "audit_666208be333e45588c194c9ced831c22",
+    "run_id": "run_9bbf07076ece460194bb4cdeaf2f97ea",
     "event_type": "tool_called",
     "actor": "risk_control_designer",
     "details": {
       "tool_name": "policy_server.get_required_controls",
       "workflow_step": "implementation_backlog_write"
     },
-    "created_at": "2026-07-26T16:06:24.037894Z"
+    "created_at": "2026-07-26T16:32:21.544507Z"
   },
   {
-    "event_id": "audit_2ec201abd2a64165bfc1e7f7058137f2",
-    "run_id": "run_3461e509aa6947fa8204733309068ab0",
+    "event_id": "audit_d2a494ed6b934a70b0a76bf8b69fd899",
+    "run_id": "run_9bbf07076ece460194bb4cdeaf2f97ea",
     "event_type": "policy_checked",
     "actor": "tool_policy_guardian",
     "details": {
@@ -1068,22 +1068,22 @@
       "requires_human_approval": false,
       "rationale": "Control lookup is a read-only governance operation."
     },
-    "created_at": "2026-07-26T16:06:24.037973Z"
+    "created_at": "2026-07-26T16:32:21.544608Z"
   },
   {
-    "event_id": "audit_4e3924cb35ac495387b0ad297cb85931",
-    "run_id": "run_3461e509aa6947fa8204733309068ab0",
+    "event_id": "audit_d93404f780854e18b9038b3a28c8108a",
+    "run_id": "run_9bbf07076ece460194bb4cdeaf2f97ea",
     "event_type": "tool_called",
     "actor": "risk_control_designer",
     "details": {
       "tool_name": "policy_server.get_required_controls",
       "workflow_step": "governed_workflow_decision"
     },
-    "created_at": "2026-07-26T16:06:24.038049Z"
+    "created_at": "2026-07-26T16:32:21.544616Z"
   },
   {
-    "event_id": "audit_cd8ed7116b1449c5aa02e2979db7db4b",
-    "run_id": "run_3461e509aa6947fa8204733309068ab0",
+    "event_id": "audit_92c8aba105834ef8beabdd6891df7a51",
+    "run_id": "run_9bbf07076ece460194bb4cdeaf2f97ea",
     "event_type": "policy_checked",
     "actor": "tool_policy_guardian",
     "details": {
@@ -1093,22 +1093,22 @@
       "requires_human_approval": false,
       "rationale": "Control lookup is a read-only governance operation."
     },
-    "created_at": "2026-07-26T16:06:24.038079Z"
+    "created_at": "2026-07-26T16:32:21.544636Z"
   },
   {
-    "event_id": "audit_b80803407e70462c9a907180d706cc4c",
-    "run_id": "run_3461e509aa6947fa8204733309068ab0",
+    "event_id": "audit_ba332cd44b1c42e7a29f8d5d7a1135c2",
+    "run_id": "run_9bbf07076ece460194bb4cdeaf2f97ea",
     "event_type": "tool_called",
     "actor": "risk_control_designer",
     "details": {
       "tool_name": "policy_server.get_required_controls",
       "workflow_step": "governed_workflow_decision"
     },
-    "created_at": "2026-07-26T16:06:24.038086Z"
+    "created_at": "2026-07-26T16:32:21.544645Z"
   },
   {
-    "event_id": "audit_023d1a5e402b4aabb193e644e7da04b9",
-    "run_id": "run_3461e509aa6947fa8204733309068ab0",
+    "event_id": "audit_250dd902774a42119a6cf16440434320",
+    "run_id": "run_9bbf07076ece460194bb4cdeaf2f97ea",
     "event_type": "policy_checked",
     "actor": "tool_policy_guardian",
     "details": {
@@ -1118,22 +1118,22 @@
       "requires_human_approval": false,
       "rationale": "Control lookup is a read-only governance operation."
     },
-    "created_at": "2026-07-26T16:06:24.038101Z"
+    "created_at": "2026-07-26T16:32:21.544661Z"
   },
   {
-    "event_id": "audit_cd0a6e8908854d92ad2199411628b487",
-    "run_id": "run_3461e509aa6947fa8204733309068ab0",
+    "event_id": "audit_e5fbec51930e41c98dd172dd84a0618d",
+    "run_id": "run_9bbf07076ece460194bb4cdeaf2f97ea",
     "event_type": "tool_called",
     "actor": "risk_control_designer",
     "details": {
       "tool_name": "policy_server.get_required_controls",
       "workflow_step": "intake_handoff_quality"
     },
-    "created_at": "2026-07-26T16:06:24.038107Z"
+    "created_at": "2026-07-26T16:32:21.544668Z"
   },
   {
-    "event_id": "audit_fa45b356eb174bbaa2d6e460bdbd3317",
-    "run_id": "run_3461e509aa6947fa8204733309068ab0",
+    "event_id": "audit_1326c16751c64b0eabaa377a8fd73f7f",
+    "run_id": "run_9bbf07076ece460194bb4cdeaf2f97ea",
     "event_type": "policy_checked",
     "actor": "tool_policy_guardian",
     "details": {
@@ -1143,22 +1143,22 @@
       "requires_human_approval": false,
       "rationale": "Control lookup is a read-only governance operation."
     },
-    "created_at": "2026-07-26T16:06:24.038120Z"
+    "created_at": "2026-07-26T16:32:21.544684Z"
   },
   {
-    "event_id": "audit_b3f4d0fc588b4fed8ec5e495b086bdb6",
-    "run_id": "run_3461e509aa6947fa8204733309068ab0",
+    "event_id": "audit_915eb77a10814ef8883791c6c0bc4f41",
+    "run_id": "run_9bbf07076ece460194bb4cdeaf2f97ea",
     "event_type": "tool_called",
     "actor": "risk_control_designer",
     "details": {
       "tool_name": "policy_server.get_required_controls",
       "workflow_step": "implementation_backlog_write"
     },
-    "created_at": "2026-07-26T16:06:24.038126Z"
+    "created_at": "2026-07-26T16:32:21.544692Z"
   },
   {
-    "event_id": "audit_e02e5579afdb4dbd9c357702f62cb3a2",
-    "run_id": "run_3461e509aa6947fa8204733309068ab0",
+    "event_id": "audit_ea2c3c256a9d477da076db8f8ee7b70b",
+    "run_id": "run_9bbf07076ece460194bb4cdeaf2f97ea",
     "event_type": "policy_checked",
     "actor": "tool_policy_guardian",
     "details": {
@@ -1168,22 +1168,22 @@
       "requires_human_approval": false,
       "rationale": "Control lookup is a read-only governance operation."
     },
-    "created_at": "2026-07-26T16:06:24.038187Z"
+    "created_at": "2026-07-26T16:32:21.544764Z"
   },
   {
-    "event_id": "audit_6236523b4ce9440ea07536d60ca86afe",
-    "run_id": "run_3461e509aa6947fa8204733309068ab0",
+    "event_id": "audit_bc5e4d0fead14154bae262bca5d36fb8",
+    "run_id": "run_9bbf07076ece460194bb4cdeaf2f97ea",
     "event_type": "tool_called",
     "actor": "risk_control_designer",
     "details": {
       "tool_name": "policy_server.get_required_controls",
       "workflow_step": "operational_write_action"
     },
-    "created_at": "2026-07-26T16:06:24.038269Z"
+    "created_at": "2026-07-26T16:32:21.544774Z"
   },
   {
-    "event_id": "audit_1ea425f968d3415ea49b9f14d86f6b3f",
-    "run_id": "run_3461e509aa6947fa8204733309068ab0",
+    "event_id": "audit_579ee70c4dd245cca95f2ff847400268",
+    "run_id": "run_9bbf07076ece460194bb4cdeaf2f97ea",
     "event_type": "policy_checked",
     "actor": "tool_policy_guardian",
     "details": {
@@ -1193,22 +1193,22 @@
       "requires_human_approval": false,
       "rationale": "Control lookup is a read-only governance operation."
     },
-    "created_at": "2026-07-26T16:06:24.038309Z"
+    "created_at": "2026-07-26T16:32:21.544796Z"
   },
   {
-    "event_id": "audit_a8294ac00f1e46e4b32bdbac7f874b00",
-    "run_id": "run_3461e509aa6947fa8204733309068ab0",
+    "event_id": "audit_3264f5af47a04acbaeca2649c1dc9da4",
+    "run_id": "run_9bbf07076ece460194bb4cdeaf2f97ea",
     "event_type": "tool_called",
     "actor": "risk_control_designer",
     "details": {
       "tool_name": "policy_server.get_required_controls",
       "workflow_step": "implementation_backlog_write"
     },
-    "created_at": "2026-07-26T16:06:24.038323Z"
+    "created_at": "2026-07-26T16:32:21.544804Z"
   },
   {
-    "event_id": "audit_a195aed0a62d469691d178ec337ac667",
-    "run_id": "run_3461e509aa6947fa8204733309068ab0",
+    "event_id": "audit_8b7b2de01c214ea3b6354e5eda54fb70",
+    "run_id": "run_9bbf07076ece460194bb4cdeaf2f97ea",
     "event_type": "policy_checked",
     "actor": "tool_policy_guardian",
     "details": {
@@ -1218,22 +1218,22 @@
       "requires_human_approval": false,
       "rationale": "Control lookup is a read-only governance operation."
     },
-    "created_at": "2026-07-26T16:06:24.038377Z"
+    "created_at": "2026-07-26T16:32:21.544848Z"
   },
   {
-    "event_id": "audit_0e17a29a198240d5bbe22ca5aac54acf",
-    "run_id": "run_3461e509aa6947fa8204733309068ab0",
+    "event_id": "audit_d3a35df08fe3472b80e6c63ce35155f3",
+    "run_id": "run_9bbf07076ece460194bb4cdeaf2f97ea",
     "event_type": "tool_called",
     "actor": "risk_control_designer",
     "details": {
       "tool_name": "policy_server.get_required_controls",
       "workflow_step": "implementation_backlog_write"
     },
-    "created_at": "2026-07-26T16:06:24.038385Z"
+    "created_at": "2026-07-26T16:32:21.544855Z"
   },
   {
-    "event_id": "audit_78085a59efea447fa3b9b8095870887c",
-    "run_id": "run_3461e509aa6947fa8204733309068ab0",
+    "event_id": "audit_1b410efbdb014c319513eab6a7a58bdf",
+    "run_id": "run_9bbf07076ece460194bb4cdeaf2f97ea",
     "event_type": "policy_checked",
     "actor": "tool_policy_guardian",
     "details": {
@@ -1243,22 +1243,22 @@
       "requires_human_approval": false,
       "rationale": "Control lookup is a read-only governance operation."
     },
-    "created_at": "2026-07-26T16:06:24.038490Z"
+    "created_at": "2026-07-26T16:32:21.544959Z"
   },
   {
-    "event_id": "audit_3b58f68c2712407f93deae3294428a1a",
-    "run_id": "run_3461e509aa6947fa8204733309068ab0",
+    "event_id": "audit_ed074b422fbe4e1982f65749f6970e17",
+    "run_id": "run_9bbf07076ece460194bb4cdeaf2f97ea",
     "event_type": "tool_called",
     "actor": "risk_control_designer",
     "details": {
       "tool_name": "policy_server.get_required_controls",
       "workflow_step": "governed_workflow_decision"
     },
-    "created_at": "2026-07-26T16:06:24.038497Z"
+    "created_at": "2026-07-26T16:32:21.544967Z"
   },
   {
-    "event_id": "audit_8b156c3d05524ca084e6db1642e18d4f",
-    "run_id": "run_3461e509aa6947fa8204733309068ab0",
+    "event_id": "audit_5ddf959d9c9b4be3a6285411ee39f5b3",
+    "run_id": "run_9bbf07076ece460194bb4cdeaf2f97ea",
     "event_type": "policy_checked",
     "actor": "tool_policy_guardian",
     "details": {
@@ -1268,22 +1268,22 @@
       "requires_human_approval": false,
       "rationale": "Control lookup is a read-only governance operation."
     },
-    "created_at": "2026-07-26T16:06:24.038513Z"
+    "created_at": "2026-07-26T16:32:21.544987Z"
   },
   {
-    "event_id": "audit_180b19b1c2cc4e4d8593997f899d662d",
-    "run_id": "run_3461e509aa6947fa8204733309068ab0",
+    "event_id": "audit_ab1a6b01c9554482846bbc873c3f09b8",
+    "run_id": "run_9bbf07076ece460194bb4cdeaf2f97ea",
     "event_type": "tool_called",
     "actor": "risk_control_designer",
     "details": {
       "tool_name": "policy_server.get_required_controls",
       "workflow_step": "operational_write_action"
     },
-    "created_at": "2026-07-26T16:06:24.038523Z"
+    "created_at": "2026-07-26T16:32:21.544995Z"
   },
   {
-    "event_id": "audit_37ec28e167714ce3b9870018e4503339",
-    "run_id": "run_3461e509aa6947fa8204733309068ab0",
+    "event_id": "audit_868fe558266a47be8e3d9a7b4017869f",
+    "run_id": "run_9bbf07076ece460194bb4cdeaf2f97ea",
     "event_type": "policy_checked",
     "actor": "tool_policy_guardian",
     "details": {
@@ -1293,22 +1293,22 @@
       "requires_human_approval": false,
       "rationale": "Control lookup is a read-only governance operation."
     },
-    "created_at": "2026-07-26T16:06:24.038538Z"
+    "created_at": "2026-07-26T16:32:21.545013Z"
   },
   {
-    "event_id": "audit_c25cb69613e14ba397e99ea6c16a0433",
-    "run_id": "run_3461e509aa6947fa8204733309068ab0",
+    "event_id": "audit_152d0f89899043679a19df6538e1cfc1",
+    "run_id": "run_9bbf07076ece460194bb4cdeaf2f97ea",
     "event_type": "tool_called",
     "actor": "risk_control_designer",
     "details": {
       "tool_name": "policy_server.get_required_controls",
       "workflow_step": "external_commitment_review"
     },
-    "created_at": "2026-07-26T16:06:24.038544Z"
+    "created_at": "2026-07-26T16:32:21.545020Z"
   },
   {
-    "event_id": "audit_6141bf9796924e30ab8023d8fd259838",
-    "run_id": "run_3461e509aa6947fa8204733309068ab0",
+    "event_id": "audit_87a16a3b0a814a9780b7975662414e3d",
+    "run_id": "run_9bbf07076ece460194bb4cdeaf2f97ea",
     "event_type": "policy_checked",
     "actor": "tool_policy_guardian",
     "details": {
@@ -1318,22 +1318,22 @@
       "requires_human_approval": false,
       "rationale": "Control lookup is a read-only governance operation."
     },
-    "created_at": "2026-07-26T16:06:24.038561Z"
+    "created_at": "2026-07-26T16:32:21.545097Z"
   },
   {
-    "event_id": "audit_ae4a587c04d04c6fb0591286f7782d8c",
-    "run_id": "run_3461e509aa6947fa8204733309068ab0",
+    "event_id": "audit_5d9b1b3c0e87433ebd66c0e6cc505aa5",
+    "run_id": "run_9bbf07076ece460194bb4cdeaf2f97ea",
     "event_type": "tool_called",
     "actor": "risk_control_designer",
     "details": {
       "tool_name": "policy_server.get_required_controls",
       "workflow_step": "scope_change_review"
     },
-    "created_at": "2026-07-26T16:06:24.038567Z"
+    "created_at": "2026-07-26T16:32:21.545110Z"
   },
   {
-    "event_id": "audit_117cfd260107449ab8c7059157a903ef",
-    "run_id": "run_3461e509aa6947fa8204733309068ab0",
+    "event_id": "audit_072ea390807249aebeec363ae08381af",
+    "run_id": "run_9bbf07076ece460194bb4cdeaf2f97ea",
     "event_type": "policy_checked",
     "actor": "tool_policy_guardian",
     "details": {
@@ -1343,22 +1343,22 @@
       "requires_human_approval": false,
       "rationale": "Control lookup is a read-only governance operation."
     },
-    "created_at": "2026-07-26T16:06:24.038582Z"
+    "created_at": "2026-07-26T16:32:21.545139Z"
   },
   {
-    "event_id": "audit_ea45a6af0b1a4489bd3387adbb5f1dc5",
-    "run_id": "run_3461e509aa6947fa8204733309068ab0",
+    "event_id": "audit_de919f9db0704ea380ae156d39a14fdc",
+    "run_id": "run_9bbf07076ece460194bb4cdeaf2f97ea",
     "event_type": "tool_called",
     "actor": "risk_control_designer",
     "details": {
       "tool_name": "policy_server.get_required_controls",
       "workflow_step": "implementation_backlog_write"
     },
-    "created_at": "2026-07-26T16:06:24.038588Z"
+    "created_at": "2026-07-26T16:32:21.545150Z"
   },
   {
-    "event_id": "audit_801abadd7ef34399b4343d395102be0a",
-    "run_id": "run_3461e509aa6947fa8204733309068ab0",
+    "event_id": "audit_a0541406eab144938fe30cb8de6a4dde",
+    "run_id": "run_9bbf07076ece460194bb4cdeaf2f97ea",
     "event_type": "policy_checked",
     "actor": "tool_policy_guardian",
     "details": {
@@ -1368,22 +1368,22 @@
       "requires_human_approval": false,
       "rationale": "Control lookup is a read-only governance operation."
     },
-    "created_at": "2026-07-26T16:06:24.038773Z"
+    "created_at": "2026-07-26T16:32:21.545234Z"
   },
   {
-    "event_id": "audit_09649558000f40de8e8a6f31d46af995",
-    "run_id": "run_3461e509aa6947fa8204733309068ab0",
+    "event_id": "audit_ba42a4b5715f455fabc49bbc96374bee",
+    "run_id": "run_9bbf07076ece460194bb4cdeaf2f97ea",
     "event_type": "tool_called",
     "actor": "risk_control_designer",
     "details": {
       "tool_name": "policy_server.get_required_controls",
       "workflow_step": "operational_write_action"
     },
-    "created_at": "2026-07-26T16:06:24.038815Z"
+    "created_at": "2026-07-26T16:32:21.545243Z"
   },
   {
-    "event_id": "audit_110069603a114db688d8871c93e12ee9",
-    "run_id": "run_3461e509aa6947fa8204733309068ab0",
+    "event_id": "audit_58a82b5b7f7447cc8fdc84473445005d",
+    "run_id": "run_9bbf07076ece460194bb4cdeaf2f97ea",
     "event_type": "policy_checked",
     "actor": "tool_policy_guardian",
     "details": {
@@ -1393,22 +1393,22 @@
       "requires_human_approval": false,
       "rationale": "Control lookup is a read-only governance operation."
     },
-    "created_at": "2026-07-26T16:06:24.038847Z"
+    "created_at": "2026-07-26T16:32:21.545264Z"
   },
   {
-    "event_id": "audit_b9f1ef2bf7164123bc758cfadd94d9df",
-    "run_id": "run_3461e509aa6947fa8204733309068ab0",
+    "event_id": "audit_3118986cceae461dba1c0620fece7e77",
+    "run_id": "run_9bbf07076ece460194bb4cdeaf2f97ea",
     "event_type": "tool_called",
     "actor": "risk_control_designer",
     "details": {
       "tool_name": "policy_server.get_required_controls",
       "workflow_step": "external_commitment_review"
     },
-    "created_at": "2026-07-26T16:06:24.038855Z"
+    "created_at": "2026-07-26T16:32:21.545271Z"
   },
   {
-    "event_id": "audit_947cce9f5c8d4231b383fb3ee028c1f0",
-    "run_id": "run_3461e509aa6947fa8204733309068ab0",
+    "event_id": "audit_9befd007e10047a0985dc5fd7c8539c2",
+    "run_id": "run_9bbf07076ece460194bb4cdeaf2f97ea",
     "event_type": "policy_checked",
     "actor": "tool_policy_guardian",
     "details": {
@@ -1418,22 +1418,22 @@
       "requires_human_approval": false,
       "rationale": "Control lookup is a read-only governance operation."
     },
-    "created_at": "2026-07-26T16:06:24.038873Z"
+    "created_at": "2026-07-26T16:32:21.545293Z"
   },
   {
-    "event_id": "audit_17ef60cd2cfd49c48720cfc3d931363b",
-    "run_id": "run_3461e509aa6947fa8204733309068ab0",
+    "event_id": "audit_2f90bac8f8fa4a37a89ec2ee8d70a5a4",
+    "run_id": "run_9bbf07076ece460194bb4cdeaf2f97ea",
     "event_type": "tool_called",
     "actor": "risk_control_designer",
     "details": {
       "tool_name": "policy_server.get_required_controls",
       "workflow_step": "scope_change_review"
     },
-    "created_at": "2026-07-26T16:06:24.038881Z"
+    "created_at": "2026-07-26T16:32:21.545301Z"
   },
   {
-    "event_id": "audit_5a81efc548954609a72dae95c3f2c6fc",
-    "run_id": "run_3461e509aa6947fa8204733309068ab0",
+    "event_id": "audit_a74d3da7e47e42cd9750110b9880a443",
+    "run_id": "run_9bbf07076ece460194bb4cdeaf2f97ea",
     "event_type": "policy_checked",
     "actor": "tool_policy_guardian",
     "details": {
@@ -1443,22 +1443,22 @@
       "requires_human_approval": false,
       "rationale": "Control lookup is a read-only governance operation."
     },
-    "created_at": "2026-07-26T16:06:24.038927Z"
+    "created_at": "2026-07-26T16:32:21.545318Z"
   },
   {
-    "event_id": "audit_296a1fbf58224c539eaa8270d715c8e3",
-    "run_id": "run_3461e509aa6947fa8204733309068ab0",
+    "event_id": "audit_08eab0692cee42648bf0dd57c0ba7ef4",
+    "run_id": "run_9bbf07076ece460194bb4cdeaf2f97ea",
     "event_type": "tool_called",
     "actor": "risk_control_designer",
     "details": {
       "tool_name": "policy_server.get_required_controls",
       "workflow_step": "implementation_backlog_write"
     },
-    "created_at": "2026-07-26T16:06:24.038933Z"
+    "created_at": "2026-07-26T16:32:21.545328Z"
   },
   {
-    "event_id": "audit_582bd96df0844d25b2f49476ae8d722b",
-    "run_id": "run_3461e509aa6947fa8204733309068ab0",
+    "event_id": "audit_600617449e3e480c9ac48c6f42ddf54b",
+    "run_id": "run_9bbf07076ece460194bb4cdeaf2f97ea",
     "event_type": "policy_checked",
     "actor": "tool_policy_guardian",
     "details": {
@@ -1468,22 +1468,22 @@
       "requires_human_approval": false,
       "rationale": "Control lookup is a read-only governance operation."
     },
-    "created_at": "2026-07-26T16:06:24.039073Z"
+    "created_at": "2026-07-26T16:32:21.545396Z"
   },
   {
-    "event_id": "audit_500d5a21360f4505b57cecba48bc30e3",
-    "run_id": "run_3461e509aa6947fa8204733309068ab0",
+    "event_id": "audit_f13514b2f5bf4c3a98cb81eadb142b6a",
+    "run_id": "run_9bbf07076ece460194bb4cdeaf2f97ea",
     "event_type": "tool_called",
     "actor": "risk_control_designer",
     "details": {
       "tool_name": "policy_server.get_required_controls",
       "workflow_step": "operational_write_action"
     },
-    "created_at": "2026-07-26T16:06:24.039083Z"
+    "created_at": "2026-07-26T16:32:21.545403Z"
   },
   {
-    "event_id": "audit_eeab06eee7a44c6abab2aeaa266df098",
-    "run_id": "run_3461e509aa6947fa8204733309068ab0",
+    "event_id": "audit_14e7341e2d8a413c859187dda4a43583",
+    "run_id": "run_9bbf07076ece460194bb4cdeaf2f97ea",
     "event_type": "policy_checked",
     "actor": "tool_policy_guardian",
     "details": {
@@ -1493,22 +1493,22 @@
       "requires_human_approval": false,
       "rationale": "Control lookup is a read-only governance operation."
     },
-    "created_at": "2026-07-26T16:06:24.039108Z"
+    "created_at": "2026-07-26T16:32:21.545420Z"
   },
   {
-    "event_id": "audit_ab5a0159e0314f9aadfee6bbfc21c7ee",
-    "run_id": "run_3461e509aa6947fa8204733309068ab0",
+    "event_id": "audit_677da106e3d24f48b8b3dfd3f7a32f41",
+    "run_id": "run_9bbf07076ece460194bb4cdeaf2f97ea",
     "event_type": "tool_called",
     "actor": "risk_control_designer",
     "details": {
       "tool_name": "policy_server.get_required_controls",
       "workflow_step": "timeline_or_sla_review"
     },
-    "created_at": "2026-07-26T16:06:24.039114Z"
+    "created_at": "2026-07-26T16:32:21.545428Z"
   },
   {
-    "event_id": "audit_7c5ae7312e6842c6964818c7d3acc221",
-    "run_id": "run_3461e509aa6947fa8204733309068ab0",
+    "event_id": "audit_0c10930a9ab7491b828b8631883aed53",
+    "run_id": "run_9bbf07076ece460194bb4cdeaf2f97ea",
     "event_type": "policy_checked",
     "actor": "tool_policy_guardian",
     "details": {
@@ -1518,68 +1518,68 @@
       "requires_human_approval": false,
       "rationale": "Control lookup is a read-only governance operation."
     },
-    "created_at": "2026-07-26T16:06:24.039131Z"
+    "created_at": "2026-07-26T16:32:21.545444Z"
   },
   {
-    "event_id": "audit_79d7d2e0ec074db88b337548f0d73bf7",
-    "run_id": "run_3461e509aa6947fa8204733309068ab0",
+    "event_id": "audit_e7125458d006470d9593e9bf4cd8aa55",
+    "run_id": "run_9bbf07076ece460194bb4cdeaf2f97ea",
     "event_type": "tool_called",
     "actor": "risk_control_designer",
     "details": {
       "tool_name": "policy_server.get_required_controls",
       "workflow_step": "implementation_backlog_write"
     },
-    "created_at": "2026-07-26T16:06:24.039137Z"
+    "created_at": "2026-07-26T16:32:21.545451Z"
   },
   {
-    "event_id": "audit_e19f91957e1b45f8bc85e2ba3fe6588d",
-    "run_id": "run_3461e509aa6947fa8204733309068ab0",
+    "event_id": "audit_001c82c626d24f86898f376a26562af0",
+    "run_id": "run_9bbf07076ece460194bb4cdeaf2f97ea",
     "event_type": "agent_completed",
     "actor": "risk_control_designer",
     "details": {
-      "artifact_id": "artifact_29ae3fd90a8d40759906236eeca9d5c1",
+      "artifact_id": "artifact_bed042588f3e49b48aa0f1900055e401",
       "artifact_type": "risk_control_matrix",
       "row_count": 12,
       "risk_count": 41
     },
-    "created_at": "2026-07-26T16:06:24.039256Z"
+    "created_at": "2026-07-26T16:32:21.545609Z"
   },
   {
-    "event_id": "audit_0984ff643ee14a44b09387508f43a407",
-    "run_id": "run_3461e509aa6947fa8204733309068ab0",
+    "event_id": "audit_c230f64382d143908bdaf1fb69153109",
+    "run_id": "run_9bbf07076ece460194bb4cdeaf2f97ea",
     "event_type": "agent_started",
     "actor": "hitl_designer",
     "details": {
       "workflow_id": "customer_onboarding"
     },
-    "created_at": "2026-07-26T16:06:24.039573Z"
+    "created_at": "2026-07-26T16:32:21.546037Z"
   },
   {
-    "event_id": "audit_a2c086f3932c44f19fa302c93545455f",
-    "run_id": "run_3461e509aa6947fa8204733309068ab0",
+    "event_id": "audit_93ad6a18b0944f09b506dde60962f9db",
+    "run_id": "run_9bbf07076ece460194bb4cdeaf2f97ea",
     "event_type": "agent_completed",
     "actor": "hitl_designer",
     "details": {
-      "artifact_id": "artifact_b80abebedc934442af2149425de1cf2d",
+      "artifact_id": "artifact_f2c3b41c30634a8eaa2d8b3483ebaf3f",
       "artifact_type": "hitl_design",
       "approval_gate_count": 3,
       "escalation_rule_count": 2
     },
-    "created_at": "2026-07-26T16:06:24.040083Z"
+    "created_at": "2026-07-26T16:32:21.546359Z"
   },
   {
-    "event_id": "audit_5d64c881b7d84a4daa535fb7b8cbe106",
-    "run_id": "run_3461e509aa6947fa8204733309068ab0",
+    "event_id": "audit_4c364ba7e21545d1a87bb9798598ee00",
+    "run_id": "run_9bbf07076ece460194bb4cdeaf2f97ea",
     "event_type": "agent_started",
     "actor": "implementation_planner",
     "details": {
       "workflow_id": "customer_onboarding"
     },
-    "created_at": "2026-07-26T16:06:24.040183Z"
+    "created_at": "2026-07-26T16:32:21.547389Z"
   },
   {
-    "event_id": "audit_315fa5ad09094dcc9c4a90823f391732",
-    "run_id": "run_3461e509aa6947fa8204733309068ab0",
+    "event_id": "audit_bfe49711250a49599d05f855d5e8b182",
+    "run_id": "run_9bbf07076ece460194bb4cdeaf2f97ea",
     "event_type": "policy_checked",
     "actor": "tool_policy_guardian",
     "details": {
@@ -1589,11 +1589,11 @@
       "requires_human_approval": false,
       "rationale": "Tool permission checks are read-only governance operations."
     },
-    "created_at": "2026-07-26T16:06:24.040205Z"
+    "created_at": "2026-07-26T16:32:21.547427Z"
   },
   {
-    "event_id": "audit_9e513ff077494b5b8920c6603f100a6c",
-    "run_id": "run_3461e509aa6947fa8204733309068ab0",
+    "event_id": "audit_0353746f63b544f5a7a5486262d993b9",
+    "run_id": "run_9bbf07076ece460194bb4cdeaf2f97ea",
     "event_type": "tool_called",
     "actor": "tool_policy_guardian",
     "details": {
@@ -1602,11 +1602,11 @@
       "target_tool_name": "project_mgmt_server.create_issue",
       "approval_granted": false
     },
-    "created_at": "2026-07-26T16:06:24.040212Z"
+    "created_at": "2026-07-26T16:32:21.547437Z"
   },
   {
-    "event_id": "audit_f1b30c10a7fa4d0b9af5b854f6abfae4",
-    "run_id": "run_3461e509aa6947fa8204733309068ab0",
+    "event_id": "audit_863df5e6fc694738a0c7228f821dcdf0",
+    "run_id": "run_9bbf07076ece460194bb4cdeaf2f97ea",
     "event_type": "policy_checked",
     "actor": "tool_policy_guardian",
     "details": {
@@ -1616,53 +1616,53 @@
       "requires_human_approval": true,
       "rationale": "Tool 'project_mgmt_server.create_issue' is write-capable and requires human approval."
     },
-    "created_at": "2026-07-26T16:06:24.040225Z"
+    "created_at": "2026-07-26T16:32:21.547454Z"
   },
   {
-    "event_id": "audit_fefa39e0722b4546861708d383f2f263",
-    "run_id": "run_3461e509aa6947fa8204733309068ab0",
+    "event_id": "audit_98eec1700b3d4c04b02bac76f606412d",
+    "run_id": "run_9bbf07076ece460194bb4cdeaf2f97ea",
     "event_type": "agent_completed",
     "actor": "implementation_planner",
     "details": {
-      "artifact_id": "artifact_56fd8b26ccd8496a81bef47ebece155f",
+      "artifact_id": "artifact_14142e51cdd14d0cbc5cfaddf1f8f127",
       "artifact_type": "implementation_backlog",
-      "backlog_item_count": 7,
+      "backlog_item_count": 12,
       "write_action_decision_without_approval": "require_approval"
     },
-    "created_at": "2026-07-26T16:06:24.040312Z"
+    "created_at": "2026-07-26T16:32:21.547732Z"
   },
   {
-    "event_id": "audit_f2d5ed827daa4d3787ea6340e6828c05",
-    "run_id": "run_3461e509aa6947fa8204733309068ab0",
+    "event_id": "audit_57d8e72312f742bc97a647e8022e1adf",
+    "run_id": "run_9bbf07076ece460194bb4cdeaf2f97ea",
     "event_type": "agent_completed",
     "actor": "coordinator",
     "details": {
       "workflow_id": "customer_onboarding",
       "phase": "initial_analysis",
       "artifacts_created": [
-        "artifact_bbb14dd21e194117992d8e140b5949af",
-        "artifact_2625b15cae0e4c03a9f1936be86aaa4c",
-        "artifact_29ae3fd90a8d40759906236eeca9d5c1",
-        "artifact_b80abebedc934442af2149425de1cf2d",
-        "artifact_56fd8b26ccd8496a81bef47ebece155f"
+        "artifact_842292e6f1b54e6e94f73b942b398587",
+        "artifact_b786e5c15d974fe7af113a50d64c05ba",
+        "artifact_bed042588f3e49b48aa0f1900055e401",
+        "artifact_f2c3b41c30634a8eaa2d8b3483ebaf3f",
+        "artifact_14142e51cdd14d0cbc5cfaddf1f8f127"
       ]
     },
-    "created_at": "2026-07-26T16:06:24.040434Z"
+    "created_at": "2026-07-26T16:32:21.547910Z"
   },
   {
-    "event_id": "audit_d4372c3a3b2f4bb7993f01e098f24670",
-    "run_id": "run_3461e509aa6947fa8204733309068ab0",
+    "event_id": "audit_fd185d8aa671481b895fd92b1b53863f",
+    "run_id": "run_9bbf07076ece460194bb4cdeaf2f97ea",
     "event_type": "run_completed",
     "actor": "system",
     "details": {
       "workflow_id": "customer_onboarding",
       "artifact_count": 5
     },
-    "created_at": "2026-07-26T16:06:24.040453Z"
+    "created_at": "2026-07-26T16:32:21.547922Z"
   },
   {
-    "event_id": "audit_4a0cb773cb0d410ca5d65b3d66ac2ee9",
-    "run_id": "run_3461e509aa6947fa8204733309068ab0",
+    "event_id": "audit_6b4ced647f984ade9349ff35fca87967",
+    "run_id": "run_9bbf07076ece460194bb4cdeaf2f97ea",
     "event_type": "approval_granted",
     "actor": "example_export_reviewer",
     "details": {
@@ -1670,11 +1670,11 @@
       "approval_reference": "approval_example_export_customer_onboarding_001",
       "dry_run": true
     },
-    "created_at": "2026-07-26T16:06:24.049376Z"
+    "created_at": "2026-07-26T16:32:21.559445Z"
   },
   {
-    "event_id": "audit_78199b054b5549978bb6c05668967913",
-    "run_id": "run_3461e509aa6947fa8204733309068ab0",
+    "event_id": "audit_9cf0ed4f465c493f80af52361aa9b3c8",
+    "run_id": "run_9bbf07076ece460194bb4cdeaf2f97ea",
     "event_type": "policy_checked",
     "actor": "tool_policy_guardian",
     "details": {
@@ -1684,11 +1684,11 @@
       "requires_human_approval": false,
       "rationale": "Tool permission checks are read-only governance operations."
     },
-    "created_at": "2026-07-26T16:06:24.049438Z"
+    "created_at": "2026-07-26T16:32:21.559520Z"
   },
   {
-    "event_id": "audit_4d9dd7b83b7e4b909150c14ee9dc47d2",
-    "run_id": "run_3461e509aa6947fa8204733309068ab0",
+    "event_id": "audit_2f688a9f56234986bf57047fffc96185",
+    "run_id": "run_9bbf07076ece460194bb4cdeaf2f97ea",
     "event_type": "tool_called",
     "actor": "tool_policy_guardian",
     "details": {
@@ -1697,11 +1697,11 @@
       "target_tool_name": "project_mgmt_server.create_issue",
       "approval_granted": true
     },
-    "created_at": "2026-07-26T16:06:24.049469Z"
+    "created_at": "2026-07-26T16:32:21.559537Z"
   },
   {
-    "event_id": "audit_01a01c098d0c4843b331dcbb255f6fc4",
-    "run_id": "run_3461e509aa6947fa8204733309068ab0",
+    "event_id": "audit_038ed24394894855b580263e6b1295d2",
+    "run_id": "run_9bbf07076ece460194bb4cdeaf2f97ea",
     "event_type": "policy_checked",
     "actor": "tool_policy_guardian",
     "details": {
@@ -1711,11 +1711,11 @@
       "requires_human_approval": true,
       "rationale": "Creating project-management issues is a write action and requires human approval."
     },
-    "created_at": "2026-07-26T16:06:24.049504Z"
+    "created_at": "2026-07-26T16:32:21.559567Z"
   },
   {
-    "event_id": "audit_d433a071d69e40c3b28954e1bc3b14c5",
-    "run_id": "run_3461e509aa6947fa8204733309068ab0",
+    "event_id": "audit_dd1e849a58cc497c874a3bbe40983a0d",
+    "run_id": "run_9bbf07076ece460194bb4cdeaf2f97ea",
     "event_type": "write_action_executed",
     "actor": "implementation_planner",
     "details": {
@@ -1727,6 +1727,6 @@
       "issue_number": null,
       "issue_url": null
     },
-    "created_at": "2026-07-26T16:06:24.049569Z"
+    "created_at": "2026-07-26T16:32:21.559696Z"
   }
 ]

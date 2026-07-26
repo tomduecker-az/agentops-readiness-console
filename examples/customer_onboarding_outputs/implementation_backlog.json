@@ -1,6 +1,6 @@
 {
-  "artifact_id": "artifact_56fd8b26ccd8496a81bef47ebece155f",
-  "run_id": "run_3461e509aa6947fa8204733309068ab0",
+  "artifact_id": "artifact_14142e51cdd14d0cbc5cfaddf1f8f127",
+  "run_id": "run_9bbf07076ece460194bb4cdeaf2f97ea",
   "artifact_type": "implementation_backlog",
   "status": "ready_for_review",
   "content": {
@@ -36,7 +36,26 @@
         "write_permission_decision_without_approval": "require_approval",
         "status": "approved",
         "github_issue_created": false,
-        "additional_context": {},
+        "additional_context": {
+          "source_step_examples": [
+            {
+              "step_id": "step_1",
+              "description": "Sales marks the customer as closed-won and submits the onboarding handoff form.",
+              "matched_terms": []
+            },
+            {
+              "step_id": "step_2",
+              "description": "Customer operations reviews account details, contract notes, and implementation scope.",
+              "matched_terms": []
+            },
+            {
+              "step_id": "step_3",
+              "description": "The onboarding coordinator checks whether required intake fields are complete.",
+              "matched_terms": []
+            }
+          ],
+          "generation_basis": "risk_pattern"
+        },
         "approval_reference": "approval_example_export_customer_onboarding_001",
         "approved_by": "example_export_reviewer",
         "dry_run": true,
@@ -52,11 +71,11 @@
       },
       {
         "backlog_id": "BACKLOG-HITL-001",
-        "title": "Add approval gate for high-risk onboarding plans",
-        "description": "Require authorized review before onboarding plans involving sensitive data, custom integrations, enterprise terms, accelerated timelines, or customer-facing commitments are finalized or advanced.",
+        "title": "Add approval gate for governed workflow decisions",
+        "description": "Require authorized review before workflow items that meet approval, review, or authorization conditions are advanced, finalized, or communicated externally.",
         "priority": "high",
         "implementation_type": "workflow_approval_gate",
-        "recommended_owner": "Customer success / Operations process owner",
+        "recommended_owner": "Operations / Process owner",
         "source_risk_ids": [
           "RISK-APPROVAL-001"
         ],
@@ -68,12 +87,53 @@
         "write_permission_decision_without_approval": "require_approval",
         "status": "proposed",
         "github_issue_created": false,
-        "additional_context": {}
+        "additional_context": {
+          "source_step_examples": [
+            {
+              "step_id": "step_2",
+              "description": "Customer operations reviews account details, contract notes, and implementation scope.",
+              "matched_terms": [
+                "custom",
+                "implementation scope",
+                "review",
+                "scope"
+              ]
+            },
+            {
+              "step_id": "step_5",
+              "description": "The implementation specialist reviews requested integrations and technical requirements.",
+              "matched_terms": [
+                "integration",
+                "integrations",
+                "requirement",
+                "requirements",
+                "review",
+                "technical requirement",
+                "technical requirements"
+              ]
+            },
+            {
+              "step_id": "step_6",
+              "description": "Customers with sensitive data, custom integrations, or enterprise terms are routed for supervisor review.",
+              "matched_terms": [
+                "custom",
+                "custom integration",
+                "custom integrations",
+                "integration",
+                "integrations",
+                "review",
+                "supervisor",
+                "terms"
+              ]
+            }
+          ],
+          "generation_basis": "risk_pattern"
+        }
       },
       {
         "backlog_id": "BACKLOG-WRITE-001",
-        "title": "Block customer-facing and system-of-record updates until approval is recorded",
-        "description": "Keep onboarding plan updates, task assignments, customer-facing commitments, and system-of-record changes in draft state until human approval is present.",
+        "title": "Block operational write actions until approval is recorded",
+        "description": "Ensure workflow state changes, task assignments, external communications, and system-of-record updates remain draft-only until an approved human decision is present.",
         "priority": "high",
         "implementation_type": "write_action_guardrail",
         "recommended_owner": "Engineering / AI platform owner",
@@ -88,15 +148,53 @@
         "write_permission_decision_without_approval": "require_approval",
         "status": "proposed",
         "github_issue_created": false,
-        "additional_context": {}
+        "additional_context": {
+          "source_step_examples": [
+            {
+              "step_id": "step_1",
+              "description": "Sales marks the customer as closed-won and submits the onboarding handoff form.",
+              "matched_terms": [
+                "close",
+                "closed",
+                "custom",
+                "handoff"
+              ]
+            },
+            {
+              "step_id": "step_8",
+              "description": "The onboarding coordinator schedules the kickoff meeting and assigns internal owners.",
+              "matched_terms": [
+                "assign",
+                "assigns",
+                "schedule",
+                "schedules"
+              ]
+            },
+            {
+              "step_id": "step_10",
+              "description": "Customer success reviews customer-facing commitments before they are sent externally.",
+              "matched_terms": [
+                "commitment",
+                "commitments",
+                "custom",
+                "customer-facing",
+                "external",
+                "review",
+                "sent",
+                "sent externally"
+              ]
+            }
+          ],
+          "generation_basis": "risk_pattern"
+        }
       },
       {
         "backlog_id": "BACKLOG-SOURCE-001",
-        "title": "Validate onboarding intake and source records before planning",
-        "description": "Prevent onboarding plans from being finalized when required intake fields, contract terms, integration details, or source records are missing, ambiguous, or conflicting.",
+        "title": "Validate source, intake, and reference information before finalization",
+        "description": "Prevent workflow items from being finalized when required source records, intake fields, handoff details, or reference information are missing, ambiguous, or conflicting.",
         "priority": "high",
         "implementation_type": "data_quality_validation",
-        "recommended_owner": "Customer operations / Data owner",
+        "recommended_owner": "Operations / Data owner",
         "source_risk_ids": [
           "RISK-SOURCE-001"
         ],
@@ -107,15 +205,285 @@
         "write_permission_decision_without_approval": "require_approval",
         "status": "proposed",
         "github_issue_created": false,
-        "additional_context": {}
+        "additional_context": {
+          "source_step_examples": [
+            {
+              "step_id": "step_1",
+              "description": "Sales marks the customer as closed-won and submits the onboarding handoff form.",
+              "matched_terms": [
+                "close",
+                "closed",
+                "custom",
+                "handoff"
+              ]
+            },
+            {
+              "step_id": "step_3",
+              "description": "The onboarding coordinator checks whether required intake fields are complete.",
+              "matched_terms": [
+                "intake",
+                "required intake"
+              ]
+            },
+            {
+              "step_id": "step_4",
+              "description": "Missing or unclear intake information is routed back to the account executive.",
+              "matched_terms": [
+                "intake",
+                "missing",
+                "routed back",
+                "unclear"
+              ]
+            }
+          ],
+          "generation_basis": "risk_pattern"
+        }
+      },
+      {
+        "backlog_id": "BACKLOG-COMMITMENT-001",
+        "title": "Add review gate before external commitments are released",
+        "description": "Require authorized review before external communications, timelines, scope statements, or commitments are released from agent-assisted workflow output.",
+        "priority": "high",
+        "implementation_type": "external_commitment_review",
+        "recommended_owner": "Operations / Process owner",
+        "source_risk_ids": [
+          "RISK-COMMITMENT-001"
+        ],
+        "source_control_ids": [
+          "CTRL-HITL-001",
+          "CTRL-AUDIT-001"
+        ],
+        "requires_human_approval_before_execution": true,
+        "write_permission_decision_without_approval": "require_approval",
+        "status": "proposed",
+        "github_issue_created": false,
+        "additional_context": {
+          "source_step_examples": [
+            {
+              "step_id": "step_10",
+              "description": "Customer success reviews customer-facing commitments before they are sent externally.",
+              "matched_terms": [
+                "commitment",
+                "commitments",
+                "custom",
+                "customer-facing",
+                "external",
+                "review",
+                "sent",
+                "sent externally"
+              ]
+            },
+            {
+              "step_id": "step_11",
+              "description": "The onboarding plan is shared with the customer.",
+              "matched_terms": [
+                "custom",
+                "shared",
+                "shared with"
+              ]
+            }
+          ],
+          "generation_basis": "risk_pattern"
+        }
+      },
+      {
+        "backlog_id": "BACKLOG-SCOPE-001",
+        "title": "Add review gate for scope, requirement, or term changes",
+        "description": "Require review before scope, requirements, terms, or implementation expectations are finalized, changed, or communicated externally.",
+        "priority": "high",
+        "implementation_type": "scope_change_control",
+        "recommended_owner": "Operations / Product owner",
+        "source_risk_ids": [
+          "RISK-SCOPE-001"
+        ],
+        "source_control_ids": [
+          "CTRL-HITL-001",
+          "CTRL-AUDIT-001"
+        ],
+        "requires_human_approval_before_execution": true,
+        "write_permission_decision_without_approval": "require_approval",
+        "status": "proposed",
+        "github_issue_created": false,
+        "additional_context": {
+          "source_step_examples": [
+            {
+              "step_id": "step_1",
+              "description": "Sales marks the customer as closed-won and submits the onboarding handoff form.",
+              "matched_terms": [
+                "close",
+                "closed",
+                "custom",
+                "handoff"
+              ]
+            },
+            {
+              "step_id": "step_2",
+              "description": "Customer operations reviews account details, contract notes, and implementation scope.",
+              "matched_terms": [
+                "custom",
+                "implementation scope",
+                "review",
+                "scope"
+              ]
+            },
+            {
+              "step_id": "step_5",
+              "description": "The implementation specialist reviews requested integrations and technical requirements.",
+              "matched_terms": [
+                "integration",
+                "integrations",
+                "requirement",
+                "requirements",
+                "review",
+                "technical requirement",
+                "technical requirements"
+              ]
+            }
+          ],
+          "generation_basis": "risk_pattern"
+        }
+      },
+      {
+        "backlog_id": "BACKLOG-INTEGRATION-001",
+        "title": "Add technical and security review for integration requirements",
+        "description": "Route technical integrations, security requirements, credentials, APIs, or system-access dependencies to an appropriate technical or security reviewer before execution.",
+        "priority": "high",
+        "implementation_type": "technical_review_control",
+        "recommended_owner": "Engineering / Security",
+        "source_risk_ids": [
+          "RISK-INTEGRATION-001"
+        ],
+        "source_control_ids": [
+          "CTRL-HITL-001",
+          "CTRL-AUDIT-001"
+        ],
+        "requires_human_approval_before_execution": true,
+        "write_permission_decision_without_approval": "require_approval",
+        "status": "proposed",
+        "github_issue_created": false,
+        "additional_context": {
+          "source_step_examples": [
+            {
+              "step_id": "step_5",
+              "description": "The implementation specialist reviews requested integrations and technical requirements.",
+              "matched_terms": [
+                "integration",
+                "integrations",
+                "requirement",
+                "requirements",
+                "review",
+                "technical requirement",
+                "technical requirements"
+              ]
+            },
+            {
+              "step_id": "step_6",
+              "description": "Customers with sensitive data, custom integrations, or enterprise terms are routed for supervisor review.",
+              "matched_terms": [
+                "custom",
+                "custom integration",
+                "custom integrations",
+                "integration",
+                "integrations",
+                "review",
+                "supervisor",
+                "terms"
+              ]
+            }
+          ],
+          "generation_basis": "risk_pattern"
+        }
+      },
+      {
+        "backlog_id": "BACKLOG-HANDOFF-001",
+        "title": "Add handoff completeness checks before workflow advancement",
+        "description": "Require missing, unclear, or incomplete handoff information to be resolved before the workflow item advances or triggers downstream action.",
+        "priority": "medium",
+        "implementation_type": "handoff_quality_control",
+        "recommended_owner": "Operations / Process owner",
+        "source_risk_ids": [
+          "RISK-HANDOFF-001"
+        ],
+        "source_control_ids": [
+          "CTRL-VALID-001"
+        ],
+        "requires_human_approval_before_execution": true,
+        "write_permission_decision_without_approval": "require_approval",
+        "status": "proposed",
+        "github_issue_created": false,
+        "additional_context": {
+          "source_step_examples": [
+            {
+              "step_id": "step_1",
+              "description": "Sales marks the customer as closed-won and submits the onboarding handoff form.",
+              "matched_terms": [
+                "close",
+                "closed",
+                "custom",
+                "handoff"
+              ]
+            },
+            {
+              "step_id": "step_3",
+              "description": "The onboarding coordinator checks whether required intake fields are complete.",
+              "matched_terms": [
+                "intake",
+                "required intake"
+              ]
+            },
+            {
+              "step_id": "step_4",
+              "description": "Missing or unclear intake information is routed back to the account executive.",
+              "matched_terms": [
+                "intake",
+                "missing",
+                "routed back",
+                "unclear"
+              ]
+            }
+          ],
+          "generation_basis": "risk_pattern"
+        }
+      },
+      {
+        "backlog_id": "BACKLOG-TIMELINE-001",
+        "title": "Add review gate for timeline, deadline, or SLA commitments",
+        "description": "Require review before compressed timelines, deadlines, SLAs, launch dates, or delivery commitments are finalized or communicated.",
+        "priority": "medium",
+        "implementation_type": "timeline_commitment_control",
+        "recommended_owner": "Operations / Delivery owner",
+        "source_risk_ids": [
+          "RISK-TIMELINE-001"
+        ],
+        "source_control_ids": [
+          "CTRL-HITL-001",
+          "CTRL-AUDIT-001"
+        ],
+        "requires_human_approval_before_execution": true,
+        "write_permission_decision_without_approval": "require_approval",
+        "status": "proposed",
+        "github_issue_created": false,
+        "additional_context": {
+          "source_step_examples": [
+            {
+              "step_id": "step_12",
+              "description": "Weekly onboarding status is tracked until launch.",
+              "matched_terms": [
+                "launch",
+                "status"
+              ]
+            }
+          ],
+          "generation_basis": "risk_pattern"
+        }
       },
       {
         "backlog_id": "BACKLOG-QUEUE-001",
-        "title": "Create review queue for high-risk onboarding cases",
-        "description": "Route onboarding cases with sensitive data, custom integrations, enterprise terms, missing intake, customer-facing commitments, or compressed timelines to a review queue with required evidence and approval status.",
+        "title": "Create review queue for high-risk workflow items",
+        "description": "Route workflow items with approval, data, handoff, timeline, scope, integration, or external-commitment risks to a review queue with required evidence, reviewer, approval status, and audit context.",
         "priority": "medium",
         "implementation_type": "review_workflow",
-        "recommended_owner": "Product / Customer operations",
+        "recommended_owner": "Product / Operations",
         "source_risk_ids": [
           "RISK-APPROVAL-001",
           "RISK-COMMITMENT-001",
@@ -141,16 +509,16 @@
         "github_issue_created": false,
         "additional_context": {
           "review_queue_count": 12,
-          "workflow_context": "customer_onboarding"
+          "generation_basis": "hitl_design"
         }
       },
       {
         "backlog_id": "BACKLOG-ESCALATION-001",
-        "title": "Implement escalation rules for high-risk onboarding cases",
-        "description": "Escalate cases that involve missing intake, sensitive customer data, custom integrations, enterprise terms, customer-facing commitments, or compressed launch timelines.",
+        "title": "Implement escalation rules for blocked or high-risk workflow items",
+        "description": "Escalate workflow items when required information is missing, approval is absent, sensitive data handling is unresolved, external commitments are blocked, or policy review is required before advancement.",
         "priority": "medium",
         "implementation_type": "escalation_rule",
-        "recommended_owner": "Customer operations / Process owner",
+        "recommended_owner": "Operations / Process owner",
         "source_risk_ids": [
           "RISK-APPROVAL-001",
           "RISK-COMMITMENT-001",
@@ -176,7 +544,7 @@
         "github_issue_created": false,
         "additional_context": {
           "escalation_rule_count": 2,
-          "workflow_context": "customer_onboarding"
+          "generation_basis": "hitl_design"
         }
       },
       {
@@ -209,17 +577,19 @@
         "write_permission_decision_without_approval": "require_approval",
         "status": "proposed",
         "github_issue_created": false,
-        "additional_context": {}
+        "additional_context": {
+          "generation_basis": "approval_gate_presence"
+        }
       }
     ],
     "summary": {
-      "backlog_item_count": 7,
-      "high_priority_count": 4,
-      "approval_required_count": 7,
+      "backlog_item_count": 12,
+      "high_priority_count": 7,
+      "approval_required_count": 12,
       "approved_count": 1,
       "github_issues_created": 0
     },
     "generation_mode": "deterministic_skeleton"
   },
-  "created_at": "2026-07-26T16:06:24.040303Z"
+  "created_at": "2026-07-26T16:32:21.547712Z"
 }

@@ -1,6 +1,6 @@
 {
-  "artifact_id": "artifact_b2fb3734807d404ab2bd5fad2b9e576a",
-  "run_id": "run_0318330d780b42599a01ec08ebeb065a",
+  "artifact_id": "artifact_d52fcf8f68de49c88abce82edab20aaf",
+  "run_id": "run_c38c52b37cbf4ad9bcefa1e07aab590b",
   "artifact_type": "workflow_map",
   "status": "ready_for_review",
   "content": {
@@ -167,5 +167,5 @@
     ],
     "generation_mode": "deterministic_skeleton"
   },
-  "created_at": "2026-07-26T16:09:51.528325Z"
+  "created_at": "2026-07-26T16:32:31.225088Z"
 }

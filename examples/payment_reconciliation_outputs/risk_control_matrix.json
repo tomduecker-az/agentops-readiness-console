@@ -1,6 +1,6 @@
 {
-  "artifact_id": "artifact_e187f59ff5374d788f04c1bbb4a4245a",
-  "run_id": "run_0318330d780b42599a01ec08ebeb065a",
+  "artifact_id": "artifact_cc4c7b4e7c914829a6ee718e92eb9bf4",
+  "run_id": "run_c38c52b37cbf4ad9bcefa1e07aab590b",
   "artifact_type": "risk_control_matrix",
   "status": "ready_for_review",
   "content": {
@@ -781,5 +781,5 @@
     },
     "generation_mode": "deterministic_skeleton"
   },
-  "created_at": "2026-07-26T16:09:51.533240Z"
+  "created_at": "2026-07-26T16:32:31.232227Z"
 }
