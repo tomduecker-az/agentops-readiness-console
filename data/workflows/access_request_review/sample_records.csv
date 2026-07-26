@@ -1,0 +1,4 @@
+request_id,employee_identifier,employee_email,manager_email,requested_system,access_level,business_justification,approval_status,ticket_status,sla_due_date,contains_privileged_access,notes
+AR-1001,E-48191,alex.rivera@example.com,manager.one@example.com,Customer Data Warehouse,read_only,Needs access for monthly reporting,pending_review,intake_complete,2026-08-15,false,Manager provided standard reporting justification
+AR-1002,E-57203,jordan.lee@example.com,manager.two@example.com,Production Admin Console,admin,Emergency support coverage requires elevated permissions,pending_security_review,awaiting_security_review,2026-08-10,true,Privileged access request requires security review
+AR-1003,E-33814,taylor.nguyen@example.com,manager.three@example.com,SSO Admin Portal,custom_role,Role mapping unclear and business justification incomplete,needs_clarification,returned_to_manager,2026-08-12,true,Missing required fields and unclear access level

@@ -1,0 +1,36 @@
+{
+  "workflow_id": "access_request_review",
+  "display_name": "Access Request Review",
+  "description": "An IT access request workflow used to evaluate governed AI readiness for identity, system access, approval, and audit controls.",
+  "packet_path": "data/workflows/access_request_review",
+  "documents": [
+    {
+      "document_id": "process_narrative",
+      "title": "Process Narrative",
+      "relative_path": "process_narrative.md",
+      "document_type": "narrative",
+      "required": true
+    },
+    {
+      "document_id": "current_workflow_steps",
+      "title": "Current Workflow Steps",
+      "relative_path": "current_workflow_steps.md",
+      "document_type": "workflow_steps",
+      "required": true
+    },
+    {
+      "document_id": "policy_and_controls",
+      "title": "Policy and Controls",
+      "relative_path": "policy_and_controls.md",
+      "document_type": "policy",
+      "required": true
+    },
+    {
+      "document_id": "sample_records",
+      "title": "Sample Records",
+      "relative_path": "sample_records.csv",
+      "document_type": "sample_records",
+      "required": true
+    }
+  ]
+}
