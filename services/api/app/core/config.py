@@ -13,7 +13,9 @@ class Settings(BaseSettings):
     api_port: int = 8000
 
     openai_api_key: str | None = None
-
+    openai_model: str = "gpt-5.6-sol"
+    openai_reasoning_effort: str = "high"
+    
     supabase_url: str | None = None
     supabase_anon_key: str | None = None
     supabase_service_role_key: str | None = None

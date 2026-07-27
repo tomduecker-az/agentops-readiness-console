@@ -11,6 +11,7 @@ class ArtifactType(str, Enum):
     risk_control_matrix = "risk_control_matrix"
     hitl_design = "hitl_design"
     implementation_backlog = "implementation_backlog"
+    llm_workflow_analysis = "llm_workflow_analysis"
 
 
 class ArtifactStatus(str, Enum):
