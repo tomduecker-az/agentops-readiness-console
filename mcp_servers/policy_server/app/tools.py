@@ -48,6 +48,45 @@ def get_required_controls(workflow_step: str) -> dict[str, Any]:
     result = core_get_required_controls(workflow_step)
     return result.model_dump(mode="json")
 
+def classify_data_elements(data_elements: list[str]) -> dict[str, Any]:
+    """
+    Classify multiple data elements using the enterprise policy catalog.
+
+    This batch tool reduces repeated MCP round trips while preserving the
+    policy-server boundary.
+    """
+
+    return {
+        "items": [
+            {
+                "data_element": data_element,
+                "classification": core_classify_data(data_element).model_dump(mode="json"),
+            }
+            for data_element in data_elements
+        ]
+    }
+
+
+def get_required_controls_for_actions(workflow_steps: list[str]) -> dict[str, Any]:
+    """
+    Return required controls for multiple workflow steps or governed actions.
+
+    This batch tool reduces repeated MCP round trips while preserving the
+    policy-server boundary.
+    """
+
+    return {
+        "items": [
+            {
+                "workflow_step": workflow_step,
+                "required_controls": core_get_required_controls(workflow_step).model_dump(
+                    mode="json"
+                ),
+            }
+            for workflow_step in workflow_steps
+        ]
+    }
+
 
 def register_policy_tools(mcp: Any) -> None:
     """
@@ -58,5 +97,7 @@ def register_policy_tools(mcp: Any) -> None:
     """
 
     mcp.tool()(classify_data)
+    mcp.tool()(classify_data_elements)
     mcp.tool()(check_tool_permission)
     mcp.tool()(get_required_controls)
+    mcp.tool()(get_required_controls_for_actions)

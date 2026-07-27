@@ -12,7 +12,7 @@ DATA_CLASSIFICATION_CATALOG: dict[str, dict[str, object]] = {
         "requires_redaction": False,
         "rationale": "Synthetic/internal record identifiers are allowed in the demo context.",
     },
-        "payment_date": {
+    "payment_date": {
         "sensitivity": DataSensitivity.financial_internal,
         "allowed_in_model_context": True,
         "requires_redaction": False,
@@ -83,6 +83,7 @@ TOOL_PERMISSION_CATALOG: dict[str, dict[str, object]] = {
             "data_sensitivity_classifier",
             "risk_control_designer",
             "coordinator",
+            "mcp_llm_shadow_analyzer",
         ],
         "requires_human_approval": False,
         "rationale": "Listing registered document metadata is read-only.",
@@ -94,6 +95,7 @@ TOOL_PERMISSION_CATALOG: dict[str, dict[str, object]] = {
             "data_sensitivity_classifier",
             "risk_control_designer",
             "coordinator",
+            "mcp_llm_shadow_analyzer",
         ],
         "requires_human_approval": False,
         "rationale": "Reading registered workflow documents is allowed for analysis agents.",
@@ -105,6 +107,7 @@ TOOL_PERMISSION_CATALOG: dict[str, dict[str, object]] = {
             "risk_control_designer",
             "coordinator",
             "tool_policy_guardian",
+            "mcp_llm_shadow_analyzer",
         ],
         "requires_human_approval": False,
         "rationale": "Data classification policy checks are read-only governance operations.",
@@ -116,6 +119,7 @@ TOOL_PERMISSION_CATALOG: dict[str, dict[str, object]] = {
             "hitl_designer",
             "coordinator",
             "tool_policy_guardian",
+            "mcp_llm_shadow_analyzer",
         ],
         "requires_human_approval": False,
         "rationale": "Control lookup is a read-only governance operation.",
@@ -136,6 +140,7 @@ TOOL_PERMISSION_CATALOG: dict[str, dict[str, object]] = {
             "data_sensitivity_classifier",
             "risk_control_designer",
             "coordinator",
+            "mcp_llm_shadow_analyzer",
         ],
         "requires_human_approval": False,
         "rationale": "Searching registered workflow documents is read-only.",
@@ -161,6 +166,31 @@ TOOL_PERMISSION_CATALOG: dict[str, dict[str, object]] = {
         ],
         "requires_human_approval": True,
         "rationale": "Creating project-management issues is a write action and requires human approval.",
+    },
+
+    "policy_server.classify_data_elements": {
+        "access_level": ToolAccessLevel.read,
+        "allowed_agents": [
+            "data_sensitivity_classifier",
+            "risk_control_designer",
+            "coordinator",
+            "tool_policy_guardian",
+            "mcp_llm_shadow_analyzer",
+        ],
+        "requires_human_approval": False,
+        "rationale": "Batch data classification is a read-only governance operation.",
+    },
+    "policy_server.get_required_controls_for_actions": {
+        "access_level": ToolAccessLevel.read,
+        "allowed_agents": [
+            "risk_control_designer",
+            "hitl_designer",
+            "coordinator",
+            "tool_policy_guardian",
+            "mcp_llm_shadow_analyzer",
+        ],
+        "requires_human_approval": False,
+        "rationale": "Batch control lookup is a read-only governance operation.",
     },
 }
 
