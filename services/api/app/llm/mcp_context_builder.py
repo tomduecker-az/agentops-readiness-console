@@ -1,11 +1,9 @@
 from __future__ import annotations
-
 from typing import Any
-
 from audit_core import AuditEventType
-
 from app.mcp_clients.stdio_runtime import call_mcp_tool
 from app.services.audit_service import log_audit_event
+from app.llm.evidence_catalog import build_evidence_catalog
 
 
 _AGENT_NAME = "mcp_llm_shadow_analyzer"
@@ -124,6 +122,13 @@ def build_mcp_retrieved_context(
         arguments={"workflow_steps": CONTROL_ACTIONS},
         tool_trace=tool_trace,
     )
+    evidence_catalog = build_evidence_catalog(
+        workflow_id=workflow_id,
+        document_contents=document_contents,
+        search_results=search_results,
+        data_classifications=data_classifications,
+        required_controls=required_controls,
+    )
 
     context = {
         "workflow_id": workflow_id,
@@ -133,6 +138,7 @@ def build_mcp_retrieved_context(
         "targeted_search_results": search_results,
         "data_classifications": data_classifications,
         "required_controls": required_controls,
+        "evidence_catalog": evidence_catalog,
         "retrieval_limits": {
             "document_list_calls": 1,
             "document_read_calls": len(document_contents),

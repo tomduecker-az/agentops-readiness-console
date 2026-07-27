@@ -43,8 +43,12 @@ LLM_WORKFLOW_ANALYSIS_SCHEMA: dict[str, Any] = {
                     "observation": {"type": "string"},
                     "workflow_evidence": {"type": "string"},
                     "why_it_matters": {"type": "string"},
+                    "evidence_references": {
+                        "type": "array",
+                        "items": {"type": "string"},
+                    },
                 },
-                "required": ["observation", "workflow_evidence", "why_it_matters"],
+                "required": ["observation", "workflow_evidence", "why_it_matters","evidence_references"],
             },
         },
         "data_sensitivity_observations": {
@@ -56,12 +60,17 @@ LLM_WORKFLOW_ANALYSIS_SCHEMA: dict[str, Any] = {
                     "sensitivity_reason": {"type": "string"},
                     "recommended_handling": {"type": "string"},
                     "workflow_evidence": {"type": "string"},
+                    "evidence_references": {
+                        "type": "array",
+                        "items": {"type": "string"},
+                    },
                 },
                 "required": [
                     "field_or_data_type",
                     "sensitivity_reason",
                     "recommended_handling",
                     "workflow_evidence",
+                    "evidence_references",
                 ],
             },
         },
@@ -76,6 +85,10 @@ LLM_WORKFLOW_ANALYSIS_SCHEMA: dict[str, Any] = {
                         "type": "string",
                         "enum": ["low", "medium", "high"],
                     },
+                    "evidence_references": {
+                        "type": "array",
+                        "items": {"type": "string"},
+                    },
                     "workflow_evidence": {"type": "string"},
                     "recommended_control": {"type": "string"},
                 },
@@ -85,6 +98,7 @@ LLM_WORKFLOW_ANALYSIS_SCHEMA: dict[str, Any] = {
                     "severity",
                     "workflow_evidence",
                     "recommended_control",
+                    "evidence_references",
                 ],
             },
         },
@@ -97,16 +111,21 @@ LLM_WORKFLOW_ANALYSIS_SCHEMA: dict[str, Any] = {
                     "control_type": {"type": "string"},
                     "applies_to": {"type": "string"},
                     "implementation_note": {"type": "string"},
+                    "evidence_references":{
+                        "type": "array",
+                        "items": {"type": "string"},
+                    }
                 },
                 "required": [
                     "control",
                     "control_type",
                     "applies_to",
                     "implementation_note",
+                    "evidence_references",
                 ],
             },
         },
-        "hitl_recommendations": {
+                "hitl_recommendations": {
             "type": "array",
             "items": {
                 "type": "object",
@@ -116,6 +135,10 @@ LLM_WORKFLOW_ANALYSIS_SCHEMA: dict[str, Any] = {
                     "agent_allowed_before_approval": {"type": "string"},
                     "blocked_without_approval": {"type": "string"},
                     "required_evidence": {"type": "string"},
+                    "evidence_references": {
+                        "type": "array",
+                        "items": {"type": "string"},
+                    },
                 },
                 "required": [
                     "review_point",
@@ -123,6 +146,7 @@ LLM_WORKFLOW_ANALYSIS_SCHEMA: dict[str, Any] = {
                     "agent_allowed_before_approval",
                     "blocked_without_approval",
                     "required_evidence",
+                    "evidence_references",
                 ],
             },
         },
@@ -139,6 +163,10 @@ LLM_WORKFLOW_ANALYSIS_SCHEMA: dict[str, Any] = {
                     "description": {"type": "string"},
                     "suggested_owner": {"type": "string"},
                     "approval_required": {"type": "boolean"},
+                    "evidence_references":{
+                       "type": "array",
+                       "items": {"type": "string"},
+                    },
                 },
                 "required": [
                     "title",
@@ -146,6 +174,7 @@ LLM_WORKFLOW_ANALYSIS_SCHEMA: dict[str, Any] = {
                     "description",
                     "suggested_owner",
                     "approval_required",
+                    "evidence_references",
                 ],
             },
         },
