@@ -44,6 +44,23 @@ LLM shadow mode may not:
 ## Artifact
 
 LLM shadow mode creates an artifact with type:
-
-```text
 llm_workflow_analysis
+
+## Shadow Evaluation
+
+LLM shadow artifacts are evaluated separately from deterministic baseline artifacts.
+
+The evaluator checks:
+
+- required artifact sections
+- workflow-specific language
+- risk observation quality
+- missing-information quality
+- grounding notes
+- hallucination-risk notes
+- implementation recommendation usefulness
+- governance boundary clarity
+- domain leakage from prior examples
+
+Evaluation results are persisted as a separate artifact:
+llm_shadow_evaluation

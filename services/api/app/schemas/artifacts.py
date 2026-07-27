@@ -12,6 +12,7 @@ class ArtifactType(str, Enum):
     hitl_design = "hitl_design"
     implementation_backlog = "implementation_backlog"
     llm_workflow_analysis = "llm_workflow_analysis"
+    llm_shadow_evaluation = "llm_shadow_evaluation"
 
 
 class ArtifactStatus(str, Enum):
