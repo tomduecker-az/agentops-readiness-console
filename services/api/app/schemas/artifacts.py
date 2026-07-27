@@ -13,6 +13,7 @@ class ArtifactType(str, Enum):
     implementation_backlog = "implementation_backlog"
     llm_workflow_analysis = "llm_workflow_analysis"
     llm_shadow_evaluation = "llm_shadow_evaluation"
+    mcp_operational_evaluation = "mcp_operational_evaluation"
 
 
 class ArtifactStatus(str, Enum):
