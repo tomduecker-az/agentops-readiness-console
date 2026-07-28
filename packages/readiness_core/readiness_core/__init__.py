@@ -22,6 +22,7 @@ from readiness_core.blueprint_validator import (
     validate_blueprint_safety,
     validation_passed,
 )
+from readiness_core.blueprint_reconciler import reconcile_blueprint_with_llm_proposal
 
 __all__ = [
     "AgenticReadinessBlueprint",
@@ -44,4 +45,5 @@ __all__ = [
     "BlueprintValidationIssue",
     "validate_blueprint_safety",
     "validation_passed",
+    "reconcile_blueprint_with_llm_proposal",
 ]
