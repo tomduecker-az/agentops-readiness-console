@@ -2,7 +2,7 @@
   "blueprint_version": "0.1.0",
   "workflow_id": "access_request_review",
   "run_id": "run_6ebf6bbdaee749e8be2cf4e24ecf5777",
-  "created_at": "2026-07-28T21:35:03.382672+00:00",
+  "created_at": "2026-07-28T22:09:59.409276+00:00",
   "executive_summary": {
     "workflow_name": "access_request_review",
     "recommendation": "good_candidate_with_controls",
@@ -1114,6 +1114,7 @@
       "evidence_grounding_evaluation",
       "hitl_design",
       "implementation_backlog",
+      "llm_blueprint_proposal",
       "llm_shadow_evaluation",
       "llm_workflow_analysis",
       "mcp_operational_evaluation",
@@ -1132,7 +1133,7 @@
     "llm_proposal_generation_mode": "llm_assisted_proposal_only",
     "reconciliation_report": {
       "reconciliation_version": "0.1.0",
-      "created_at": "2026-07-28T21:35:03.382481+00:00",
+      "created_at": "2026-07-28T22:09:59.408277+00:00",
       "strategy": "llm_proposal_with_deterministic_safety_floor",
       "accepted_sections": [
         "executive_summary",
