@@ -17,6 +17,11 @@ from readiness_core.models import (
     ToolCapabilityRecommendation,
 )
 from readiness_core.blueprint_builder import build_agentic_readiness_blueprint
+from readiness_core.blueprint_validator import (
+    BlueprintValidationIssue,
+    validate_blueprint_safety,
+    validation_passed,
+)
 
 __all__ = [
     "AgenticReadinessBlueprint",
@@ -36,4 +41,7 @@ __all__ = [
     "StepAutonomyRecommendation",
     "ToolCapabilityRecommendation",
     "build_agentic_readiness_blueprint",
+    "BlueprintValidationIssue",
+    "validate_blueprint_safety",
+    "validation_passed",
 ]

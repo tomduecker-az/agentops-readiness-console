@@ -1,10 +1,12 @@
 from __future__ import annotations
-
+from dataclasses import asdict
 from typing import Any
-
 from audit_core.models import AuditEventType
-from readiness_core import build_agentic_readiness_blueprint
-
+from readiness_core import (
+    build_agentic_readiness_blueprint,
+    validate_blueprint_safety,
+    validation_passed,
+)
 from app.schemas.artifacts import ArtifactType
 from app.services.artifact_service import create_artifact, get_artifacts_for_run
 from app.services.audit_service import log_audit_event
@@ -50,7 +52,36 @@ def generate_agentic_readiness_blueprint(
         workflow_documents=workflow_documents,
     )
 
+    validation_issues = validate_blueprint_safety(blueprint)
+    validation_issue_payload = [asdict(issue) for issue in validation_issues]
+    validation_succeeded = validation_passed(validation_issues)
+
+    blueprint.metadata["blueprint_safety_validation"] = {
+        "passed": validation_succeeded,
+        "issue_count": len(validation_issues),
+        "issues": validation_issue_payload,
+    }
+
     blueprint_content = blueprint.model_dump(mode="json")
+
+    if not validation_succeeded:
+        log_audit_event(
+            run_id=run_id,
+            event_type=AuditEventType.policy_violation,
+            actor="blueprint_service",
+            details={
+                "workflow_id": workflow_id,
+                "agent": "agentic_readiness_blueprint_builder",
+                "reason": "blueprint_safety_validation_failed",
+                "issues": validation_issue_payload,
+                "blueprint_safety_validation_passed": validation_succeeded,
+                "blueprint_safety_validation_issue_count": len(validation_issues),
+            },
+        )
+
+        raise BlueprintGenerationError(
+            "Cannot persist Agentic Readiness Blueprint because safety validation failed."
+        )
 
     artifact_id = None
 
