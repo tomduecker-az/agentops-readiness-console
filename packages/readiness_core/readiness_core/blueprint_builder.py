@@ -402,7 +402,97 @@ def _build_autonomy_matrix(
 def _classify_step(step: str) -> dict[str, Any]:
     text = step.lower()
 
-    if any(keyword in text for keyword in ["provision", "permission", "entitlement", "grant access"]):
+    is_provisioning_action = any(
+        keyword in text
+        for keyword in [
+            "provisions approved access",
+            "provision approved access",
+            "provision access",
+            "grant access",
+            "create entitlement",
+            "change entitlement",
+            "disable access",
+            "remove access",
+        ]
+    )
+
+    is_record_write_action = any(
+        keyword in text
+        for keyword in [
+            "updates ticket",
+            "update ticket",
+            "updates status",
+            "update status",
+            "records provisioned",
+            "record provisioned",
+            "attaches approval evidence",
+            "attach approval evidence",
+            "updates tracking",
+            "update tracking",
+        ]
+    )
+
+    is_approval_decision = any(
+        keyword in text
+        for keyword in [
+            "approves or rejects",
+            "approve or reject",
+            "approval decision",
+            "owner reviews and approves",
+            "application owner reviews and approves",
+            "security reviewer performs additional review",
+        ]
+    )
+
+    is_controlled_communication = any(
+        keyword in text
+        for keyword in [
+            "routed back",
+            "route back",
+            "sent back",
+            "send back",
+            "escalated",
+            "escalate",
+            "notification is sent",
+            "notify the",
+            "message is sent",
+            "send a message",
+            "send notification",
+            "request clarification",
+            "asks the",
+        ]
+    )
+
+    is_reporting = any(
+        keyword in text
+        for keyword in [
+            "report",
+            "weekly",
+            "dashboard",
+            "metrics",
+        ]
+    )
+
+    is_verification_or_triage = any(
+        keyword in text
+        for keyword in [
+            "verifies",
+            "verify",
+            "validates",
+            "validate",
+            "checks whether",
+            "checks if",
+            "reviews the request for",
+            "review the request for",
+            "missing",
+            "unclear",
+            "incomplete",
+            "conflicting",
+            "intake",
+        ]
+    )
+
+    if is_provisioning_action:
         return {
             "posture": AutonomyPosture.approval_gated_action,
             "why_useful": "AI can prepare the action, verify required evidence, and check whether prerequisites are complete.",
@@ -424,29 +514,7 @@ def _classify_step(step: str) -> dict[str, Any]:
             "phase": ImplementationPhase.phase_3_approval_gated_actions,
         }
 
-    if any(keyword in text for keyword in ["approve", "reject", "approval", "security review", "owner review"]):
-        return {
-            "posture": AutonomyPosture.ai_recommend_human_approve,
-            "why_useful": "AI can summarize context, organize evidence, and highlight risks before the reviewer makes a decision.",
-            "why_limited": "Approval decisions carry accountability and should remain with an authorized human reviewer.",
-            "allowed": [
-                "Summarize the request and supporting evidence.",
-                "Identify missing or inconsistent information.",
-                "Recommend reviewer questions or next steps.",
-            ],
-            "blocked": [
-                "Approve or reject the request autonomously.",
-                "Bypass required reviewers.",
-                "Record final decisions without human confirmation.",
-            ],
-            "reviewer": "Required business, application, or security approver",
-            "approval_required": True,
-            "audit_required": True,
-            "risk_level": RiskLevel.high,
-            "phase": ImplementationPhase.phase_2_human_reviewed_recommendations,
-        }
-
-    if any(keyword in text for keyword in ["update", "ticket", "status", "record", "tracking", "evidence"]):
+    if is_record_write_action:
         return {
             "posture": AutonomyPosture.approval_gated_action,
             "why_useful": "AI can reduce administrative effort by preparing structured record updates.",
@@ -468,29 +536,51 @@ def _classify_step(step: str) -> dict[str, Any]:
             "phase": ImplementationPhase.phase_3_approval_gated_actions,
         }
 
-    if any(keyword in text for keyword in ["missing", "unclear", "conflicting", "verify", "check", "review", "validate"]):
+    if is_approval_decision:
         return {
-            "posture": AutonomyPosture.ai_assist,
-            "why_useful": "AI can help inspect information, identify gaps, and organize review findings.",
-            "why_limited": "The model should not make final policy or business decisions without human review.",
+            "posture": AutonomyPosture.ai_recommend_human_approve,
+            "why_useful": "AI can summarize context, organize evidence, and highlight risks before the reviewer makes a decision.",
+            "why_limited": "Approval decisions carry accountability and should remain with an authorized human reviewer.",
             "allowed": [
-                "Identify missing information.",
-                "Compare request details against documented requirements.",
-                "Prepare a reviewer summary.",
+                "Summarize the request and supporting evidence.",
+                "Identify missing or inconsistent information.",
+                "Recommend reviewer questions or next steps.",
             ],
             "blocked": [
-                "Make final approval decisions.",
-                "Execute write actions.",
-                "Assume missing facts that are not present in evidence.",
+                "Approve or reject the request autonomously.",
+                "Bypass required reviewers.",
+                "Record final decisions without human confirmation.",
             ],
-            "reviewer": "Workflow analyst or responsible reviewer",
-            "approval_required": False,
+            "reviewer": "Required business, application, or security approver",
+            "approval_required": True,
             "audit_required": True,
-            "risk_level": RiskLevel.medium,
-            "phase": ImplementationPhase.phase_1_read_only_analysis,
+            "risk_level": RiskLevel.high,
+            "phase": ImplementationPhase.phase_2_human_reviewed_recommendations,
         }
 
-    if any(keyword in text for keyword in ["report", "weekly", "metrics"]):
+    if is_controlled_communication:
+        return {
+            "posture": AutonomyPosture.ai_recommend_human_approve,
+            "why_useful": "AI can identify when a communication or escalation is needed and draft a clear reviewer-ready message.",
+            "why_limited": "Messages, escalations, and requests for additional information can affect workflow outcomes and should be reviewed before sending.",
+            "allowed": [
+                "Draft clarification requests or escalation summaries.",
+                "Identify the reason communication is needed.",
+                "Prepare supporting evidence for the recipient.",
+            ],
+            "blocked": [
+                "Send external or workflow-impacting communications without review.",
+                "Escalate based on unsupported assumptions.",
+                "Change workflow status as part of the communication.",
+            ],
+            "reviewer": "Workflow analyst or team lead",
+            "approval_required": True,
+            "audit_required": True,
+            "risk_level": RiskLevel.medium,
+            "phase": ImplementationPhase.phase_2_human_reviewed_recommendations,
+        }
+
+    if is_reporting:
         return {
             "posture": AutonomyPosture.ai_assist,
             "why_useful": "AI can summarize workflow status and prepare draft reporting outputs.",
@@ -510,6 +600,28 @@ def _classify_step(step: str) -> dict[str, Any]:
             "audit_required": True,
             "risk_level": RiskLevel.medium,
             "phase": ImplementationPhase.phase_2_human_reviewed_recommendations,
+        }
+
+    if is_verification_or_triage:
+        return {
+            "posture": AutonomyPosture.ai_assist,
+            "why_useful": "AI can help inspect information, identify gaps, compare details against documented requirements, and organize review findings.",
+            "why_limited": "The model should not make final policy, approval, or business decisions without human review.",
+            "allowed": [
+                "Identify missing information.",
+                "Compare request details against documented requirements.",
+                "Prepare a reviewer summary.",
+            ],
+            "blocked": [
+                "Make final approval decisions.",
+                "Execute write actions.",
+                "Assume missing facts that are not present in evidence.",
+            ],
+            "reviewer": "Workflow analyst or responsible reviewer",
+            "approval_required": False,
+            "audit_required": True,
+            "risk_level": RiskLevel.medium,
+            "phase": ImplementationPhase.phase_1_read_only_analysis,
         }
 
     return {
@@ -532,7 +644,6 @@ def _classify_step(step: str) -> dict[str, Any]:
         "risk_level": RiskLevel.medium,
         "phase": ImplementationPhase.phase_1_read_only_analysis,
     }
-
 
 def _build_human_approval_gates(
     *,
