@@ -1,0 +1,1080 @@
+{
+  "executive_summary": {
+    "workflow_name": "access_request_review",
+    "recommendation": "good_candidate_with_controls",
+    "summary": "The workflow is a good candidate for bounded LLM assistance in intake checking, evidence organization, reviewer summaries, clarification drafts, SLA queue preparation, and report preparation. Access decisions must remain with application owners and security reviewers, while provisioning, record updates, communications, escalations, report distribution, and other governed actions require explicit human approval and audit. Current data classifications block many decision-relevant fields from model context, and the empty required-control lookup must be resolved before production use. [DOC-001, DOC-002, DOC-003, POLICY-001, POLICY-002]",
+    "primary_value_opportunities": [
+      "Use approved, minimized fields to prepare intake checklists and summarize externally verified discrepancies for identity analyst review. [DOC-002, DOC-003, POLICY-001]",
+      "Prepare non-authoritative evidence summaries and reviewer questions without approving, rejecting, or waiving required review. [DOC-001, DOC-002, DOC-003]",
+      "Draft clarification messages, SLA escalation packages, and weekly reports for human review before communication or distribution. [DOC-002, DOC-003, POLICY-001]",
+      "Prepare structured provisioning and record-update proposals after required approvals have been independently verified. [DOC-001, DOC-002, DOC-003]"
+    ],
+    "primary_constraints": [
+      "Employee identifiers, emails, requested systems, access levels, privilege indicators, business justifications, approval evidence, and provisioning records are blocked from model context under the current classifications. [DOC-004, POLICY-001]",
+      "Application access and security-review decisions must remain human-controlled. [DOC-001, DOC-002, DOC-003]",
+      "Provisioning and workflow-record changes cannot occur before required approvals and evidence are recorded. [DOC-001, DOC-002, DOC-003]",
+      "Clarifications, escalations, and report distribution require human review and controlled execution. [DOC-002, DOC-003, POLICY-001]",
+      "Mandatory-review criteria, SLA escalation thresholds, reviewer authorization rules, status transitions, and evidence-retention requirements are incomplete. [DOC-001, DOC-002, DOC-003]",
+      "The required-control lookup returned empty mappings and cannot be treated as authorization for automation. [DOC-003, POLICY-002]"
+    ],
+    "confidence": "Moderate: the main workflow and approval boundaries are consistently documented, but production readiness depends on unresolved data-handling, routing, control-mapping, and technical-boundary details.",
+    "evidence_references": [
+      "DOC-001",
+      "DOC-002",
+      "DOC-003",
+      "DOC-004",
+      "POLICY-001",
+      "POLICY-002"
+    ]
+  },
+  "step_level_autonomy_matrix": [
+    {
+      "step_id": "STEP-001",
+      "step_name": "Access request submission",
+      "current_step_summary": "A manager submits required employee access-request information.",
+      "recommended_posture": "ai_assist",
+      "why_ai_is_useful": "AI can present a required-field checklist and flag apparent omissions before the manager completes submission.",
+      "why_ai_should_be_limited": "The request contains PII and confidential access details that are currently blocked from model context, and AI must not submit or update the authoritative request.",
+      "allowed_ai_actions": [
+        "Present a checklist of documented required fields.",
+        "Flag apparent omissions in approved or redacted inputs.",
+        "Draft a non-authoritative submission summary."
+      ],
+      "blocked_ai_actions": [
+        "Submit the request.",
+        "Write to the workflow record.",
+        "Ingest fields blocked from model context.",
+        "Invent missing request information."
+      ],
+      "required_human_reviewer": "Manager",
+      "approval_required": false,
+      "audit_required": true,
+      "risk_level": "medium",
+      "implementation_phase": "phase_1_read_only_analysis",
+      "evidence_references": [
+        "DOC-002",
+        "DOC-003",
+        "DOC-004",
+        "POLICY-001"
+      ]
+    },
+    {
+      "step_id": "STEP-002",
+      "step_name": "Employee and manager verification",
+      "current_step_summary": "The identity analyst verifies employee and manager information, role, and employment status against the HR source.",
+      "recommended_posture": "ai_assist",
+      "why_ai_is_useful": "AI can organize externally produced verification results, identify discrepancies, and prepare an analyst checklist.",
+      "why_ai_should_be_limited": "Authoritative verification must use the HR source outside the model, and direct identifiers and emails are blocked from model context.",
+      "allowed_ai_actions": [
+        "Summarize approved verification-result metadata.",
+        "Identify apparent inconsistencies supplied by authoritative checks.",
+        "Prepare a checklist for identity analyst review."
+      ],
+      "blocked_ai_actions": [
+        "Declare final identity or employment verification.",
+        "Directly access or alter the HR source.",
+        "Process blocked identifiers or emails in model context.",
+        "Route or update the request."
+      ],
+      "required_human_reviewer": "Identity analyst",
+      "approval_required": false,
+      "audit_required": true,
+      "risk_level": "high",
+      "implementation_phase": "phase_1_read_only_analysis",
+      "evidence_references": [
+        "DOC-002",
+        "DOC-003",
+        "POLICY-001"
+      ]
+    },
+    {
+      "step_id": "STEP-003",
+      "step_name": "Additional-review triage",
+      "current_step_summary": "The identity analyst reviews the request for privileged, sensitive, custom, API, SSO, security-related, or dependent access.",
+      "recommended_posture": "ai_assist",
+      "why_ai_is_useful": "AI can prepare a triage checklist, flag uncertainty, and organize potential review triggers for the identity analyst.",
+      "why_ai_should_be_limited": "Decision-relevant fields are blocked from model context, and complete authoritative routing criteria are not documented. AI cannot clear a request from required review.",
+      "allowed_ai_actions": [
+        "Prepare a documented-trigger checklist.",
+        "Flag potential triggers or uncertainty from approved inputs.",
+        "Draft a triage summary for the identity analyst."
+      ],
+      "blocked_ai_actions": [
+        "Determine that required application-owner or security review can be skipped.",
+        "Make a final sensitive-system or privilege classification.",
+        "Use blocked request fields without approved handling.",
+        "Change routing or workflow status."
+      ],
+      "required_human_reviewer": "Identity analyst",
+      "approval_required": false,
+      "audit_required": true,
+      "risk_level": "high",
+      "implementation_phase": "phase_1_read_only_analysis",
+      "evidence_references": [
+        "DOC-001",
+        "DOC-002",
+        "DOC-003",
+        "POLICY-001"
+      ]
+    },
+    {
+      "step_id": "STEP-004",
+      "step_name": "Clarification routing",
+      "current_step_summary": "Deficient intake information is routed back to the manager for clarification.",
+      "recommended_posture": "ai_recommend_human_approve",
+      "why_ai_is_useful": "AI can draft a neutral deficiency list and clarification message from approved or redacted information.",
+      "why_ai_should_be_limited": "Sending the message, changing routing, or recording a returned status affects the workflow and requires identity analyst review, approval, and audit.",
+      "allowed_ai_actions": [
+        "Draft a clarification request.",
+        "Summarize human-confirmed missing, unclear, incomplete, or conflicting items.",
+        "Prepare proposed recipient and routing details for review."
+      ],
+      "blocked_ai_actions": [
+        "Send the clarification without human approval.",
+        "Route the request back autonomously.",
+        "Change ticket status.",
+        "Include restricted information unnecessarily."
+      ],
+      "required_human_reviewer": "Identity analyst",
+      "approval_required": true,
+      "audit_required": true,
+      "risk_level": "medium",
+      "implementation_phase": "phase_2_human_reviewed_recommendations",
+      "evidence_references": [
+        "DOC-002",
+        "DOC-003",
+        "DOC-004",
+        "POLICY-001"
+      ]
+    },
+    {
+      "step_id": "STEP-005",
+      "step_name": "Application-owner access decision",
+      "current_step_summary": "The application owner approves or rejects requested system access.",
+      "recommended_posture": "ai_recommend_human_approve",
+      "why_ai_is_useful": "AI can organize approved evidence, identify unresolved questions, and prepare a clearly labeled non-authoritative recommendation.",
+      "why_ai_should_be_limited": "Approval or rejection is an accountable human decision and cannot be inferred from model output or recorded without the application owner.",
+      "allowed_ai_actions": [
+        "Prepare a non-authoritative evidence summary.",
+        "Identify missing or inconsistent evidence.",
+        "Draft reviewer questions or a recommendation labeled as advisory."
+      ],
+      "blocked_ai_actions": [
+        "Approve or reject access.",
+        "Represent a recommendation as a decision.",
+        "Change approval status.",
+        "Bypass the application owner."
+      ],
+      "required_human_reviewer": "Application owner",
+      "approval_required": true,
+      "audit_required": true,
+      "risk_level": "high",
+      "implementation_phase": "phase_2_human_reviewed_recommendations",
+      "evidence_references": [
+        "DOC-001",
+        "DOC-002",
+        "DOC-003"
+      ]
+    },
+    {
+      "step_id": "STEP-006",
+      "step_name": "Additional security review",
+      "current_step_summary": "The security reviewer performs additional review for privileged, sensitive, custom, or security-related access.",
+      "recommended_posture": "ai_recommend_human_approve",
+      "why_ai_is_useful": "AI can organize potential risk indicators and prepare reviewer questions or an advisory summary.",
+      "why_ai_should_be_limited": "AI cannot waive security review, decide that security requirements are satisfied, or approve privileged or sensitive access.",
+      "allowed_ai_actions": [
+        "Prepare a non-authoritative security-review summary.",
+        "Flag potential concerns and missing evidence.",
+        "Draft questions for the security reviewer."
+      ],
+      "blocked_ai_actions": [
+        "Approve or reject the request.",
+        "Waive required security review.",
+        "Clear the request for provisioning.",
+        "Record a security-review outcome."
+      ],
+      "required_human_reviewer": "Security reviewer",
+      "approval_required": true,
+      "audit_required": true,
+      "risk_level": "high",
+      "implementation_phase": "phase_2_human_reviewed_recommendations",
+      "evidence_references": [
+        "DOC-001",
+        "DOC-002",
+        "DOC-003"
+      ]
+    },
+    {
+      "step_id": "STEP-007",
+      "step_name": "Access provisioning",
+      "current_step_summary": "Authorized IT personnel provision approved access in the identity provider and target systems.",
+      "recommended_posture": "approval_gated_action",
+      "why_ai_is_useful": "AI can prepare a read-only provisioning checklist and flag missing approval prerequisites.",
+      "why_ai_should_be_limited": "Provisioning changes system access, requires all applicable approvals to be recorded, and must never execute autonomously.",
+      "allowed_ai_actions": [
+        "Prepare a proposed provisioning checklist.",
+        "Summarize externally verified approval prerequisites.",
+        "Flag missing or conflicting prerequisites."
+      ],
+      "blocked_ai_actions": [
+        "Provision or modify access without explicit human approval.",
+        "Hold or use provisioning credentials autonomously.",
+        "Treat model-generated text as approval evidence.",
+        "Override reviewer decisions."
+      ],
+      "required_human_reviewer": "Authorized IT personnel",
+      "approval_required": true,
+      "audit_required": true,
+      "risk_level": "critical",
+      "implementation_phase": "phase_3_approval_gated_actions",
+      "evidence_references": [
+        "DOC-001",
+        "DOC-002",
+        "DOC-003"
+      ]
+    },
+    {
+      "step_id": "STEP-008",
+      "step_name": "Ticket and evidence update",
+      "current_step_summary": "The identity analyst updates ticket status, records provisioned systems, and attaches approval evidence.",
+      "recommended_posture": "approval_gated_action",
+      "why_ai_is_useful": "AI can draft structured status, provisioning, reviewer, and evidence metadata for human verification.",
+      "why_ai_should_be_limited": "Official records and evidence affect auditability and cannot be written, removed, or altered without explicit approval and an auditable history.",
+      "allowed_ai_actions": [
+        "Draft a proposed record update.",
+        "Identify required evidence fields.",
+        "Flag missing reviewer or provisioning metadata."
+      ],
+      "blocked_ai_actions": [
+        "Change ticket status without approval.",
+        "Attach, remove, or modify evidence autonomously.",
+        "Record unsupported provisioning details.",
+        "Overwrite prior audit history."
+      ],
+      "required_human_reviewer": "Identity analyst",
+      "approval_required": true,
+      "audit_required": true,
+      "risk_level": "high",
+      "implementation_phase": "phase_3_approval_gated_actions",
+      "evidence_references": [
+        "DOC-002",
+        "DOC-003",
+        "POLICY-001"
+      ]
+    },
+    {
+      "step_id": "STEP-009",
+      "step_name": "SLA escalation",
+      "current_step_summary": "Requests approaching the SLA deadline are escalated to the identity team lead.",
+      "recommended_posture": "ai_recommend_human_approve",
+      "why_ai_is_useful": "AI can use approved SLA metadata to prepare a candidate queue and draft escalation summary.",
+      "why_ai_should_be_limited": "The escalation threshold is not documented, and sending an escalation or changing workflow records requires human review and audit.",
+      "allowed_ai_actions": [
+        "Prepare a candidate escalation queue using an externally approved threshold.",
+        "Draft an escalation summary.",
+        "Flag missing SLA or unresolved-status information."
+      ],
+      "blocked_ai_actions": [
+        "Invent or infer the escalation threshold.",
+        "Send an escalation without human approval.",
+        "Change ticket status.",
+        "Escalate based on unsupported assumptions."
+      ],
+      "required_human_reviewer": "Identity analyst or identity team lead",
+      "approval_required": true,
+      "audit_required": true,
+      "risk_level": "medium",
+      "implementation_phase": "phase_2_human_reviewed_recommendations",
+      "evidence_references": [
+        "DOC-001",
+        "DOC-002",
+        "DOC-003",
+        "POLICY-001"
+      ]
+    },
+    {
+      "step_id": "STEP-010",
+      "step_name": "Weekly reporting and audit-evidence retention",
+      "current_step_summary": "A weekly access review report is prepared for the security lead and audit evidence is retained.",
+      "recommended_posture": "ai_assist",
+      "why_ai_is_useful": "AI can prepare a draft report, highlight exceptions, and summarize trends from approved, minimized, or aggregated data.",
+      "why_ai_should_be_limited": "Report contents and distribution controls are not fully documented, and retained audit evidence must not be modified by the model.",
+      "allowed_ai_actions": [
+        "Prepare a draft report from approved data.",
+        "Highlight exceptions and follow-up items.",
+        "Summarize aggregate workflow trends."
+      ],
+      "blocked_ai_actions": [
+        "Distribute the report without human review.",
+        "Include blocked or unnecessary sensitive data.",
+        "Modify retained audit evidence.",
+        "Present unsupported conclusions."
+      ],
+      "required_human_reviewer": "Security lead or authorized report preparer",
+      "approval_required": false,
+      "audit_required": true,
+      "risk_level": "medium",
+      "implementation_phase": "phase_2_human_reviewed_recommendations",
+      "evidence_references": [
+        "DOC-002",
+        "DOC-003",
+        "POLICY-001"
+      ]
+    }
+  ],
+  "tooling_blueprint": [
+    {
+      "capability_name": "workflow_document_search",
+      "capability_description": "Search approved workflow documents for evidence-backed process requirements; no direct source-system or workflow-record access is implied.",
+      "operation_type": "read",
+      "recommended_access": "ai_assist",
+      "risk_level": "low",
+      "approval_required": false,
+      "audit_required": true,
+      "mcp_server_candidate": "document_server",
+      "implementation_phase": "phase_1_read_only_analysis",
+      "evidence_references": [
+        "DOC-001",
+        "DOC-002",
+        "DOC-003",
+        "DOC-004"
+      ]
+    },
+    {
+      "capability_name": "policy_lookup",
+      "capability_description": "Retrieve documented policy and control requirements while treating empty control mappings as unresolved rather than permissive.",
+      "operation_type": "read",
+      "recommended_access": "ai_assist",
+      "risk_level": "low",
+      "approval_required": false,
+      "audit_required": true,
+      "mcp_server_candidate": "policy_server",
+      "implementation_phase": "phase_1_read_only_analysis",
+      "evidence_references": [
+        "DOC-003",
+        "POLICY-002"
+      ]
+    },
+    {
+      "capability_name": "data_classification",
+      "capability_description": "Identify model-context restrictions and required handling for workflow data elements before LLM invocation.",
+      "operation_type": "read",
+      "recommended_access": "ai_assist",
+      "risk_level": "medium",
+      "approval_required": false,
+      "audit_required": true,
+      "mcp_server_candidate": "policy_server",
+      "implementation_phase": "phase_1_read_only_analysis",
+      "evidence_references": [
+        "DOC-004",
+        "POLICY-001"
+      ]
+    },
+    {
+      "capability_name": "intake_validation",
+      "capability_description": "Check approved or redacted intake data against documented required fields and prepare apparent deficiency findings for identity analyst review.",
+      "operation_type": "read",
+      "recommended_access": "ai_assist",
+      "risk_level": "medium",
+      "approval_required": false,
+      "audit_required": true,
+      "mcp_server_candidate": "document_server",
+      "implementation_phase": "phase_1_read_only_analysis",
+      "evidence_references": [
+        "DOC-002",
+        "DOC-003",
+        "POLICY-001"
+      ]
+    },
+    {
+      "capability_name": "approval_request",
+      "capability_description": "Route a human-approved review package to the documented application owner or security reviewer; the capability must not make or record the approval decision autonomously.",
+      "operation_type": "write",
+      "recommended_access": "approval_gated_action",
+      "risk_level": "high",
+      "approval_required": true,
+      "audit_required": true,
+      "mcp_server_candidate": "approval_server",
+      "implementation_phase": "phase_3_approval_gated_actions",
+      "evidence_references": [
+        "DOC-001",
+        "DOC-002",
+        "DOC-003"
+      ]
+    },
+    {
+      "capability_name": "workflow_record_update",
+      "capability_description": "Apply a human-approved ticket, status, provisioning-record, or evidence update while preserving reviewer information and audit history.",
+      "operation_type": "write",
+      "recommended_access": "approval_gated_action",
+      "risk_level": "high",
+      "approval_required": true,
+      "audit_required": true,
+      "mcp_server_candidate": "project_mgmt_server",
+      "implementation_phase": "phase_3_approval_gated_actions",
+      "evidence_references": [
+        "DOC-002",
+        "DOC-003",
+        "POLICY-001"
+      ]
+    },
+    {
+      "capability_name": "system_access_provisioning",
+      "capability_description": "Execute a specifically approved provisioning action only after deterministic verification that all required human approvals and reviewer information are recorded.",
+      "operation_type": "write",
+      "recommended_access": "approval_gated_action",
+      "risk_level": "critical",
+      "approval_required": true,
+      "audit_required": true,
+      "mcp_server_candidate": "provisioning_server",
+      "implementation_phase": "phase_3_approval_gated_actions",
+      "evidence_references": [
+        "DOC-001",
+        "DOC-002",
+        "DOC-003"
+      ]
+    },
+    {
+      "capability_name": "controlled_notification",
+      "capability_description": "Send an approved clarification, escalation, or report-distribution message only after a human verifies the facts, recipient, and disclosure scope.",
+      "operation_type": "external_communication",
+      "recommended_access": "approval_gated_action",
+      "risk_level": "high",
+      "approval_required": true,
+      "audit_required": true,
+      "mcp_server_candidate": "notification_server",
+      "implementation_phase": "phase_3_approval_gated_actions",
+      "evidence_references": [
+        "DOC-002",
+        "DOC-003",
+        "POLICY-001"
+      ]
+    },
+    {
+      "capability_name": "report_generation",
+      "capability_description": "Prepare a draft weekly report from approved, minimized, or aggregated records; distribution remains outside this capability and requires controlled notification.",
+      "operation_type": "read",
+      "recommended_access": "ai_assist",
+      "risk_level": "medium",
+      "approval_required": false,
+      "audit_required": true,
+      "mcp_server_candidate": "reporting_server",
+      "implementation_phase": "phase_2_human_reviewed_recommendations",
+      "evidence_references": [
+        "DOC-002",
+        "DOC-003",
+        "POLICY-001"
+      ]
+    },
+    {
+      "capability_name": "audit_event_write",
+      "capability_description": "Record model actions, tool calls, approval references, write attempts, and outcomes in the audit trail; the model must not suppress or alter audit events.",
+      "operation_type": "write",
+      "recommended_access": "approval_gated_action",
+      "risk_level": "high",
+      "approval_required": false,
+      "audit_required": true,
+      "mcp_server_candidate": "audit_server",
+      "implementation_phase": "phase_1_read_only_analysis",
+      "evidence_references": [
+        "DOC-001",
+        "DOC-003",
+        "POLICY-002"
+      ]
+    }
+  ],
+  "human_approval_gates": [
+    {
+      "gate_name": "Intake verification and routing gate",
+      "trigger_condition": "The request is ready to be treated as intake-complete, routed for review, returned for clarification, or assigned a new status.",
+      "required_reviewer": "Identity analyst",
+      "decision_required": "Confirm required-field and HR-source verification results and select the appropriate next workflow path.",
+      "agent_allowed_before_approval": [
+        "Prepare a required-field checklist.",
+        "Summarize approved authoritative verification results.",
+        "Draft a deficiency list."
+      ],
+      "blocked_without_approval": [
+        "Declare final verification.",
+        "Route the request.",
+        "Send a clarification.",
+        "Change ticket status."
+      ],
+      "required_evidence": [
+        "Required-field results.",
+        "Authoritative HR-source verification results.",
+        "Human-confirmed discrepancy or deficiency list when applicable."
+      ],
+      "evidence_references": [
+        "DOC-002",
+        "DOC-003",
+        "POLICY-001"
+      ]
+    },
+    {
+      "gate_name": "Clarification communication gate",
+      "trigger_condition": "Missing, unclear, incomplete, or conflicting information requires communication to the manager.",
+      "required_reviewer": "Identity analyst",
+      "decision_required": "Approve the deficiency list, recipient, message content, routing action, and any associated status update.",
+      "agent_allowed_before_approval": [
+        "Draft a neutral clarification message.",
+        "Organize the human-confirmed deficiency list."
+      ],
+      "blocked_without_approval": [
+        "Send the clarification.",
+        "Route the request back.",
+        "Record a returned status."
+      ],
+      "required_evidence": [
+        "Human-confirmed deficiency list.",
+        "Confirmed recipient.",
+        "Proposed message and record changes."
+      ],
+      "evidence_references": [
+        "DOC-002",
+        "DOC-003"
+      ]
+    },
+    {
+      "gate_name": "Application-owner decision gate",
+      "trigger_condition": "The request reaches the application access decision stage.",
+      "required_reviewer": "Application owner",
+      "decision_required": "Approve or reject the requested system access.",
+      "agent_allowed_before_approval": [
+        "Prepare an advisory evidence summary.",
+        "Flag missing information.",
+        "Draft reviewer questions."
+      ],
+      "blocked_without_approval": [
+        "Approve or reject access.",
+        "Change approval status.",
+        "Represent a draft recommendation as a decision."
+      ],
+      "required_evidence": [
+        "Recorded application-owner decision.",
+        "Reviewer information.",
+        "Supporting evidence required by the documented workflow."
+      ],
+      "evidence_references": [
+        "DOC-001",
+        "DOC-002",
+        "DOC-003"
+      ]
+    },
+    {
+      "gate_name": "Security-review decision gate",
+      "trigger_condition": "A request is identified as privileged, sensitive, custom, or security-related and therefore requires additional review.",
+      "required_reviewer": "Security reviewer",
+      "decision_required": "Record the security-review outcome and determine whether security requirements are satisfied.",
+      "agent_allowed_before_approval": [
+        "Prepare an advisory security summary.",
+        "Flag potential concerns.",
+        "Draft reviewer questions."
+      ],
+      "blocked_without_approval": [
+        "Waive security review.",
+        "Approve privileged or sensitive access.",
+        "Clear the request for provisioning.",
+        "Record a security outcome."
+      ],
+      "required_evidence": [
+        "Recorded security-review outcome.",
+        "Security reviewer information.",
+        "Applicable supporting evidence."
+      ],
+      "evidence_references": [
+        "DOC-001",
+        "DOC-002",
+        "DOC-003"
+      ]
+    },
+    {
+      "gate_name": "Provisioning authorization gate",
+      "trigger_condition": "The request has reached provisioning and all applicable review outcomes are expected to be recorded.",
+      "required_reviewer": "Authorized IT personnel",
+      "decision_required": "Confirm recorded approvals and explicitly authorize the specific provisioning action.",
+      "agent_allowed_before_approval": [
+        "Prepare a read-only provisioning checklist.",
+        "Summarize externally verified approval prerequisites.",
+        "Flag missing reviewer information."
+      ],
+      "blocked_without_approval": [
+        "Provision access.",
+        "Modify permissions.",
+        "Invoke the identity provider or target systems."
+      ],
+      "required_evidence": [
+        "Recorded application-owner approval.",
+        "Recorded security-review outcome when applicable.",
+        "Reviewer information.",
+        "Specific human authorization to execute."
+      ],
+      "evidence_references": [
+        "DOC-001",
+        "DOC-002",
+        "DOC-003"
+      ]
+    },
+    {
+      "gate_name": "Ticket and evidence update gate",
+      "trigger_condition": "A ticket status, provisioned-system record, approval attachment, reviewer field, or other authoritative workflow record is proposed for change.",
+      "required_reviewer": "Identity analyst",
+      "decision_required": "Validate the proposed update and approve the exact record changes.",
+      "agent_allowed_before_approval": [
+        "Draft structured record changes.",
+        "Identify required evidence metadata.",
+        "Flag missing or inconsistent fields."
+      ],
+      "blocked_without_approval": [
+        "Change ticket status.",
+        "Attach or modify evidence.",
+        "Record provisioned systems.",
+        "Alter reviewer information."
+      ],
+      "required_evidence": [
+        "Human-verified approval evidence.",
+        "Reviewer information.",
+        "Provisioning record when applicable.",
+        "Exact proposed changes."
+      ],
+      "evidence_references": [
+        "DOC-002",
+        "DOC-003",
+        "POLICY-001"
+      ]
+    },
+    {
+      "gate_name": "SLA escalation gate",
+      "trigger_condition": "A request is identified as potentially approaching the SLA deadline under an externally approved threshold.",
+      "required_reviewer": "Identity analyst or identity team lead",
+      "decision_required": "Confirm that escalation is warranted and approve the recipient, message, and any related record change.",
+      "agent_allowed_before_approval": [
+        "Prepare a candidate queue from approved SLA metadata.",
+        "Draft an escalation summary."
+      ],
+      "blocked_without_approval": [
+        "Send an escalation.",
+        "Change workflow records.",
+        "Apply an undefined escalation threshold."
+      ],
+      "required_evidence": [
+        "Applicable SLA due date.",
+        "Approved escalation threshold.",
+        "Current unresolved status.",
+        "Confirmed recipient."
+      ],
+      "evidence_references": [
+        "DOC-002",
+        "DOC-003",
+        "POLICY-001"
+      ]
+    },
+    {
+      "gate_name": "Weekly report distribution gate",
+      "trigger_condition": "A draft weekly access review report is ready for distribution or retained audit evidence would be affected.",
+      "required_reviewer": "Security lead or authorized report preparer",
+      "decision_required": "Approve report contents, recipient scope, disclosure level, and distribution.",
+      "agent_allowed_before_approval": [
+        "Prepare a draft report from approved data.",
+        "Highlight exceptions and trends.",
+        "Identify records requiring follow-up."
+      ],
+      "blocked_without_approval": [
+        "Distribute the report.",
+        "Expand the recipient scope.",
+        "Modify retained audit evidence."
+      ],
+      "required_evidence": [
+        "Reviewed report contents.",
+        "Approved recipient scope.",
+        "Confirmation that required audit evidence is retained."
+      ],
+      "evidence_references": [
+        "DOC-002",
+        "DOC-003",
+        "POLICY-001"
+      ]
+    }
+  ],
+  "risk_control_summary": [
+    {
+      "risk_id": "RISK-001",
+      "risk_description": "PII or confidential access-request data could be exposed to the model despite current context restrictions.",
+      "risk_level": "high",
+      "recommended_controls": [
+        "Enforce a field-level allowlist and pre-invocation redaction.",
+        "Reject payloads containing blocked fields.",
+        "Keep original requests, HR data, approval evidence, and provisioning records outside model context.",
+        "Restrict logs to approved metadata."
+      ],
+      "owner_role": "Identity team",
+      "evidence_references": [
+        "DOC-004",
+        "POLICY-001"
+      ]
+    },
+    {
+      "risk_id": "RISK-002",
+      "risk_description": "An AI recommendation could be mistaken for an application-owner approval or security-review decision.",
+      "risk_level": "high",
+      "recommended_controls": [
+        "Label all recommendations as non-authoritative.",
+        "Require the named human reviewer to record the decision.",
+        "Prevent model output from directly changing approval status."
+      ],
+      "owner_role": "Application owner and security reviewer",
+      "evidence_references": [
+        "DOC-001",
+        "DOC-002",
+        "DOC-003"
+      ]
+    },
+    {
+      "risk_id": "RISK-003",
+      "risk_description": "Access could be provisioned before all applicable approvals and reviewer information are recorded.",
+      "risk_level": "critical",
+      "recommended_controls": [
+        "Use a deterministic pre-provisioning gate outside the model.",
+        "Require explicit authorization from authorized IT personnel.",
+        "Keep provisioning execution approval-gated and fully audited.",
+        "Reject model-generated text as approval evidence."
+      ],
+      "owner_role": "Authorized IT personnel",
+      "evidence_references": [
+        "DOC-001",
+        "DOC-002",
+        "DOC-003"
+      ]
+    },
+    {
+      "risk_id": "RISK-004",
+      "risk_description": "Incorrect triage of privileged, sensitive, custom, API, SSO, dependent, or security-related access could bypass mandatory review.",
+      "risk_level": "high",
+      "recommended_controls": [
+        "Define authoritative routing criteria outside the model.",
+        "Use deterministic routing rules and maintained reference data.",
+        "Allow AI to flag possible triggers but never to clear required review."
+      ],
+      "owner_role": "Identity team and security reviewer",
+      "evidence_references": [
+        "DOC-001",
+        "DOC-002",
+        "DOC-003",
+        "POLICY-001"
+      ]
+    },
+    {
+      "risk_id": "RISK-005",
+      "risk_description": "Ticket or evidence updates could omit, overwrite, or misassociate approvals, reviewer information, or provisioning records.",
+      "risk_level": "high",
+      "recommended_controls": [
+        "Require explicit human approval for each proposed record write.",
+        "Validate required evidence references before execution.",
+        "Preserve prior values and an auditable history.",
+        "Audit every write attempt and outcome."
+      ],
+      "owner_role": "Identity analyst",
+      "evidence_references": [
+        "DOC-002",
+        "DOC-003",
+        "POLICY-001"
+      ]
+    },
+    {
+      "risk_id": "RISK-006",
+      "risk_description": "Clarifications, escalations, or reports could be inaccurate, misdirected, or disclose restricted information.",
+      "risk_level": "high",
+      "recommended_controls": [
+        "Generate drafts only from approved or redacted fields.",
+        "Require human verification of facts, recipient, and disclosure scope.",
+        "Use approval-gated and audited notification execution."
+      ],
+      "owner_role": "Identity analyst or security lead",
+      "evidence_references": [
+        "DOC-002",
+        "DOC-003",
+        "POLICY-001"
+      ]
+    },
+    {
+      "risk_id": "RISK-007",
+      "risk_description": "SLA escalation could be inconsistent because no threshold defines when a request is approaching the deadline.",
+      "risk_level": "medium",
+      "recommended_controls": [
+        "Define and approve the escalation threshold outside the model.",
+        "Generate candidate queues only after the threshold is formalized.",
+        "Require human approval before escalation or status change."
+      ],
+      "owner_role": "Identity team lead",
+      "evidence_references": [
+        "DOC-001",
+        "DOC-002",
+        "DOC-003"
+      ]
+    },
+    {
+      "risk_id": "RISK-008",
+      "risk_description": "Empty required-control mappings could be misinterpreted as permission for uncontrolled automation.",
+      "risk_level": "high",
+      "recommended_controls": [
+        "Treat empty mappings as unresolved governance gaps.",
+        "Require policy-owner resolution before production governed actions.",
+        "Fail closed when applicable controls cannot be determined."
+      ],
+      "owner_role": "Policy owner",
+      "evidence_references": [
+        "DOC-003",
+        "POLICY-002"
+      ]
+    }
+  ],
+  "implementation_roadmap": [
+    {
+      "phase": "phase_1_read_only_analysis",
+      "title": "Read-only, metadata-limited pilot",
+      "objective": "Validate useful LLM assistance without workflow writes, decisions, provisioning, or communications.",
+      "recommended_actions": [
+        "Implement governed workflow-document search, policy lookup, data classification, and intake-validation assistance using approved inputs.",
+        "Enforce field-level model-context allowlisting and redaction before invocation.",
+        "Log model activity and blocked write attempts.",
+        "Evaluate intake-checklist quality, discrepancy summaries, and SLA backlog analysis under human review."
+      ],
+      "exit_criteria": [
+        "Blocked fields are consistently excluded from model context.",
+        "The model has no workflow, provisioning, notification, or record-update authority.",
+        "Identity analysts confirm that outputs are traceable and useful.",
+        "Quality and data-exposure acceptance thresholds are defined and met."
+      ],
+      "dependencies": [
+        "Approved model-context boundary and logging rules.",
+        "Confirmed field mappings for privilege indicators and free-text notes.",
+        "Representative human-reviewed test cases."
+      ],
+      "evidence_references": [
+        "DOC-001",
+        "DOC-002",
+        "DOC-003",
+        "DOC-004",
+        "POLICY-001",
+        "POLICY-002"
+      ]
+    },
+    {
+      "phase": "phase_2_human_reviewed_recommendations",
+      "title": "Human-reviewed recommendations and drafts",
+      "objective": "Support reviewers with advisory summaries, clarification drafts, security-review packages, escalation candidates, and draft reports while keeping decisions and communications human-controlled.",
+      "recommended_actions": [
+        "Clearly label every recommendation as non-authoritative.",
+        "Configure reviewer-specific queues for identity analysts, application owners, security reviewers, and report reviewers.",
+        "Require human review of clarification, escalation, and report content before controlled execution.",
+        "Track reviewer acceptance, correction, rejection, and missed-trigger rates."
+      ],
+      "exit_criteria": [
+        "Application and security decisions remain exclusively human-recorded.",
+        "No communication or workflow update occurs from a recommendation alone.",
+        "Reviewers can trace each material statement to approved evidence.",
+        "Correction and missed-trigger rates meet defined acceptance thresholds."
+      ],
+      "dependencies": [
+        "Reviewer-role validation rules.",
+        "Authoritative mandatory-review criteria.",
+        "Defined SLA escalation threshold.",
+        "Approved report content and recipient scope."
+      ],
+      "evidence_references": [
+        "DOC-001",
+        "DOC-002",
+        "DOC-003",
+        "POLICY-001"
+      ]
+    },
+    {
+      "phase": "phase_3_approval_gated_actions",
+      "title": "Approval-gated governed actions",
+      "objective": "Permit controlled execution only after explicit human approval, deterministic policy checks, and audit logging.",
+      "recommended_actions": [
+        "Require explicit human authorization for approval-request routing, provisioning, workflow-record updates, and controlled notifications.",
+        "Implement deterministic verification of recorded approvals before provisioning.",
+        "Validate required evidence and preserve prior record history before ticket updates.",
+        "Audit every attempted, approved, denied, successful, and failed governed action."
+      ],
+      "exit_criteria": [
+        "No governed write or communication can execute without its required approval.",
+        "Provisioning fails closed when required approvals or reviewer information are absent.",
+        "Record updates preserve approval evidence and audit history.",
+        "Audit records are complete and reviewable."
+      ],
+      "dependencies": [
+        "Resolution of empty required-control mappings.",
+        "Documented approval and ticket-state semantics.",
+        "Validated reviewer authorization and delegation rules.",
+        "Defined failure, correction, and exception procedures."
+      ],
+      "evidence_references": [
+        "DOC-001",
+        "DOC-002",
+        "DOC-003",
+        "POLICY-002"
+      ]
+    },
+    {
+      "phase": "phase_4_limited_automation",
+      "title": "Limited automation restricted to non-decision, read-only processing",
+      "objective": "Consider only narrowly scoped read-only automation, such as approved metadata queue preparation; autonomous writes, decisions, provisioning, communications, and report distribution remain excluded.",
+      "recommended_actions": [
+        "Limit any scheduled processing to approved read-only analytics and candidate-queue preparation.",
+        "Continue human approval for all workflow-impacting actions.",
+        "Monitor data-filter failures, false alerts, missed alerts, and reviewer correction rates.",
+        "Disable the capability if monitoring or evidence requirements are not met."
+      ],
+      "exit_criteria": [
+        "Automation scope is documented as read-only and non-decisional.",
+        "No autonomous write or external communication path exists.",
+        "Monitoring confirms acceptable quality and data handling.",
+        "Rollback and exception handling are tested."
+      ],
+      "dependencies": [
+        "Successful completion of earlier phases.",
+        "Production monitoring and rollback procedures.",
+        "Formal acceptance thresholds.",
+        "Continued enforcement of model-context restrictions."
+      ],
+      "evidence_references": [
+        "DOC-001",
+        "DOC-002",
+        "DOC-003",
+        "POLICY-001",
+        "POLICY-002"
+      ]
+    }
+  ],
+  "limitations_and_missing_information": [
+    "No threshold or timing rule defines when a request is approaching its SLA deadline. [DOC-001, DOC-002, DOC-003]",
+    "No authoritative sensitive-system inventory or complete criteria for privileged, custom, API, SSO, dependency, elevated, or security-related routing are provided. [DOC-001, DOC-002, DOC-003]",
+    "The packet does not define how authorized application owners, security reviewers, IT personnel, or delegations are validated. [DOC-002, DOC-003]",
+    "Approval, rejection, and ticket-status semantics and allowed transitions are not documented. [DOC-002, DOC-003]",
+    "Evidence-retention duration, storage location, and disposal requirements are not provided. [DOC-003]",
+    "The required-control lookup returned empty mappings, and the reason is unknown. [POLICY-002]",
+    "The approved model deployment boundary, retention behavior, and detailed logging rules are not provided. [POLICY-001, POLICY-002]",
+    "The feasibility of redacting blocked fields while retaining useful context has not been established. [DOC-004, POLICY-001]",
+    "The mapping between contains_privileged_access and privileged_access_indicator is unconfirmed. [DOC-004, POLICY-001]",
+    "The mapping between notes and free_text_notes is unconfirmed. [DOC-004, POLICY-001]",
+    "No emergency or exception process is described. [DOC-001, DOC-002, DOC-003]",
+    "Report contents, approved distribution scope, and handling requirements beyond preparation for the security lead are unspecified. [DOC-002, DOC-003]",
+    "Failure handling, correction procedures, monitoring ownership, and acceptance thresholds for AI output are undefined. [DOC-001, DOC-003]"
+  ],
+  "advisor_notes": {
+    "key_assumptions": [
+      "Sample records are illustrative and do not establish complete production routing or control behavior. [DOC-004]",
+      "The HR source, identity provider, target systems, and ticket mechanism remain generic; no vendor or integration method is assumed. [DOC-001, DOC-002]",
+      "AI receives only fields approved for model context, and authoritative verification data remains outside the model unless separately approved. [POLICY-001]",
+      "Human approval is captured in the governing workflow before any governed action executes. [DOC-001, DOC-003]",
+      "Empty required-control mappings are treated as unresolved rather than permissive. [DOC-003, POLICY-002]"
+    ],
+    "deterministic_baseline_disagreements": [
+      "The baseline assigned generic reviewers such as workflow owner or workflow analyst to several steps. This proposal uses the documented actors: manager, identity analyst, application owner, security reviewer, authorized IT personnel, identity team lead, and security lead or authorized report preparer. [DOC-001, DOC-002]",
+      "The baseline treated approval_request as AI-recommend/human-approve even though routing an approval request is a write. This proposal makes the tool invocation approval-gated while preserving the final decision for the human reviewer. [DOC-002, DOC-003]",
+      "The baseline treated controlled_notification as AI-recommend/human-approve. This proposal distinguishes drafting from sending and makes the external-communication capability itself approval-gated and audited. [DOC-002, DOC-003]",
+      "The baseline phase-four language contemplated parallel monitoring before autonomous execution. This proposal excludes autonomous writes entirely and limits phase four to read-only, non-decision processing. [DOC-001, DOC-003]",
+      "The baseline assigned medium risk to HR verification and additional-review triage. This proposal assigns high risk because blocked PII or confidential fields and incomplete routing criteria materially constrain those steps. [DOC-002, DOC-003, POLICY-001]"
+    ],
+    "recommended_human_review_focus": [
+      "Confirm that model-context filtering excludes all blocked PII and confidential fields. [DOC-004, POLICY-001]",
+      "Formalize mandatory-review routing criteria and ensure AI cannot waive review. [DOC-001, DOC-002, DOC-003]",
+      "Verify that application-owner and security decisions cannot be inferred from or changed by model output. [DOC-001, DOC-002, DOC-003]",
+      "Validate the deterministic pre-provisioning approval gate and reviewer authorization checks. [DOC-001, DOC-003]",
+      "Confirm that record writes preserve evidence, reviewer information, and audit history. [DOC-002, DOC-003]",
+      "Resolve empty required-control mappings before production governed actions. [DOC-003, POLICY-002]",
+      "Define the SLA threshold, report distribution scope, retention requirements, and AI-output acceptance criteria. [DOC-002, DOC-003]"
+    ]
+  },
+  "metadata": {
+    "workflow_id": "access_request_review",
+    "run_id": "run_6ebf6bbdaee749e8be2cf4e24ecf5777",
+    "created_at": "2026-07-28T21:16:46.953699+00:00",
+    "analysis_mode": "llm_blueprint_advisor_proposal",
+    "generation_mode": "llm_assisted_proposal_only",
+    "schema_name": "llm_blueprint_proposal",
+    "allowed_tool_capabilities": [
+      "workflow_document_search",
+      "policy_lookup",
+      "data_classification",
+      "intake_validation",
+      "approval_request",
+      "workflow_record_update",
+      "system_access_provisioning",
+      "controlled_notification",
+      "report_generation",
+      "audit_event_write"
+    ],
+    "allowed_mcp_server_candidates": [
+      "document_server",
+      "policy_server",
+      "approval_server",
+      "project_mgmt_server",
+      "provisioning_server",
+      "notification_server",
+      "reporting_server",
+      "audit_server"
+    ],
+    "evidence_catalog": [
+      {
+        "evidence_id": "DOC-001",
+        "evidence_type": "workflow_document",
+        "workflow_id": "access_request_review",
+        "source_id": "process_narrative",
+        "source_title": "Process Narrative",
+        "query": null,
+        "summary": "# Process Narrative The access request review workflow manages employee requests for application, data, and system access. Managers submit access requests for employees who need new or changed permissions. The identity team reviews required intake fields, verifies employee information against the HR system, and checks whether the request involves privileged access, sensitive systems, custom roles, APIs, or security-related permissions. Requests with missing, unclear, or conflicting informatio..."
+      },
+      {
+        "evidence_id": "DOC-002",
+        "evidence_type": "workflow_document",
+        "workflow_id": "access_request_review",
+        "source_id": "current_workflow_steps",
+        "source_title": "Current Workflow Steps",
+        "query": null,
+        "summary": "# Current Workflow Steps 1. Manager submits an access request for an employee, including employee identifier, requested system, access level, business justification, and required fields. 2. Identity analyst verifies employee identifier, employee email, manager email, role, and employment status against the HR source system. 3. Identity analyst reviews the request for privileged access, sensitive systems, custom permissions, APIs, SSO, security requirements, or system access dependencies. 4. M..."
+      },
+      {
+        "evidence_id": "DOC-003",
+        "evidence_type": "workflow_document",
+        "workflow_id": "access_request_review",
+        "source_id": "policy_and_controls",
+        "source_title": "Policy and Controls",
+        "query": null,
+        "summary": "# Policy and Controls - Access requests require a valid employee identifier, manager, requested system, access level, and business justification. - Requests with missing, unclear, incomplete, or conflicting intake information must be routed back for clarification. - Privileged access requires application owner approval and security review. - Access to sensitive systems requires additional review before provisioning. - Provisioning actions must not occur until required approvals are recorded. ..."
+      },
+      {
+        "evidence_id": "DOC-004",
+        "evidence_type": "workflow_document",
+        "workflow_id": "access_request_review",
+        "source_id": "sample_records",
+        "source_title": "Sample Records",
+        "query": null,
+        "summary": "request_id,employee_identifier,employee_email,manager_email,requested_system,access_level,business_justification,approval_status,ticket_status,sla_due_date,contains_privileged_access,notes AR-1001,E-48191,alex.rivera@example.com,manager.one@example.com,Customer Data Warehouse,read_only,Needs access for monthly reporting,pending_review,intake_complete,2026-08-15,false,Manager provided standard reporting justification AR-1002,E-57203,jordan.lee@example.com,manager.two@example.com,Production Adm..."
+      },
+      {
+        "evidence_id": "POLICY-001",
+        "evidence_type": "data_classification_batch",
+        "workflow_id": "access_request_review",
+        "source_id": "policy_server.classify_data_elements",
+        "source_title": "Batch data classification results",
+        "query": null,
+        "summary": "Policy-server classifications for workflow data elements."
+      },
+      {
+        "evidence_id": "POLICY-002",
+        "evidence_type": "required_controls_batch",
+        "workflow_id": "access_request_review",
+        "source_id": "policy_server.get_required_controls_for_actions",
+        "source_title": "Batch required-control lookup results",
+        "query": null,
+        "summary": "Policy-server required-control lookup results for governed workflow actions."
+      }
+    ],
+    "workflow_step_count": 10,
+    "governance_note": "This is an LLM-generated blueprint proposal. It is not the final Agentic Readiness Blueprint until deterministic safety validation and reconciliation are applied."
+  }
+}
