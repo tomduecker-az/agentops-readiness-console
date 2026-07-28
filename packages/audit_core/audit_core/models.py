@@ -16,6 +16,8 @@ class AuditEventType(str, Enum):
     write_action_executed = "write_action_executed"
     write_action_failed = "write_action_failed"
     policy_violation = "policy_violation"
+    blueprint_generation_started = "blueprint_generation_started"
+    blueprint_generation_completed = "blueprint_generation_completed"
 
 
 class AuditEvent(BaseModel):
