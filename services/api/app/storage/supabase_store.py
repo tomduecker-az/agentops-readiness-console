@@ -1,15 +1,38 @@
 from __future__ import annotations
-
 from datetime import UTC, datetime
 from typing import Any
 from uuid import uuid4
-
 import httpx
 from audit_core.models import AuditEvent, AuditEventType
-
 from app.core.config import get_settings
 from app.schemas.artifacts import AnalysisArtifact, ArtifactStatus, ArtifactType
+import atexit
 
+_HTTP_CLIENT: httpx.Client | None = None
+
+
+def _get_http_client() -> httpx.Client:
+    global _HTTP_CLIENT
+
+    if _HTTP_CLIENT is None:
+        _HTTP_CLIENT = httpx.Client(
+            timeout=httpx.Timeout(30.0, connect=10.0),
+            limits=httpx.Limits(
+                max_connections=10,
+                max_keepalive_connections=5,
+            ),
+        )
+
+    return _HTTP_CLIENT
+
+
+@atexit.register
+def _close_http_client() -> None:
+    global _HTTP_CLIENT
+
+    if _HTTP_CLIENT is not None:
+        _HTTP_CLIENT.close()
+        _HTTP_CLIENT = None
 
 class SupabaseStorageError(RuntimeError):
     pass
@@ -283,14 +306,15 @@ def _request(
         headers["Authorization"] = f"Bearer {key}"
 
     try:
-        with httpx.Client(timeout=30.0) as client:
-            response = client.request(
-                method=method,
-                url=url,
-                params=query,
-                json=json_body,
-                headers=headers,
-            )
+        client = _get_http_client()
+
+        response = client.request(
+            method=method,
+            url=url,
+            params=query,
+            json=json_body,
+            headers=headers,
+        )
 
         response.raise_for_status()
 

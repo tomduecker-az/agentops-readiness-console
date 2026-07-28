@@ -36,6 +36,7 @@ Rules:
 - Use workflow-neutral language.
 - Do not borrow language from payment reconciliation or customer onboarding unless it appears in the retrieved context.
 - Produce practical recommendations that a business analyst, technology leader, or AI governance reviewer could use.
+- Reference evidence IDs from the provided evidence_catalog whenever making workflow, risk, control, HITL, or missing-information claims.
 """.strip()
 
 
@@ -61,6 +62,7 @@ def run_mcp_llm_shadow_analysis(
         run_id=run_id,
         workflow_id=workflow_id,
     )
+    evidence_catalog_index = _build_evidence_catalog_index(mcp_context)
 
     user_prompt = "\n\n".join(
         [
@@ -68,6 +70,7 @@ def run_mcp_llm_shadow_analysis(
             "Return only the structured JSON object requested by the schema.",
             "Focus on grounded, practical workflow-readiness analysis.",
             "Use the MCP-retrieved context below as the only source of workflow and policy evidence.",
+            "Use evidence_id values from evidence_catalog to ground important observations, risks, controls, HITL gates, implementation recommendations, and missing-information claims.",
             json.dumps(mcp_context, indent=2, default=str),
         ]
     )
@@ -90,6 +93,7 @@ def run_mcp_llm_shadow_analysis(
         "source": "bounded_mcp_tool_retrieved_context",
         "tool_call_count": len(tool_trace),
         "tool_trace": tool_trace,
+        "evidence_catalog_index": evidence_catalog_index,
         "governance_note": (
             "This artifact is advisory bounded MCP shadow analysis only. "
             "The application retrieved workflow and policy context through controlled MCP tools. "
@@ -126,3 +130,25 @@ def run_mcp_llm_shadow_analysis(
         "workflow_id": workflow_id,
         "analysis": analysis,
     }
+
+def _build_evidence_catalog_index(
+        mcp_context: dict[str, Any],
+    ) -> list[dict[str, Any]]:
+        evidence_catalog = mcp_context.get("evidence_catalog", [])
+
+        index = []
+
+        for item in evidence_catalog:
+            index.append(
+                {
+                    "evidence_id": item.get("evidence_id"),
+                    "evidence_type": item.get("evidence_type"),
+                    "workflow_id": item.get("workflow_id"),
+                    "source_id": item.get("source_id"),
+                    "source_title": item.get("source_title"),
+                    "query": item.get("query"),
+                    "summary": item.get("summary"),
+                }
+            )
+
+        return index

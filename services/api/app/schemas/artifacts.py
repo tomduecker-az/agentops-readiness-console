@@ -14,6 +14,7 @@ class ArtifactType(str, Enum):
     llm_workflow_analysis = "llm_workflow_analysis"
     llm_shadow_evaluation = "llm_shadow_evaluation"
     mcp_operational_evaluation = "mcp_operational_evaluation"
+    evidence_grounding_evaluation = "evidence_grounding_evaluation"
 
 
 class ArtifactStatus(str, Enum):
