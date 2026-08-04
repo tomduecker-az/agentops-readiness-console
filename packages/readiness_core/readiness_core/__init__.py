@@ -16,6 +16,9 @@ from readiness_core.models import (
     StepAutonomyRecommendation,
     ToolCapabilityRecommendation,
 )
+from readiness_core.diagnostic_markdown_exporter import (
+    render_workflow_ai_opportunity_diagnostic_markdown,
+)
 from readiness_core.blueprint_builder import build_agentic_readiness_blueprint
 from readiness_core.blueprint_validator import (
     BlueprintValidationIssue,
@@ -110,4 +113,5 @@ __all__ = [
     "DiagnosticQualityIssue",
     "evaluate_diagnostic_quality",
     "quality_passed",
+    "render_workflow_ai_opportunity_diagnostic_markdown",
 ]
