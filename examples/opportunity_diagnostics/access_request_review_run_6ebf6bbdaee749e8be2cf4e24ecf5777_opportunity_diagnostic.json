@@ -1,0 +1,1981 @@
+{
+  "diagnostic_version": "1.0.0",
+  "workflow_id": "access_request_review",
+  "run_id": "run_6ebf6bbdaee749e8be2cf4e24ecf5777",
+  "created_at": "2026-07-28T22:09:59.409276+00:00",
+  "executive_summary": {
+    "headline": "The best first AI investment is exception preparation for identity analysts, not access decisions or provisioning.",
+    "recommendation": "Pilot a read-only intake exception packet assistant that uses externally generated validation results and approved metadata to prepare deficiency checklists, discrepancy summaries, and reviewer questions. Keep raw restricted request fields, routing decisions, communications, workflow updates, approvals, and provisioning outside the model.",
+    "current_automation_ceiling": "read_only_ai_assist",
+    "recommended_first_pilot": "Read-only intake exception packet preparation for identity analyst review, using deterministic required-field and HR verification results rather than raw restricted request content.",
+    "do_not_start_with": [
+      "AI approval or rejection of access requests",
+      "Autonomous privileged or sensitive-access triage",
+      "Autonomous provisioning or permission changes",
+      "Autonomous clarification, escalation, or report distribution",
+      "Autonomous ticket-status or approval-evidence updates"
+    ],
+    "top_blockers": [
+      "Most fields needed to understand the requested access are currently blocked from model context.",
+      "Mandatory-review criteria and the sensitive-system inventory are incomplete, so AI cannot safely determine when additional review is unnecessary.",
+      "The required-control lookup returned empty mappings and therefore provides no production authorization for governed actions.",
+      "Reviewer authority, delegation rules, approval semantics, and allowed ticket-state transitions are not defined.",
+      "No workflow performance baseline or AI acceptance thresholds have been established."
+    ],
+    "next_30_days": [
+      "Define the exact model-context allowlist and test redaction against representative records.",
+      "Create deterministic required-field and HR-verification result flags that can be passed to the model without exposing blocked source values.",
+      "Baseline identity analyst handling time, clarification cycles, deficiency types, and correction rates.",
+      "Assemble a human-reviewed evaluation set covering standard, privileged, and clarification cases.",
+      "Resolve ownership and remediation for the empty required-control mappings.",
+      "Document mandatory-review triggers, reviewer authority, and the allowed workflow states before considering recommendation or action capabilities."
+    ],
+    "executive_takeaway": "The workflow is structured enough for useful AI assistance but not for agentic decision-making. The immediate value lies in reducing the repeated work of organizing exceptions and evidence. Higher autonomy will be unlocked primarily by codifying routing, authority, state, and data rules\u2014not by giving the model more tools."
+  },
+  "automation_ceiling": {
+    "current_ceiling": "read_only_ai_assist",
+    "ceiling_summary": "AI may search approved workflow documents and prepare read-only checklists, summaries, and candidate work queues from approved, minimized inputs. It should not determine final routing, communicate externally, update records, approve access, or provision permissions.",
+    "why_this_is_the_ceiling": [
+      "Employee and manager identifiers, requested systems, access levels, privilege indicators, business justifications, approval evidence, and provisioning records are currently blocked from model context.",
+      "The complete criteria for privileged, sensitive, custom, API, SSO, dependency, elevated, or security-related routing are not documented.",
+      "The required-control service returned empty mappings for governed actions.",
+      "Approval authority, delegation, state-transition, retention, and exception rules remain incomplete.",
+      "Policy requires explicit human approval before write actions and recorded approvals before provisioning."
+    ],
+    "what_would_raise_the_ceiling": [
+      "A validated field-level allowlist, redaction process, and approved model-processing boundary",
+      "Authoritative deterministic routing criteria and maintained reference data",
+      "Resolved required-control mappings with fail-closed behavior",
+      "Documented reviewer authority and delegation rules",
+      "Defined approval and ticket-state semantics",
+      "Human-reviewed quality thresholds and production monitoring"
+    ],
+    "what_prevents_higher_autonomy": [
+      "The model currently cannot see much of the information needed for useful access analysis.",
+      "Allowing the model to infer missing routing rules could bypass mandatory review.",
+      "A model recommendation could be mistaken for an accountable human decision.",
+      "Provisioning and record writes could cause unauthorized access or damage audit evidence.",
+      "The organization has not defined measurable conditions under which AI performance would justify expansion."
+    ],
+    "evidence_references": [
+      "DOC-001",
+      "DOC-002",
+      "DOC-003",
+      "DOC-004",
+      "POLICY-001",
+      "POLICY-002"
+    ],
+    "confidence": "high"
+  },
+  "key_findings": [
+    {
+      "finding_id": "FIND-001",
+      "title": "The data boundary conflicts with the obvious AI use case",
+      "finding": "The fields most useful for evaluating access\u2014requested system, access level, privilege indicator, business justification, identifiers, approval evidence, and provisioning records\u2014are currently blocked from model context. Raw-request triage is therefore not a safe or technically ready first pilot.",
+      "why_it_matters": "A pilot that ignores this restriction will either expose prohibited data or produce weak recommendations from incomplete context. The initial design must use external validation results and minimized metadata rather than raw request analysis.",
+      "severity": "critical",
+      "evidence_references": [
+        "DOC-002",
+        "DOC-004",
+        "POLICY-001"
+      ],
+      "confidence": "high"
+    },
+    {
+      "finding_id": "FIND-002",
+      "title": "Exception preparation is ready before decision automation",
+      "finding": "The workflow repeatedly checks completeness, organizes discrepancies, identifies review triggers, prepares reviewer evidence, and routes exceptions. These synthesis tasks can be separated from the accountable decisions and write actions that follow.",
+      "why_it_matters": "The organization can pursue analyst productivity and consistency without asking AI to approve access, waive security review, or change workflow state.",
+      "severity": "high",
+      "evidence_references": [
+        "DOC-001",
+        "DOC-002",
+        "DOC-003"
+      ],
+      "confidence": "high"
+    },
+    {
+      "finding_id": "FIND-003",
+      "title": "Incomplete routing rules are a larger blocker than model capability",
+      "finding": "The workflow names privileged, sensitive, custom, API, SSO, dependent, elevated, and security-related conditions, but it does not provide a complete sensitive-system inventory or authoritative detection criteria.",
+      "why_it_matters": "Without deterministic rules, AI cannot safely conclude that a request does not need additional review. More capable reasoning would not solve the missing operating definition.",
+      "severity": "critical",
+      "evidence_references": [
+        "DOC-001",
+        "DOC-002",
+        "DOC-003"
+      ],
+      "confidence": "high"
+    },
+    {
+      "finding_id": "FIND-004",
+      "title": "Empty control mappings are an unresolved dependency, not permission",
+      "finding": "The required-control lookup returned empty mappings even though the workflow policy explicitly requires approvals, evidence retention, review, and human authorization for writes.",
+      "why_it_matters": "Production teams could incorrectly treat the empty response as a green light. Governed actions must fail closed until the policy owner confirms the applicable controls.",
+      "severity": "high",
+      "evidence_references": [
+        "DOC-003",
+        "POLICY-002"
+      ],
+      "confidence": "high"
+    },
+    {
+      "finding_id": "FIND-005",
+      "title": "Post-approval administration is not low risk",
+      "finding": "Provisioning, ticket updates, evidence attachment, escalations, and report distribution occur after review but still change access, authoritative records, or disclosure scope.",
+      "why_it_matters": "The organization should not assume that downstream administrative work is safe for autonomous execution. Errors could create unauthorized access or impair the audit trail.",
+      "severity": "critical",
+      "evidence_references": [
+        "DOC-001",
+        "DOC-002",
+        "DOC-003",
+        "POLICY-001"
+      ],
+      "confidence": "high"
+    },
+    {
+      "finding_id": "FIND-006",
+      "title": "Readiness scores do not equal workflow autonomy",
+      "finding": "The blueprint reports strong governance and analysis-quality scores, but process clarity is only partial and the operational data, authority, control-mapping, and transition rules needed for agentic execution remain incomplete.",
+      "why_it_matters": "A high composite readiness score can create false confidence if it is interpreted as permission for autonomous workflow actions.",
+      "severity": "high",
+      "evidence_references": [
+        "DOC-001",
+        "DOC-002",
+        "DOC-003",
+        "POLICY-001",
+        "POLICY-002"
+      ],
+      "confidence": "high"
+    }
+  ],
+  "non_obvious_insights": [
+    {
+      "insight_id": "INSIGHT-001",
+      "title": "The pilot is really testing a context-transformation layer",
+      "insight": "Because raw decision-relevant fields are blocked, the first pilot must test whether deterministic checks can transform sensitive request data into useful, non-sensitive validation flags and evidence metadata.",
+      "why_it_is_not_obvious": "The visible opportunity appears to be natural-language review of the access request, but the current policy boundary removes most of the language and attributes needed for that task.",
+      "business_implication": "Pilot success depends as much on the quality of the external validation and minimization design as on the model itself.",
+      "recommended_action": "Evaluate the model only after the allowlist, redaction, and external validation-result format have been tested on representative cases.",
+      "evidence_references": [
+        "DOC-002",
+        "DOC-004",
+        "POLICY-001"
+      ],
+      "confidence": "high"
+    },
+    {
+      "insight_id": "INSIGHT-002",
+      "title": "The highest-value work may be exception packaging rather than straight-through processing",
+      "insight": "The sample records illustrate a standard request, a privileged request requiring security review, and an incomplete privileged request requiring clarification. The work changes materially by exception type.",
+      "why_it_is_not_obvious": "A linear ten-step workflow can look suitable for end-to-end automation, but actual analyst effort is likely concentrated around ambiguous and higher-risk branches.",
+      "business_implication": "AI should first reduce the effort of assembling clear exception packets while preserving human ownership of routing and decisions.",
+      "recommended_action": "Segment pilot results by standard, privileged, and clarification cases instead of reporting only an overall average.",
+      "evidence_references": [
+        "DOC-002",
+        "DOC-003",
+        "DOC-004"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "insight_id": "INSIGHT-003",
+      "title": "Process codification, not more tool access, is the main autonomy unlock",
+      "insight": "The workflow already identifies the necessary human actors, but it lacks complete criteria for mandatory review, reviewer authorization, ticket transitions, SLA escalation, evidence retention, and exceptions.",
+      "why_it_is_not_obvious": "Agentic programs often focus first on integrations and tool permissions. Here, integrations would amplify ambiguity unless the operating rules are made explicit.",
+      "business_implication": "Funding process redesign and reference-data ownership will unlock more safe automation than granting the model write access.",
+      "recommended_action": "Prioritize decision tables, authority rules, state semantics, and evidence requirements before implementing governed action tools.",
+      "evidence_references": [
+        "DOC-001",
+        "DOC-002",
+        "DOC-003",
+        "POLICY-002"
+      ],
+      "confidence": "high"
+    },
+    {
+      "insight_id": "INSIGHT-004",
+      "title": "The strongest early value signal is reviewer behavior, not AI agreement with historical outcomes",
+      "insight": "Historical approval outcomes are not documented as a complete or reliable decision standard. Reviewer acceptance, correction, missed-deficiency, and evidence-traceability measures are more appropriate for an assistive pilot.",
+      "why_it_is_not_obvious": "Teams may try to score the model by whether it predicts approval or rejection, even though the pilot should not be making those decisions and complete decision criteria are missing.",
+      "business_implication": "The evaluation should focus on whether AI makes analysts faster and more consistent without concealing uncertainty or missing required review.",
+      "recommended_action": "Capture reviewer edits, rejected suggestions, missed deficiencies, and traceability to approved evidence before considering decision-support expansion.",
+      "evidence_references": [
+        "DOC-001",
+        "DOC-002",
+        "DOC-003"
+      ],
+      "confidence": "high"
+    }
+  ],
+  "automation_misconceptions": [
+    {
+      "misconception_id": "MISCONCEPTION-001",
+      "tempting_but_wrong_idea": "Use AI to approve standard-looking requests and send only privileged cases to humans.",
+      "why_it_is_wrong_or_premature": "The model cannot currently use several central access attributes, and the organization has not defined complete criteria for sensitive, custom, API, SSO, dependent, or security-related routing. A standard-looking request could still require mandatory review.",
+      "safer_alternative": "Use deterministic external rules to identify mandatory-review candidates and let AI prepare an advisory checklist without clearing any request from review.",
+      "evidence_references": [
+        "DOC-001",
+        "DOC-002",
+        "DOC-003",
+        "POLICY-001"
+      ],
+      "confidence": "high"
+    },
+    {
+      "misconception_id": "MISCONCEPTION-002",
+      "tempting_but_wrong_idea": "Once approval status says approved, an agent can provision access and update the ticket.",
+      "why_it_is_wrong_or_premature": "The packet does not define approval-state semantics, required reviewer validation, delegations, allowed state transitions, or exception handling. Policy also requires recorded approvals and explicit human approval for writes.",
+      "safer_alternative": "Allow AI to prepare a read-only provisioning and record-update proposal while authorized IT personnel and the identity analyst verify prerequisites and execute exact approved actions.",
+      "evidence_references": [
+        "DOC-001",
+        "DOC-002",
+        "DOC-003"
+      ],
+      "confidence": "high"
+    },
+    {
+      "misconception_id": "MISCONCEPTION-003",
+      "tempting_but_wrong_idea": "An empty required-control lookup means no additional controls are required.",
+      "why_it_is_wrong_or_premature": "The explicit policy requires approvals, evidence preservation, additional review, and human authorization for writes. The empty lookup is inconsistent with those documented obligations.",
+      "safer_alternative": "Fail closed and require the policy owner to resolve the control mappings before any production governed action.",
+      "evidence_references": [
+        "DOC-003",
+        "POLICY-002"
+      ],
+      "confidence": "high"
+    }
+  ],
+  "operational_pattern_analysis": [
+    {
+      "pattern_id": "PATTERN-001",
+      "workflow_pattern": "Repeated validation followed by exception branching",
+      "operational_dependency": "Identity analysts combine required-field checks, authoritative HR verification results, and indicators of privileged, sensitive, custom, API, SSO, security-related, or dependent access.",
+      "ai_opportunity_created_by_pattern": "AI can consistently organize externally generated validation results into deficiency checklists, discrepancy summaries, and reviewer questions.",
+      "ai_limitation_created_by_pattern": "The same attributes that drive useful analysis are sensitive or blocked, and the authoritative branching criteria are incomplete.",
+      "what_this_means_for_the_pilot": "The pilot should evaluate exception-packet quality from minimized validation metadata, not raw-request interpretation or autonomous routing.",
+      "evidence_references": [
+        "DOC-001",
+        "DOC-002",
+        "DOC-003",
+        "DOC-004",
+        "POLICY-001"
+      ],
+      "confidence": "high"
+    },
+    {
+      "pattern_id": "PATTERN-002",
+      "workflow_pattern": "Multi-reviewer evidence assembly before a consequential action",
+      "operational_dependency": "Application owners and security reviewers make accountable decisions, and provisioning waits for all applicable recorded outcomes.",
+      "ai_opportunity_created_by_pattern": "AI can reduce reviewer preparation effort by organizing evidence, unresolved questions, and missing prerequisites.",
+      "ai_limitation_created_by_pattern": "The model cannot substitute for reviewer judgment, validate undocumented authority, or treat generated text as approval evidence.",
+      "what_this_means_for_the_pilot": "Reviewer-packet preparation can be explored after the intake pilot, but approval outcomes and workflow advancement must remain human-recorded.",
+      "evidence_references": [
+        "DOC-001",
+        "DOC-002",
+        "DOC-003"
+      ],
+      "confidence": "high"
+    },
+    {
+      "pattern_id": "PATTERN-003",
+      "workflow_pattern": "Administrative follow-through with audit consequences",
+      "operational_dependency": "Provisioning, ticket updates, evidence retention, SLA escalation, and weekly reporting depend on accurate state and approved disclosure.",
+      "ai_opportunity_created_by_pattern": "AI can draft structured updates, candidate queues, and reports.",
+      "ai_limitation_created_by_pattern": "Even clerical errors can alter access, misstate workflow status, omit evidence, or disclose restricted information.",
+      "what_this_means_for_the_pilot": "Draft generation may be tested later, but execution and distribution must remain approval-gated and audited.",
+      "evidence_references": [
+        "DOC-001",
+        "DOC-002",
+        "DOC-003",
+        "POLICY-001"
+      ],
+      "confidence": "high"
+    }
+  ],
+  "pilot_learning_objectives": [
+    {
+      "objective_id": "PILOT-OBJ-001",
+      "objective": "Determine whether minimized validation metadata is sufficient to produce useful intake exception packets.",
+      "why_it_matters": "If useful output requires blocked request content, the proposed architecture will not support the intended use case under the current policy boundary.",
+      "how_to_test": "Compare AI-prepared packets with identity analyst-prepared packets across representative standard, privileged, and clarification cases while excluding blocked fields.",
+      "pass_fail_signal": "Pass if analysts can complete review with fewer manual assembly steps and without repeatedly consulting omitted data solely to understand the packet; fail if outputs are routinely too generic or misleading.",
+      "expansion_decision_supported": "Whether to expand from document search and checklists into broader intake assistance.",
+      "evidence_references": [
+        "DOC-002",
+        "DOC-004",
+        "POLICY-001"
+      ],
+      "confidence": "high"
+    },
+    {
+      "objective_id": "PILOT-OBJ-002",
+      "objective": "Verify that the context filter reliably blocks restricted fields and unsafe free text.",
+      "why_it_matters": "The pilot cannot be considered successful if productivity gains depend on prohibited data exposure.",
+      "how_to_test": "Run representative and adversarial payloads containing identifiers, access details, privilege indicators, justifications, and notes through the pre-invocation filter and inspect model inputs and approved logs.",
+      "pass_fail_signal": "Pass only if blocked fields are consistently excluded and filter failures are visible and fail closed.",
+      "expansion_decision_supported": "Whether any production model processing of workflow metadata is acceptable.",
+      "evidence_references": [
+        "DOC-004",
+        "POLICY-001"
+      ],
+      "confidence": "high"
+    },
+    {
+      "objective_id": "PILOT-OBJ-003",
+      "objective": "Measure whether AI reduces analyst effort without increasing missed deficiencies or false conflict flags.",
+      "why_it_matters": "Faster packet preparation is not valuable if analysts must perform extensive corrections or if required clarification is missed.",
+      "how_to_test": "Collect baseline and pilot handling time, reviewer corrections, false deficiency flags, missed deficiencies, and repeated clarification cycles.",
+      "pass_fail_signal": "Pass if handling effort improves while error and correction measures remain within workflow-owner-approved acceptance thresholds.",
+      "expansion_decision_supported": "Whether the assistant should move from controlled evaluation to routine read-only use.",
+      "evidence_references": [
+        "DOC-002",
+        "DOC-003",
+        "DOC-004"
+      ],
+      "confidence": "high"
+    },
+    {
+      "objective_id": "PILOT-OBJ-004",
+      "objective": "Confirm that every material output is traceable to an approved validation result or workflow requirement.",
+      "why_it_matters": "Reviewers must be able to distinguish evidence-backed findings from model inference before relying on summaries.",
+      "how_to_test": "Require packet statements to cite the relevant required-field rule, external verification result, or documented workflow requirement and have analysts flag unsupported statements.",
+      "pass_fail_signal": "Pass if material findings are consistently traceable and unsupported conclusions are detected before use.",
+      "expansion_decision_supported": "Whether to add reviewer summaries or advisory recommendations.",
+      "evidence_references": [
+        "DOC-002",
+        "DOC-003"
+      ],
+      "confidence": "high"
+    },
+    {
+      "objective_id": "PILOT-OBJ-005",
+      "objective": "Identify which request patterns benefit from AI and which should bypass it.",
+      "why_it_matters": "Standard, privileged, and incomplete requests may have different preparation effort, correction rates, and risk.",
+      "how_to_test": "Segment pilot measures by human-confirmed case type and compare usefulness, corrections, and time impact.",
+      "pass_fail_signal": "Pass if the workflow owner can define a bounded population where benefit is repeatable and risk is controlled.",
+      "expansion_decision_supported": "Which request types should be included in later phases.",
+      "evidence_references": [
+        "DOC-002",
+        "DOC-003",
+        "DOC-004"
+      ],
+      "confidence": "medium"
+    }
+  ],
+  "autonomy_unlock_path": [
+    {
+      "stage_id": "UNLOCK-001",
+      "from_ceiling": "read_only_ai_assist",
+      "to_ceiling": "human_reviewed_recommendations",
+      "required_changes": [
+        "Validate the model-context allowlist and redaction process.",
+        "Create authoritative external validation-result formats.",
+        "Document mandatory-review criteria and the sensitive-system inventory.",
+        "Define reviewer-specific acceptance and correction procedures.",
+        "Label all AI outputs as advisory and prevent recommendation-driven workflow advancement."
+      ],
+      "validation_required": [
+        "No blocked fields appear in model context or inappropriate logs.",
+        "Missed-deficiency, false-flag, correction, and traceability measures meet approved thresholds.",
+        "Reviewers can identify the evidence supporting each material statement.",
+        "No recommendation is recorded as an approval or security outcome."
+      ],
+      "risks_that_must_be_reduced": [
+        "Sensitive-data exposure",
+        "Incorrect or missed review triggers",
+        "Recommendations being mistaken for decisions",
+        "Unsupported summaries"
+      ],
+      "evidence_references": [
+        "DOC-001",
+        "DOC-002",
+        "DOC-003",
+        "DOC-004",
+        "POLICY-001"
+      ],
+      "confidence": "high"
+    },
+    {
+      "stage_id": "UNLOCK-002",
+      "from_ceiling": "human_reviewed_recommendations",
+      "to_ceiling": "approval_gated_actions",
+      "required_changes": [
+        "Resolve required-control mappings.",
+        "Define reviewer authorization and delegation validation.",
+        "Document approval, rejection, and ticket-state semantics and allowed transitions.",
+        "Define exact evidence prerequisites for each action.",
+        "Implement exact-action human approval, durable audit records, and fail-closed execution.",
+        "Define failure, correction, rollback, and exception procedures."
+      ],
+      "validation_required": [
+        "No write or communication executes without the required named human approval.",
+        "Provisioning fails closed when approvals or reviewer information are missing.",
+        "Proposed and executed changes match exactly.",
+        "Prior record history and approval evidence remain preserved.",
+        "Unauthorized reviewers and invalid state transitions are rejected."
+      ],
+      "risks_that_must_be_reduced": [
+        "Unauthorized provisioning",
+        "Invalid workflow advancement",
+        "Evidence loss or misassociation",
+        "Misdirected communication",
+        "Uncontrolled write execution"
+      ],
+      "evidence_references": [
+        "DOC-001",
+        "DOC-002",
+        "DOC-003",
+        "POLICY-002"
+      ],
+      "confidence": "high"
+    },
+    {
+      "stage_id": "UNLOCK-003",
+      "from_ceiling": "approval_gated_actions",
+      "to_ceiling": "limited_automation_candidate",
+      "required_changes": [
+        "Restrict automation to scheduled read-only analytics and candidate-queue preparation.",
+        "Define the SLA escalation threshold and approved report scope.",
+        "Establish monitoring ownership, rollback procedures, and operating thresholds.",
+        "Continue human approval for all decisions, writes, communications, provisioning, and report distribution."
+      ],
+      "validation_required": [
+        "The automated scope contains no autonomous write or external communication path.",
+        "False-alert, missed-alert, filter-failure, and correction measures remain acceptable.",
+        "Rollback and disablement procedures are tested.",
+        "Monitoring evidence is complete and reviewable."
+      ],
+      "risks_that_must_be_reduced": [
+        "Incorrect scheduled queue generation",
+        "Undefined SLA interpretation",
+        "Sensitive-data leakage in reports",
+        "Unmonitored degradation"
+      ],
+      "evidence_references": [
+        "DOC-001",
+        "DOC-002",
+        "DOC-003",
+        "POLICY-001",
+        "POLICY-002"
+      ],
+      "confidence": "medium"
+    }
+  ],
+  "sample_record_patterns": [
+    {
+      "pattern_id": "SAMPLE-PATTERN-001",
+      "pattern_name": "Standard request versus exception-driven handling",
+      "records_observed": [
+        "AR-1001",
+        "AR-1002",
+        "AR-1003"
+      ],
+      "what_the_pattern_shows": "The illustrative records include one apparently standard read-only request, one privileged request awaiting security review, and one privileged request returned for incomplete or unclear information.",
+      "ai_opportunity": "A read-only assistant can normalize these cases into consistent analyst packets showing completeness results, external verification outcomes, unresolved items, and human review requirements.",
+      "risk_or_limitation": "Three illustrative records do not establish production frequencies, and the model must not infer that the standard-looking case is safe to approve or that the privilege field alone captures every review trigger.",
+      "recommended_handling": "Use the three patterns as initial evaluation strata, then expand the test set with human-confirmed representative cases before drawing operational conclusions.",
+      "evidence_references": [
+        "DOC-004"
+      ],
+      "confidence": "high"
+    },
+    {
+      "pattern_id": "SAMPLE-PATTERN-002",
+      "pattern_name": "Privilege and clarification can coexist",
+      "records_observed": [
+        "AR-1003"
+      ],
+      "what_the_pattern_shows": "A request can require clarification while also carrying a privileged-access indicator.",
+      "ai_opportunity": "AI can prepare a deficiency packet while preserving the fact that higher-risk review may still be required after clarification.",
+      "risk_or_limitation": "A simplistic workflow could treat return-for-clarification as replacing the security-review requirement and lose the higher-risk routing obligation.",
+      "recommended_handling": "Represent clarification needs and mandatory-review triggers as separate attributes rather than a single exclusive status.",
+      "evidence_references": [
+        "DOC-002",
+        "DOC-003",
+        "DOC-004"
+      ],
+      "confidence": "high"
+    },
+    {
+      "pattern_id": "SAMPLE-PATTERN-003",
+      "pattern_name": "Free-text ambiguity drives exception work",
+      "records_observed": [
+        "AR-1001",
+        "AR-1002",
+        "AR-1003"
+      ],
+      "what_the_pattern_shows": "Business justifications and notes range from standard explanations to emergency context and incomplete role mapping.",
+      "ai_opportunity": "If an approved protected handling method is established later, AI could help structure reviewer questions and summarize human-confirmed deficiencies.",
+      "risk_or_limitation": "Business justification and access details are blocked, and notes require redaction; unrestricted free-text ingestion is not ready.",
+      "recommended_handling": "For the first pilot, use human-confirmed deficiency categories or redacted structured flags rather than raw justification and notes.",
+      "evidence_references": [
+        "DOC-004",
+        "POLICY-001"
+      ],
+      "confidence": "high"
+    }
+  ],
+  "top_readiness_blockers": [
+    {
+      "blocker_id": "BLOCKER-001",
+      "title": "Decision-relevant data is blocked from model context",
+      "description": "The current classification prevents the model from receiving identifiers and several access attributes central to intake analysis and routing.",
+      "business_impact": "A raw-request assistant would either violate the data boundary or generate low-value output from incomplete context.",
+      "technical_or_control_impact": "A field-level allowlist, redaction layer, payload rejection, and externally computed validation metadata are prerequisites.",
+      "severity": "critical",
+      "recommended_remediation": [
+        "Confirm field mappings, including privilege and notes fields.",
+        "Define the minimum model-context schema.",
+        "Test redaction and rejection against representative records.",
+        "Keep original requests and authoritative verification data outside the model."
+      ],
+      "owner_role": "Identity team with data governance review",
+      "evidence_references": [
+        "DOC-002",
+        "DOC-004",
+        "POLICY-001"
+      ],
+      "confidence": "high"
+    },
+    {
+      "blocker_id": "BLOCKER-002",
+      "title": "Mandatory-review criteria are incomplete",
+      "description": "The workflow identifies categories requiring additional review but does not define a complete sensitive-system inventory or authoritative routing criteria.",
+      "business_impact": "Requests could be delayed by excessive routing or exposed to risk by missed security review.",
+      "technical_or_control_impact": "AI cannot safely clear a request from review; routing must remain human-controlled until deterministic rules exist.",
+      "severity": "critical",
+      "recommended_remediation": [
+        "Define each mandatory-review trigger.",
+        "Establish ownership for the sensitive-system and routing reference data.",
+        "Specify treatment of uncertain or conflicting indicators.",
+        "Require fail-closed routing when criteria cannot be resolved."
+      ],
+      "owner_role": "Identity workflow owner with security reviewer",
+      "evidence_references": [
+        "DOC-001",
+        "DOC-002",
+        "DOC-003"
+      ],
+      "confidence": "high"
+    },
+    {
+      "blocker_id": "BLOCKER-003",
+      "title": "Required-control mappings are unresolved",
+      "description": "The control service returned empty mappings for governed actions despite explicit workflow policy requirements.",
+      "business_impact": "Production implementation teams lack a reliable control authorization basis and may interpret silence inconsistently.",
+      "technical_or_control_impact": "Governed actions must fail closed until mappings and implementation evidence are confirmed.",
+      "severity": "high",
+      "recommended_remediation": [
+        "Determine why the lookup returned empty results.",
+        "Map each governed action to applicable controls.",
+        "Define fail-closed behavior for unresolved lookups.",
+        "Obtain policy-owner confirmation before production use."
+      ],
+      "owner_role": "Policy owner",
+      "evidence_references": [
+        "DOC-003",
+        "POLICY-002"
+      ],
+      "confidence": "high"
+    },
+    {
+      "blocker_id": "BLOCKER-004",
+      "title": "Authority and state semantics are undocumented",
+      "description": "The packet does not define how authorized application owners, security reviewers, IT personnel, or delegations are validated, nor the allowed approval and ticket-state transitions.",
+      "business_impact": "A technically correct recommendation could still be acted on by the wrong person or applied in the wrong workflow state.",
+      "technical_or_control_impact": "Approval-gated actions cannot be reliably enforced without role validation and deterministic transition rules.",
+      "severity": "high",
+      "recommended_remediation": [
+        "Define authorized reviewer sources and delegation rules.",
+        "Document approval, rejection, and pending-state meanings.",
+        "Define allowed state transitions and invalid-transition handling.",
+        "Specify emergency and exception handling."
+      ],
+      "owner_role": "Workflow owner",
+      "evidence_references": [
+        "DOC-002",
+        "DOC-003"
+      ],
+      "confidence": "high"
+    },
+    {
+      "blocker_id": "BLOCKER-005",
+      "title": "Measurement baselines and acceptance thresholds are missing",
+      "description": "The packet does not provide current handling time, clarification rates, error rates, correction rates, or approved thresholds for AI outputs.",
+      "business_impact": "The organization cannot determine whether the pilot creates value or whether quality is sufficient for expansion.",
+      "technical_or_control_impact": "There is no evidence-based release gate for moving beyond read-only evaluation.",
+      "severity": "high",
+      "recommended_remediation": [
+        "Collect pre-pilot operational baselines.",
+        "Define material-error and data-exposure criteria.",
+        "Set workflow-owner-approved acceptance thresholds.",
+        "Assign monitoring and correction ownership."
+      ],
+      "owner_role": "Workflow owner",
+      "evidence_references": [
+        "DOC-001",
+        "DOC-003"
+      ],
+      "confidence": "high"
+    },
+    {
+      "blocker_id": "BLOCKER-006",
+      "title": "SLA and reporting operating rules are incomplete",
+      "description": "No threshold defines approaching the SLA deadline, and report content, recipient scope, and handling requirements are not fully specified.",
+      "business_impact": "Automated queue preparation or reporting could generate inconsistent escalations or disclose unnecessary information.",
+      "technical_or_control_impact": "SLA queues and report drafts cannot progress beyond bounded evaluation until these rules are approved.",
+      "severity": "medium",
+      "recommended_remediation": [
+        "Define the escalation threshold and unresolved-status criteria.",
+        "Define report fields, aggregation level, recipient scope, and review requirements.",
+        "Keep sending and distribution human-approved."
+      ],
+      "owner_role": "Identity team lead and security lead",
+      "evidence_references": [
+        "DOC-001",
+        "DOC-002",
+        "DOC-003",
+        "POLICY-001"
+      ],
+      "confidence": "high"
+    }
+  ],
+  "recommended_first_use_case": {
+    "use_case_id": "USECASE-001",
+    "title": "Read-only intake exception packet assistant",
+    "description": "Prepare a structured packet for the identity analyst from documented required-field rules, externally generated completeness and HR-verification results, and approved metadata. The packet should identify human-confirmed missing or conflicting items, summarize verification-result metadata, cite workflow requirements, and draft reviewer questions. It must not inspect blocked raw fields, determine final routing, communicate, or update the workflow.",
+    "why_this_is_recommended": [
+      "It targets repeated analyst work that occurs before approvals and provisioning.",
+      "It can operate with externally produced validation flags rather than raw restricted request values.",
+      "It supports standard, privileged, and clarification patterns without making access decisions.",
+      "It produces measurable outputs such as preparation time, correction rate, missed deficiencies, and traceability.",
+      "It directly tests whether the current data boundary can support useful AI before investment in broader integrations."
+    ],
+    "expected_value": [
+      "Reduced analyst effort assembling intake and discrepancy information",
+      "More consistent deficiency packets",
+      "Fewer avoidable omissions in clarification preparation",
+      "Faster identification of cases needing human attention",
+      "Better evidence traceability for later reviewer stages"
+    ],
+    "required_inputs": [
+      "Documented required-field checklist",
+      "Externally computed field-presence results",
+      "Externally computed HR-verification result metadata",
+      "Approved internal workflow metadata",
+      "Human-confirmed deficiency categories where interpretation is required",
+      "Approved workflow and policy documents"
+    ],
+    "required_controls": [
+      "Field-level allowlist and pre-invocation redaction",
+      "Payload rejection for blocked fields",
+      "Read-only model access with no workflow credentials",
+      "Traceability from packet statements to approved evidence",
+      "Identity analyst review before routing, communication, or status change",
+      "Audit logging of model inputs, outputs, and blocked attempts using approved metadata"
+    ],
+    "blocked_actions": [
+      "Approve or reject access",
+      "Clear a request from application-owner or security review",
+      "Make final identity or employment verification",
+      "Route or return a request",
+      "Send a clarification",
+      "Change ticket or approval status",
+      "Provision or modify access",
+      "Ingest blocked raw request fields"
+    ],
+    "risk_level": "medium",
+    "readiness": "ready_for_pilot",
+    "suggested_pilot_scope": "Use a representative, human-reviewed evaluation set segmented into standard, privileged, and clarification cases. Operate in shadow mode with no workflow, notification, approval, or provisioning writes. Compare AI-prepared packets with current analyst preparation.",
+    "success_measures": [
+      "Change in analyst packet-preparation time versus baseline",
+      "Reviewer correction and rejection rates",
+      "False deficiency and missed-deficiency rates",
+      "Repeat clarification cycles",
+      "Percentage of material statements traceable to approved evidence",
+      "Blocked-field exposure and context-filter failure rate",
+      "Analyst usefulness rating segmented by case type"
+    ],
+    "evidence_references": [
+      "DOC-001",
+      "DOC-002",
+      "DOC-003",
+      "DOC-004",
+      "POLICY-001",
+      "POLICY-002"
+    ],
+    "confidence": "high"
+  },
+  "additional_candidate_use_cases": [
+    {
+      "use_case_id": "USECASE-002",
+      "title": "Human-reviewed reviewer packet preparation",
+      "description": "Prepare advisory evidence summaries and unresolved questions for application owners or security reviewers without recommending that required review be waived.",
+      "why_this_is_recommended": [
+        "The workflow has distinct reviewer stages with repeated evidence-assembly needs.",
+        "It preserves accountable human decisions.",
+        "It can build on the traceability and context controls proven in the first pilot."
+      ],
+      "expected_value": [
+        "Reduced reviewer preparation effort",
+        "More consistent identification of missing evidence",
+        "Clearer handoffs between identity analysts and reviewers"
+      ],
+      "required_inputs": [
+        "Approved, minimized evidence metadata",
+        "Authoritative mandatory-review criteria",
+        "Reviewer-specific required evidence",
+        "Approved workflow documents"
+      ],
+      "required_controls": [
+        "Non-authoritative labeling",
+        "Evidence citations",
+        "Reviewer role validation",
+        "No direct approval-status update",
+        "Human-recorded application-owner and security outcomes"
+      ],
+      "blocked_actions": [
+        "Approve or reject access",
+        "Waive security review",
+        "Clear a request for provisioning",
+        "Record a reviewer outcome"
+      ],
+      "risk_level": "high",
+      "readiness": "needs_control_definition",
+      "suggested_pilot_scope": "Shadow evaluation on human-confirmed cases after the intake pilot proves data filtering and evidence traceability.",
+      "success_measures": [
+        "Reviewer preparation time",
+        "Correction rate",
+        "Missed evidence rate",
+        "Unsupported-statement rate",
+        "Reviewer acceptance rate"
+      ],
+      "evidence_references": [
+        "DOC-001",
+        "DOC-002",
+        "DOC-003",
+        "POLICY-001"
+      ],
+      "confidence": "high"
+    },
+    {
+      "use_case_id": "USECASE-003",
+      "title": "SLA candidate queue and escalation draft preparation",
+      "description": "Prepare a read-only queue from approved status and SLA metadata and draft an escalation summary for human review.",
+      "why_this_is_recommended": [
+        "SLA due date and ticket status are identified as internal fields allowed in model context.",
+        "Queue preparation is non-decisional when an externally approved threshold is used.",
+        "It could reduce manual backlog review."
+      ],
+      "expected_value": [
+        "More consistent backlog visibility",
+        "Reduced effort preparing escalation packages",
+        "Earlier identification of unresolved items after the threshold is defined"
+      ],
+      "required_inputs": [
+        "Approved SLA escalation threshold",
+        "SLA due date",
+        "Current unresolved status",
+        "Approved recipient information supplied outside model context as needed"
+      ],
+      "required_controls": [
+        "Deterministic threshold calculation outside the model",
+        "Human approval before sending or updating records",
+        "Approved metadata-only model context",
+        "Audited queue generation"
+      ],
+      "blocked_actions": [
+        "Infer the SLA threshold",
+        "Send an escalation",
+        "Change workflow status",
+        "Expand recipient scope"
+      ],
+      "risk_level": "medium",
+      "readiness": "needs_process_redesign",
+      "suggested_pilot_scope": "Offline queue comparison after the identity team lead approves a threshold and unresolved-status definition.",
+      "success_measures": [
+        "Candidate precision and missed-candidate rate",
+        "Queue preparation time",
+        "Draft correction rate",
+        "Threshold consistency"
+      ],
+      "evidence_references": [
+        "DOC-001",
+        "DOC-002",
+        "DOC-003",
+        "POLICY-001"
+      ],
+      "confidence": "high"
+    },
+    {
+      "use_case_id": "USECASE-004",
+      "title": "Draft weekly access review report",
+      "description": "Prepare an aggregate or minimized draft report and highlight follow-up items for security lead review.",
+      "why_this_is_recommended": [
+        "Weekly reporting is a recurring synthesis activity.",
+        "Aggregate preparation can remain separate from distribution and retained evidence.",
+        "The use case can reuse proven data minimization and traceability controls."
+      ],
+      "expected_value": [
+        "Reduced report preparation effort",
+        "More consistent exception summaries",
+        "Improved visibility of follow-up items"
+      ],
+      "required_inputs": [
+        "Approved report content definition",
+        "Approved minimized or aggregate data",
+        "Approved recipient and disclosure scope",
+        "Human-confirmed exception categories"
+      ],
+      "required_controls": [
+        "Human review of contents",
+        "Data minimization",
+        "No autonomous distribution",
+        "No modification of retained evidence",
+        "Approved report retention and handling rules"
+      ],
+      "blocked_actions": [
+        "Distribute the report",
+        "Include blocked fields",
+        "Modify audit evidence",
+        "Present unsupported conclusions"
+      ],
+      "risk_level": "medium",
+      "readiness": "needs_control_definition",
+      "suggested_pilot_scope": "Generate offline draft reports from approved aggregate data after report fields and recipient scope are documented.",
+      "success_measures": [
+        "Report preparation time",
+        "Reviewer correction rate",
+        "Unsupported conclusion rate",
+        "Sensitive-data inclusion incidents",
+        "Follow-up item accuracy"
+      ],
+      "evidence_references": [
+        "DOC-002",
+        "DOC-003",
+        "POLICY-001"
+      ],
+      "confidence": "medium"
+    }
+  ],
+  "use_cases_to_avoid": [
+    {
+      "use_case_id": "AVOID-001",
+      "title": "Autonomous access approval or rejection",
+      "why_to_avoid_now": [
+        "Approval is assigned to an accountable application owner.",
+        "Privileged and sensitive cases require additional human review.",
+        "Decision criteria and reviewer authority rules are incomplete.",
+        "Several decision-relevant fields are blocked from model context."
+      ],
+      "failure_modes": [
+        "Unauthorized access approval",
+        "Incorrect rejection",
+        "Mandatory security review bypass",
+        "AI recommendation recorded as a human decision"
+      ],
+      "conditions_that_would_change_recommendation": [
+        "AI may later provide advisory summaries after data controls and decision criteria are validated, but approval and rejection must remain human decisions."
+      ],
+      "risk_level": "critical",
+      "evidence_references": [
+        "DOC-001",
+        "DOC-002",
+        "DOC-003",
+        "POLICY-001"
+      ],
+      "confidence": "high"
+    },
+    {
+      "use_case_id": "AVOID-002",
+      "title": "Autonomous provisioning or permission changes",
+      "why_to_avoid_now": [
+        "Provisioning directly changes access.",
+        "Policy prohibits provisioning before required approvals are recorded.",
+        "Approval semantics, reviewer authorization, and exception handling are incomplete.",
+        "The model must not hold or use provisioning credentials autonomously."
+      ],
+      "failure_modes": [
+        "Access provisioned without all required approvals",
+        "Wrong system or access level provisioned",
+        "Unauthorized privilege elevation",
+        "Incomplete audit evidence"
+      ],
+      "conditions_that_would_change_recommendation": [
+        "Only an exact, approval-gated action may be considered after deterministic prerequisite verification, durable audit logging, and authorized IT approval. Autonomous provisioning remains excluded."
+      ],
+      "risk_level": "critical",
+      "evidence_references": [
+        "DOC-001",
+        "DOC-002",
+        "DOC-003"
+      ],
+      "confidence": "high"
+    },
+    {
+      "use_case_id": "AVOID-003",
+      "title": "Autonomous mandatory-review routing or clearance",
+      "why_to_avoid_now": [
+        "The sensitive-system inventory and complete routing criteria are missing.",
+        "Decision-relevant access fields are blocked.",
+        "An incorrect clearance could bypass application-owner or security review."
+      ],
+      "failure_modes": [
+        "Privileged or sensitive access treated as standard",
+        "Security review omitted",
+        "Excessive false routing and workflow delay",
+        "Inconsistent handling of custom, API, SSO, or dependent access"
+      ],
+      "conditions_that_would_change_recommendation": [
+        "Deterministic routing may become possible after authoritative criteria and reference data are defined; AI may flag uncertainty but should not waive review."
+      ],
+      "risk_level": "critical",
+      "evidence_references": [
+        "DOC-001",
+        "DOC-002",
+        "DOC-003",
+        "POLICY-001"
+      ],
+      "confidence": "high"
+    },
+    {
+      "use_case_id": "AVOID-004",
+      "title": "Autonomous communications and workflow-record updates",
+      "why_to_avoid_now": [
+        "Clarifications, escalations, and reports may disclose restricted information or use the wrong recipient.",
+        "Ticket and evidence updates affect auditability.",
+        "Policy requires explicit human approval before writes."
+      ],
+      "failure_modes": [
+        "Incorrect or misdirected clarification",
+        "Premature SLA escalation",
+        "Unauthorized report distribution",
+        "Incorrect status or evidence update",
+        "Prior audit history overwritten"
+      ],
+      "conditions_that_would_change_recommendation": [
+        "Human-approved exact-action execution may be considered after authority, state, disclosure, evidence, and audit controls are validated. Autonomous execution remains excluded."
+      ],
+      "risk_level": "high",
+      "evidence_references": [
+        "DOC-002",
+        "DOC-003",
+        "POLICY-001"
+      ],
+      "confidence": "high"
+    }
+  ],
+  "process_redesign_requirements": [
+    {
+      "requirement_id": "REDESIGN-001",
+      "title": "Separate authoritative validation from AI explanation",
+      "current_gap": "Useful validation currently depends on restricted request and HR data that should remain outside model context.",
+      "required_change": "Create deterministic required-field, HR-verification, and policy-trigger checks outside the model and expose only approved result metadata to AI.",
+      "why_required_for_ai_readiness": "This preserves authoritative source checks while giving the assistant enough structured context to prepare useful analyst packets.",
+      "unlocks": [
+        "Read-only intake exception packets",
+        "Discrepancy summaries",
+        "Reviewer checklists"
+      ],
+      "owner_role": "Identity team with data governance review",
+      "priority": "critical",
+      "evidence_references": [
+        "DOC-002",
+        "DOC-004",
+        "POLICY-001"
+      ],
+      "confidence": "high"
+    },
+    {
+      "requirement_id": "REDESIGN-002",
+      "title": "Codify mandatory-review routing",
+      "current_gap": "Named risk categories lack complete authoritative criteria and reference data.",
+      "required_change": "Define deterministic decision tables for privileged, sensitive, custom, API, SSO, dependency, elevated, and security-related conditions, including uncertain cases.",
+      "why_required_for_ai_readiness": "Neither AI nor conventional automation can safely route or clear requests consistently without explicit rules.",
+      "unlocks": [
+        "Reliable review-trigger flags",
+        "Reviewer queue preparation",
+        "Safer advisory triage"
+      ],
+      "owner_role": "Identity workflow owner with security reviewer",
+      "priority": "critical",
+      "evidence_references": [
+        "DOC-001",
+        "DOC-002",
+        "DOC-003"
+      ],
+      "confidence": "high"
+    },
+    {
+      "requirement_id": "REDESIGN-003",
+      "title": "Define authority and delegation rules",
+      "current_gap": "The workflow names reviewer roles but does not define how authorized individuals or delegations are validated.",
+      "required_change": "Document the authoritative basis for application-owner, security-reviewer, authorized IT, identity-analyst, and delegated authority.",
+      "why_required_for_ai_readiness": "Approval-gated actions are not meaningful unless the system can verify that the approver is authorized for the specific action.",
+      "unlocks": [
+        "Reviewer-specific queues",
+        "Approval-gated routing",
+        "Controlled action execution"
+      ],
+      "owner_role": "Workflow owner",
+      "priority": "high",
+      "evidence_references": [
+        "DOC-002",
+        "DOC-003"
+      ],
+      "confidence": "high"
+    },
+    {
+      "requirement_id": "REDESIGN-004",
+      "title": "Define workflow states and transitions",
+      "current_gap": "Approval, rejection, pending, clarification, and ticket-state semantics and allowed transitions are not documented.",
+      "required_change": "Specify allowed states, transition prerequisites, actor authority, evidence requirements, and invalid-transition handling.",
+      "why_required_for_ai_readiness": "Draft updates and approval-gated writes cannot be validated without an authoritative state model.",
+      "unlocks": [
+        "Structured update proposals",
+        "Deterministic transition validation",
+        "Approval-gated record updates"
+      ],
+      "owner_role": "Workflow owner",
+      "priority": "high",
+      "evidence_references": [
+        "DOC-002",
+        "DOC-003"
+      ],
+      "confidence": "high"
+    },
+    {
+      "requirement_id": "REDESIGN-005",
+      "title": "Define SLA and reporting operating rules",
+      "current_gap": "The escalation threshold, report contents, disclosure scope, and detailed handling requirements are unspecified.",
+      "required_change": "Approve the SLA threshold, unresolved-status criteria, report fields, aggregation level, recipient scope, and review requirements.",
+      "why_required_for_ai_readiness": "Candidate queues and reports will otherwise be inconsistent or disclose unnecessary information.",
+      "unlocks": [
+        "SLA candidate queues",
+        "Escalation drafts",
+        "Weekly report drafts"
+      ],
+      "owner_role": "Identity team lead and security lead",
+      "priority": "medium",
+      "evidence_references": [
+        "DOC-001",
+        "DOC-002",
+        "DOC-003",
+        "POLICY-001"
+      ],
+      "confidence": "high"
+    },
+    {
+      "requirement_id": "REDESIGN-006",
+      "title": "Define evidence lifecycle and exception handling",
+      "current_gap": "Retention duration, storage, disposal, emergency handling, correction, and failure procedures are not provided.",
+      "required_change": "Document evidence lifecycle rules and procedures for emergency requests, failed actions, corrections, rollback, and disputed AI output.",
+      "why_required_for_ai_readiness": "Higher autonomy cannot preserve auditability or recover safely from errors without these operating rules.",
+      "unlocks": [
+        "Durable audit design",
+        "Controlled record updates",
+        "Approval-gated action recovery"
+      ],
+      "owner_role": "Workflow owner with security and audit review",
+      "priority": "high",
+      "evidence_references": [
+        "DOC-001",
+        "DOC-002",
+        "DOC-003"
+      ],
+      "confidence": "high"
+    }
+  ],
+  "control_gap_remediation_plan": [
+    {
+      "control_gap_id": "CONTROL-GAP-001",
+      "title": "Model-context boundary enforcement",
+      "current_gap": "Restricted fields could enter the model unless filtering is implemented and field mappings are confirmed.",
+      "risk_if_unresolved": "Exposure of PII, confidential access details, approval evidence, or provisioning information.",
+      "recommended_control": "Use a field-level allowlist, pre-invocation redaction, payload rejection, approved metadata-only logging, and tests for the privilege and notes field mappings.",
+      "validation_method": "Inspect model inputs and logs from representative and adversarial test payloads and verify fail-closed behavior.",
+      "owner_role": "Data steward and AI platform owner",
+      "priority": "critical",
+      "evidence_references": [
+        "DOC-004",
+        "POLICY-001"
+      ],
+      "confidence": "high"
+    },
+    {
+      "control_gap_id": "CONTROL-GAP-002",
+      "title": "Unresolved required-control mappings",
+      "current_gap": "The control lookup returned empty mappings for all queried governed actions.",
+      "risk_if_unresolved": "Teams may deploy governed capabilities without confirmed policy coverage.",
+      "recommended_control": "Require policy-owner resolution and fail closed whenever applicable controls cannot be determined.",
+      "validation_method": "Verify that each proposed action has an approved control mapping and that unmapped actions are blocked.",
+      "owner_role": "Policy owner",
+      "priority": "high",
+      "evidence_references": [
+        "DOC-003",
+        "POLICY-002"
+      ],
+      "confidence": "high"
+    },
+    {
+      "control_gap_id": "CONTROL-GAP-003",
+      "title": "Deterministic mandatory-review routing",
+      "current_gap": "Review triggers are described but not fully defined.",
+      "risk_if_unresolved": "Privileged or sensitive requests could bypass required review.",
+      "recommended_control": "Maintain authoritative routing criteria and reference data outside the model; allow AI to flag possible triggers but never clear review.",
+      "validation_method": "Test the routing rules against human-confirmed standard, privileged, sensitive, custom, and ambiguous cases.",
+      "owner_role": "Identity team and security reviewer",
+      "priority": "critical",
+      "evidence_references": [
+        "DOC-001",
+        "DOC-002",
+        "DOC-003"
+      ],
+      "confidence": "high"
+    },
+    {
+      "control_gap_id": "CONTROL-GAP-004",
+      "title": "Reviewer authority and exact-action approval",
+      "current_gap": "Reviewer and delegation validation is undefined.",
+      "risk_if_unresolved": "An unauthorized person could approve a decision or action.",
+      "recommended_control": "Verify reviewer authority for the specific request and require approval of the exact proposed action, recipient, or record change.",
+      "validation_method": "Test authorized, unauthorized, delegated, expired, and mismatched reviewer scenarios.",
+      "owner_role": "Workflow owner",
+      "priority": "high",
+      "evidence_references": [
+        "DOC-002",
+        "DOC-003"
+      ],
+      "confidence": "high"
+    },
+    {
+      "control_gap_id": "CONTROL-GAP-005",
+      "title": "Pre-provisioning verification",
+      "current_gap": "Recorded approval and reviewer prerequisites are not expressed as deterministic executable checks.",
+      "risk_if_unresolved": "Access could be provisioned without all applicable approvals.",
+      "recommended_control": "Use an external fail-closed gate that verifies recorded application-owner approval, security outcome when applicable, reviewer information, and specific authorized IT approval.",
+      "validation_method": "Attempt provisioning proposals with missing, conflicting, invalid, and complete approval evidence and confirm only complete cases can reach human execution.",
+      "owner_role": "Authorized IT personnel",
+      "priority": "critical",
+      "evidence_references": [
+        "DOC-001",
+        "DOC-002",
+        "DOC-003"
+      ],
+      "confidence": "high"
+    },
+    {
+      "control_gap_id": "CONTROL-GAP-006",
+      "title": "Evidence-preserving write validation",
+      "current_gap": "Exact state-transition, evidence-validation, and history-preservation behavior is not defined.",
+      "risk_if_unresolved": "Ticket updates could overwrite, omit, or misassociate approval and provisioning evidence.",
+      "recommended_control": "Validate exact proposed changes, required evidence references, allowed transitions, and reviewer identity while preserving prior values and durable audit history.",
+      "validation_method": "Test valid and invalid writes, concurrent corrections, missing evidence, and audit-history preservation.",
+      "owner_role": "Identity analyst",
+      "priority": "high",
+      "evidence_references": [
+        "DOC-002",
+        "DOC-003",
+        "POLICY-001"
+      ],
+      "confidence": "high"
+    },
+    {
+      "control_gap_id": "CONTROL-GAP-007",
+      "title": "Human-reviewed communication execution",
+      "current_gap": "Clarification, escalation, and reporting drafts could be inaccurate, misdirected, or over-disclose information.",
+      "risk_if_unresolved": "Restricted information or incorrect workflow messages could be sent.",
+      "recommended_control": "Require human verification of facts, recipient, disclosure scope, and exact content before any controlled communication.",
+      "validation_method": "Test incorrect recipients, excessive disclosure, unsupported facts, and unapproved versions and confirm they cannot be sent.",
+      "owner_role": "Identity analyst or security lead",
+      "priority": "high",
+      "evidence_references": [
+        "DOC-002",
+        "DOC-003",
+        "POLICY-001"
+      ],
+      "confidence": "high"
+    }
+  ],
+  "value_hypotheses": [
+    {
+      "hypothesis_id": "VALUE-001",
+      "value_area": "Identity analyst productivity",
+      "hypothesis": "Structured AI-prepared intake exception packets will reduce the time analysts spend assembling completeness and discrepancy information.",
+      "expected_directional_impact": "Lower preparation effort without transferring verification or decision authority to AI.",
+      "required_measurements": [
+        "Packet-preparation time",
+        "Total intake handling time",
+        "Analyst review time",
+        "AI output correction time"
+      ],
+      "baseline_data_needed": [
+        "Current time spent preparing intake and deficiency summaries",
+        "Current case volume by human-confirmed pattern",
+        "Current rework time"
+      ],
+      "confidence": "high",
+      "evidence_references": [
+        "DOC-001",
+        "DOC-002",
+        "DOC-003"
+      ]
+    },
+    {
+      "hypothesis_id": "VALUE-002",
+      "value_area": "Intake quality",
+      "hypothesis": "Consistent checklist and deficiency-packet preparation will reduce avoidable omissions and repeated clarification cycles.",
+      "expected_directional_impact": "Fewer missed required fields and fewer clarification exchanges caused by incomplete deficiency descriptions.",
+      "required_measurements": [
+        "Missed-deficiency rate",
+        "False-deficiency rate",
+        "Clarification return rate",
+        "Number of clarification cycles per returned request"
+      ],
+      "baseline_data_needed": [
+        "Current deficiency categories",
+        "Current clarification frequency",
+        "Current repeated-clarification frequency"
+      ],
+      "confidence": "medium",
+      "evidence_references": [
+        "DOC-002",
+        "DOC-003",
+        "DOC-004"
+      ]
+    },
+    {
+      "hypothesis_id": "VALUE-003",
+      "value_area": "Reviewer readiness",
+      "hypothesis": "Evidence-linked summaries will reduce the effort required for application-owner and security-review preparation.",
+      "expected_directional_impact": "Faster reviewer orientation and fewer follow-ups for missing evidence, while decisions remain human-controlled.",
+      "required_measurements": [
+        "Reviewer preparation time",
+        "Missing-evidence follow-ups",
+        "Summary correction rate",
+        "Unsupported-statement rate"
+      ],
+      "baseline_data_needed": [
+        "Current reviewer preparation time",
+        "Current follow-up frequency",
+        "Current evidence-deficiency types"
+      ],
+      "confidence": "medium",
+      "evidence_references": [
+        "DOC-001",
+        "DOC-002",
+        "DOC-003"
+      ]
+    },
+    {
+      "hypothesis_id": "VALUE-004",
+      "value_area": "SLA visibility",
+      "hypothesis": "After an escalation threshold is defined, a read-only candidate queue will reduce manual backlog-review effort and improve consistency.",
+      "expected_directional_impact": "More consistent identification of near-deadline unresolved requests without autonomous escalation.",
+      "required_measurements": [
+        "Queue preparation time",
+        "Missed candidate rate",
+        "False candidate rate",
+        "Age of unresolved requests at human escalation"
+      ],
+      "baseline_data_needed": [
+        "Current backlog-review effort",
+        "Current escalation timing",
+        "Current missed or late escalation occurrences"
+      ],
+      "confidence": "medium",
+      "evidence_references": [
+        "DOC-001",
+        "DOC-002",
+        "DOC-003"
+      ]
+    },
+    {
+      "hypothesis_id": "VALUE-005",
+      "value_area": "Auditability",
+      "hypothesis": "Evidence-linked AI outputs and exact-action approval records will improve the traceability of analyst preparation and later governed actions.",
+      "expected_directional_impact": "Fewer unsupported summaries and clearer linkage between evidence, reviewer decisions, and approved actions.",
+      "required_measurements": [
+        "Evidence traceability rate",
+        "Unsupported-statement rate",
+        "Missing reviewer metadata rate",
+        "Incomplete audit-event rate"
+      ],
+      "baseline_data_needed": [
+        "Current evidence completeness",
+        "Current reviewer metadata completeness",
+        "Current audit exception types"
+      ],
+      "confidence": "medium",
+      "evidence_references": [
+        "DOC-002",
+        "DOC-003"
+      ]
+    }
+  ],
+  "measurement_plan": [
+    {
+      "metric_name": "Intake packet preparation time",
+      "why_it_matters": "Tests the primary productivity hypothesis without relying on approval outcomes.",
+      "how_to_measure": "Compare analyst time for current preparation with time to review and correct AI-prepared packets for comparable human-confirmed case types.",
+      "baseline_required": true,
+      "target_or_success_signal": "A repeatable reduction in preparation effort without deterioration in deficiency accuracy."
+    },
+    {
+      "metric_name": "Missed-deficiency rate",
+      "why_it_matters": "A missed required or conflicting item can cause incorrect advancement or later rework.",
+      "how_to_measure": "Count human-confirmed deficiencies absent from the AI packet divided by all human-confirmed deficiencies.",
+      "baseline_required": true,
+      "target_or_success_signal": "No material increase from current analyst performance and performance within an approved acceptance threshold."
+    },
+    {
+      "metric_name": "False-deficiency rate",
+      "why_it_matters": "False flags create unnecessary clarification and analyst work.",
+      "how_to_measure": "Count AI-flagged deficiencies rejected by the identity analyst and segment by deficiency category.",
+      "baseline_required": true,
+      "target_or_success_signal": "A correction burden low enough that net analyst effort improves."
+    },
+    {
+      "metric_name": "Reviewer correction rate",
+      "why_it_matters": "Shows whether outputs are usable or merely shift work into editing.",
+      "how_to_measure": "Track packets requiring material additions, removals, or factual corrections.",
+      "baseline_required": true,
+      "target_or_success_signal": "Material corrections decline during the pilot and remain within an approved threshold."
+    },
+    {
+      "metric_name": "Evidence traceability rate",
+      "why_it_matters": "Reviewers must be able to verify material statements.",
+      "how_to_measure": "Sample material packet statements and determine whether each links to an approved validation result or documented requirement.",
+      "baseline_required": false,
+      "target_or_success_signal": "Material statements are consistently evidence-linked before expansion."
+    },
+    {
+      "metric_name": "Clarification cycles per returned request",
+      "why_it_matters": "A complete deficiency packet should reduce repeated requests for missing information.",
+      "how_to_measure": "Count manager clarification exchanges from initial return until intake is complete.",
+      "baseline_required": true,
+      "target_or_success_signal": "A directional reduction without over-requesting unnecessary information."
+    },
+    {
+      "metric_name": "Blocked-field exposure rate",
+      "why_it_matters": "Any productivity gain is unacceptable if restricted data enters model context.",
+      "how_to_measure": "Inspect filtered payloads and approved model-input logs for blocked fields and unsafe free text.",
+      "baseline_required": false,
+      "target_or_success_signal": "No blocked fields reach model context; any filter uncertainty fails closed."
+    },
+    {
+      "metric_name": "Analyst usefulness by case type",
+      "why_it_matters": "Standard, privileged, and clarification cases may benefit differently.",
+      "how_to_measure": "Collect a structured analyst assessment and correction burden for each human-confirmed case type.",
+      "baseline_required": false,
+      "target_or_success_signal": "At least one bounded case population shows repeatable usefulness sufficient to justify routine read-only use."
+    },
+    {
+      "metric_name": "Mandatory-review trigger miss rate",
+      "why_it_matters": "Later advisory triage must not conceal requests requiring application-owner or security review.",
+      "how_to_measure": "Compare AI flags with human-confirmed outcomes from authoritative routing criteria after those criteria are documented.",
+      "baseline_required": true,
+      "target_or_success_signal": "Meets a workflow-owner-approved threshold before any triage expansion; AI never clears review on its own."
+    },
+    {
+      "metric_name": "Governed-action control failure rate",
+      "why_it_matters": "Any later action capability must reliably reject missing approval, invalid authority, or invalid state.",
+      "how_to_measure": "Run controlled negative tests for missing approvals, unauthorized reviewers, invalid transitions, and mismatched actions.",
+      "baseline_required": false,
+      "target_or_success_signal": "All invalid governed actions fail closed before approval-gated capabilities are introduced."
+    }
+  ],
+  "sample_record_opportunity_analysis": [
+    {
+      "record_id": "AR-1001",
+      "recommended_handling": "Treat as an illustrative standard-pattern case for read-only packet preparation; an identity analyst must still verify completeness, authoritative HR results, and required routing.",
+      "ai_assistance_opportunities": [
+        "Prepare a required-field result checklist from external validation flags",
+        "Summarize approved verification metadata",
+        "Identify unresolved analyst questions",
+        "Create an evidence-linked intake packet"
+      ],
+      "human_review_triggers": [
+        "Final intake-complete determination",
+        "Any conflict in authoritative verification",
+        "Any additional-review trigger not represented in approved metadata",
+        "Routing or status change"
+      ],
+      "blocked_or_sensitive_fields": [
+        "Employee and manager identifiers and emails",
+        "Requested system",
+        "Access level",
+        "Business justification",
+        "Raw notes"
+      ],
+      "missing_information": [
+        "Authoritative HR verification result",
+        "Complete mandatory-review evaluation",
+        "Approved field-handling method"
+      ],
+      "evidence_references": [
+        "DOC-002",
+        "DOC-003",
+        "DOC-004",
+        "POLICY-001"
+      ],
+      "confidence": "high"
+    },
+    {
+      "record_id": "AR-1002",
+      "recommended_handling": "Keep in human-controlled application-owner and security review. AI may prepare an advisory packet from approved metadata but must not determine whether security requirements are satisfied.",
+      "ai_assistance_opportunities": [
+        "Prepare a checklist of required review evidence",
+        "Summarize approved status metadata",
+        "Draft questions for the security reviewer",
+        "Flag missing reviewer information"
+      ],
+      "human_review_triggers": [
+        "Privileged-access indicator",
+        "Application-owner decision",
+        "Security-review outcome",
+        "Provisioning authorization"
+      ],
+      "blocked_or_sensitive_fields": [
+        "Employee and manager identifiers and emails",
+        "Requested system",
+        "Access level",
+        "Privilege details",
+        "Business justification",
+        "Approval evidence"
+      ],
+      "missing_information": [
+        "Recorded application-owner decision",
+        "Recorded security-review outcome",
+        "Validated reviewer authority",
+        "Complete approval prerequisites"
+      ],
+      "evidence_references": [
+        "DOC-001",
+        "DOC-002",
+        "DOC-003",
+        "DOC-004",
+        "POLICY-001"
+      ],
+      "confidence": "high"
+    },
+    {
+      "record_id": "AR-1003",
+      "recommended_handling": "Keep returned for human-confirmed clarification while preserving the separate privileged-review obligation for later processing.",
+      "ai_assistance_opportunities": [
+        "Organize human-confirmed deficiency categories",
+        "Draft a neutral clarification message for analyst review",
+        "Prepare reviewer questions about role mapping and justification completeness",
+        "Preserve the higher-risk review flag in the advisory packet"
+      ],
+      "human_review_triggers": [
+        "Unclear role mapping",
+        "Incomplete justification",
+        "Privileged-access indicator",
+        "Clarification recipient and content",
+        "Any routing or status change"
+      ],
+      "blocked_or_sensitive_fields": [
+        "Employee and manager identifiers and emails",
+        "Requested system",
+        "Access level",
+        "Privilege details",
+        "Business justification",
+        "Raw notes"
+      ],
+      "missing_information": [
+        "Human-confirmed complete deficiency list",
+        "Clarified access level or role mapping",
+        "Complete business justification",
+        "Subsequent application-owner and security outcomes"
+      ],
+      "evidence_references": [
+        "DOC-002",
+        "DOC-003",
+        "DOC-004",
+        "POLICY-001"
+      ],
+      "confidence": "high"
+    }
+  ],
+  "future_state_recommendations": [
+    {
+      "recommendation_id": "FUTURE-001",
+      "title": "Introduce an approved validation-result contract",
+      "current_state_issue": "Raw workflow data is too sensitive for current model use, while unstructured redaction may remove essential meaning.",
+      "future_state_change": "Define a structured, minimized contract containing external check outcomes, deficiency categories, uncertainty indicators, and evidence references.",
+      "expected_benefit": "Useful AI preparation without exposing raw identifiers or confidential access details.",
+      "required_controls": [
+        "Field allowlist",
+        "External authoritative checks",
+        "Schema validation",
+        "Fail-closed redaction",
+        "Approved metadata logging"
+      ],
+      "implementation_notes": [
+        "Do not include original identifiers, requested systems, access levels, justifications, approval evidence, or provisioning records under current classifications.",
+        "Confirm the privilege and notes field mappings before implementation."
+      ],
+      "evidence_references": [
+        "DOC-002",
+        "DOC-004",
+        "POLICY-001"
+      ],
+      "confidence": "high"
+    },
+    {
+      "recommendation_id": "FUTURE-002",
+      "title": "Make exception types explicit and non-exclusive",
+      "current_state_issue": "A request can simultaneously need clarification and remain subject to privileged or security review.",
+      "future_state_change": "Represent completeness, verification, mandatory-review triggers, approval state, and workflow state as separate attributes rather than one overloaded status.",
+      "expected_benefit": "Clearer routing, fewer lost review obligations, and safer packet generation.",
+      "required_controls": [
+        "Documented attribute definitions",
+        "Allowed state transitions",
+        "Human confirmation of ambiguous cases",
+        "Audit history"
+      ],
+      "implementation_notes": [
+        "Use AR-1003 as an illustrative test of simultaneous clarification and higher-risk review obligations.",
+        "Do not infer production frequency from the sample."
+      ],
+      "evidence_references": [
+        "DOC-002",
+        "DOC-003",
+        "DOC-004"
+      ],
+      "confidence": "high"
+    },
+    {
+      "recommendation_id": "FUTURE-003",
+      "title": "Create deterministic gates around all consequential actions",
+      "current_state_issue": "Approval, provisioning, communication, and record-update prerequisites are described narratively but not fully executable.",
+      "future_state_change": "Implement external checks for authority, required approvals, exact action, allowed state, evidence completeness, and disclosure scope.",
+      "expected_benefit": "Later AI-generated proposals can be executed safely only after explicit human approval without granting the model autonomous authority.",
+      "required_controls": [
+        "Reviewer validation",
+        "Exact-action approval",
+        "State-transition validation",
+        "Evidence verification",
+        "Durable audit logging",
+        "Fail-closed execution"
+      ],
+      "implementation_notes": [
+        "Keep credentials and policy enforcement outside the model.",
+        "Reject model-generated text as approval evidence."
+      ],
+      "evidence_references": [
+        "DOC-001",
+        "DOC-002",
+        "DOC-003",
+        "POLICY-002"
+      ],
+      "confidence": "high"
+    },
+    {
+      "recommendation_id": "FUTURE-004",
+      "title": "Use segmented expansion gates",
+      "current_state_issue": "A single overall pilot score could hide poor performance on privileged or ambiguous cases.",
+      "future_state_change": "Evaluate standard, privileged, clarification, and combined-exception patterns separately before expanding scope.",
+      "expected_benefit": "Expansion can be limited to case populations where value and safety are demonstrated.",
+      "required_controls": [
+        "Human-confirmed case labels",
+        "Segmented quality measures",
+        "Approved acceptance thresholds",
+        "Rollback and scope restrictions"
+      ],
+      "implementation_notes": [
+        "Do not use historical approval prediction as the primary pilot measure.",
+        "Track correction burden and missed review triggers by segment."
+      ],
+      "evidence_references": [
+        "DOC-002",
+        "DOC-003",
+        "DOC-004"
+      ],
+      "confidence": "medium"
+    }
+  ],
+  "diagnostic_backlog": [
+    {
+      "backlog_id": "DIAG-BACKLOG-001",
+      "title": "Define and test the model-context contract",
+      "description": "Create the field allowlist, redaction rules, external validation-result schema, and blocked-payload behavior for the first pilot.",
+      "priority": "critical",
+      "owner_role": "Data steward and AI platform owner",
+      "dependencies": [
+        "Confirmation of field mappings",
+        "Approved model-processing boundary",
+        "Representative test cases"
+      ],
+      "acceptance_criteria": [
+        "Blocked fields are excluded from all model inputs.",
+        "Unsafe or unmapped fields fail closed.",
+        "Approved logs contain only permitted metadata.",
+        "The minimized schema supports analyst-understandable packets."
+      ],
+      "evidence_references": [
+        "DOC-004",
+        "POLICY-001"
+      ]
+    },
+    {
+      "backlog_id": "DIAG-BACKLOG-002",
+      "title": "Build the read-only shadow pilot",
+      "description": "Implement intake packet generation with no workflow, notification, approval, provisioning, or record-update authority.",
+      "priority": "high",
+      "owner_role": "Identity team with AI governance review",
+      "dependencies": [
+        "DIAG-BACKLOG-001",
+        "Approved evaluation set",
+        "Baseline measurement plan"
+      ],
+      "acceptance_criteria": [
+        "The assistant produces evidence-linked packets.",
+        "No write or external communication capability exists.",
+        "Identity analysts can review and correct every output.",
+        "Pilot events and blocked attempts are auditable."
+      ],
+      "evidence_references": [
+        "DOC-001",
+        "DOC-002",
+        "DOC-003",
+        "POLICY-001"
+      ]
+    },
+    {
+      "backlog_id": "DIAG-BACKLOG-003",
+      "title": "Formalize mandatory-review criteria",
+      "description": "Document the sensitive-system inventory and complete routing rules for privileged, custom, API, SSO, dependent, elevated, and security-related access.",
+      "priority": "critical",
+      "owner_role": "Identity workflow owner with security reviewer",
+      "dependencies": [
+        "Business and security agreement on definitions"
+      ],
+      "acceptance_criteria": [
+        "Each trigger has an authoritative definition.",
+        "Uncertain and conflicting cases have a defined fail-closed path.",
+        "Rule ownership and maintenance are assigned.",
+        "Human-confirmed test cases validate the rules."
+      ],
+      "evidence_references": [
+        "DOC-001",
+        "DOC-002",
+        "DOC-003"
+      ]
+    },
+    {
+      "backlog_id": "DIAG-BACKLOG-004",
+      "title": "Resolve required-control mappings",
+      "description": "Determine why policy lookups returned empty mappings and document applicable controls for every proposed capability.",
+      "priority": "high",
+      "owner_role": "Policy owner",
+      "dependencies": [
+        "Inventory of proposed read and governed actions"
+      ],
+      "acceptance_criteria": [
+        "Each proposed action has an approved mapping.",
+        "Unmapped actions fail closed.",
+        "Implementation evidence requirements are documented.",
+        "Production approval does not rely on an empty lookup."
+      ],
+      "evidence_references": [
+        "DOC-003",
+        "POLICY-002"
+      ]
+    },
+    {
+      "backlog_id": "DIAG-BACKLOG-005",
+      "title": "Define authority, state, and evidence semantics",
+      "description": "Document authorized reviewers and delegations, approval meanings, allowed ticket transitions, and evidence prerequisites.",
+      "priority": "high",
+      "owner_role": "Workflow owner",
+      "dependencies": [
+        "Application-owner, security-reviewer, identity-team, and authorized-IT input"
+      ],
+      "acceptance_criteria": [
+        "Reviewer authority can be validated.",
+        "Allowed transitions and prerequisites are explicit.",
+        "Invalid transitions are rejected.",
+        "Evidence requirements are defined for approvals, provisioning, updates, and rejection."
+      ],
+      "evidence_references": [
+        "DOC-002",
+        "DOC-003"
+      ]
+    },
+    {
+      "backlog_id": "DIAG-BACKLOG-006",
+      "title": "Establish pilot baselines and expansion thresholds",
+      "description": "Measure current performance and define acceptance criteria for usefulness, accuracy, traceability, and data handling.",
+      "priority": "high",
+      "owner_role": "Workflow owner",
+      "dependencies": [
+        "Representative case set",
+        "Agreed metric definitions"
+      ],
+      "acceptance_criteria": [
+        "Current handling time and clarification measures are recorded.",
+        "Error and correction measures are segmented by case type.",
+        "Data-exposure criteria require fail-closed behavior.",
+        "Expansion decisions have approved pass, hold, and stop conditions."
+      ],
+      "evidence_references": [
+        "DOC-001",
+        "DOC-003",
+        "DOC-004"
+      ]
+    },
+    {
+      "backlog_id": "DIAG-BACKLOG-007",
+      "title": "Define SLA and weekly reporting rules",
+      "description": "Approve the escalation threshold, unresolved-status criteria, report contents, aggregation, recipient scope, and handling requirements.",
+      "priority": "medium",
+      "owner_role": "Identity team lead and security lead",
+      "dependencies": [
+        "Workflow-owner agreement",
+        "Data classification review"
+      ],
+      "acceptance_criteria": [
+        "SLA candidates can be calculated deterministically.",
+        "Report fields and recipient scope are documented.",
+        "Sending and distribution remain human-approved.",
+        "Blocked fields are excluded or approved for protected handling."
+      ],
+      "evidence_references": [
+        "DOC-001",
+        "DOC-002",
+        "DOC-003",
+        "POLICY-001"
+      ]
+    },
+    {
+      "backlog_id": "DIAG-BACKLOG-008",
+      "title": "Define failure, correction, and rollback procedures",
+      "description": "Create operating procedures for incorrect AI output, failed governed actions, disputed recommendations, emergency cases, and capability disablement.",
+      "priority": "high",
+      "owner_role": "Workflow owner with security review",
+      "dependencies": [
+        "State semantics",
+        "Audit design",
+        "Monitoring ownership"
+      ],
+      "acceptance_criteria": [
+        "Incorrect outputs can be corrected without losing history.",
+        "Failed actions cannot leave ambiguous workflow state.",
+        "Emergency cases have a documented human path.",
+        "Capabilities can be disabled and rolled back."
+      ],
+      "evidence_references": [
+        "DOC-001",
+        "DOC-002",
+        "DOC-003"
+      ]
+    }
+  ],
+  "questions_for_workflow_owner": [
+    {
+      "question_id": "QUESTION-001",
+      "question": "Which exact fields and derived validation results may be sent to the approved model environment, and what retention and logging behavior is permitted?",
+      "why_it_matters": "The first pilot cannot be designed until the usable model-context boundary is explicit.",
+      "answer_needed_for": [
+        "Pilot input schema",
+        "Redaction design",
+        "Logging design"
+      ],
+      "priority": "critical"
+    },
+    {
+      "question_id": "QUESTION-002",
+      "question": "Can deterministic services produce field-presence, HR-verification, and discrepancy results without exposing the underlying restricted values to the model?",
+      "why_it_matters": "The recommended pilot depends on transforming sensitive source data into approved validation metadata.",
+      "answer_needed_for": [
+        "First pilot feasibility",
+        "Context minimization",
+        "Authoritative verification boundary"
+      ],
+      "priority": "critical"
+    },
+    {
+      "question_id": "QUESTION-003",
+      "question": "What is the authoritative inventory of sensitive systems, and what are the complete criteria for privileged, custom, API, SSO, dependency, elevated, and security-related review?",
+      "why_it_matters": "These rules determine mandatory review and cannot be safely inferred by AI.",
+      "answer_needed_for": [
+        "Routing rules",
+        "Reviewer queues",
+        "Later advisory triage"
+      ],
+      "priority": "critical"
+    },
+    {
+      "question_id": "QUESTION-004",
+      "question": "How are authorized application owners, security reviewers, IT personnel, identity analysts, and delegations validated for a specific request?",
+      "why_it_matters": "An approval gate is ineffective if reviewer authority cannot be verified.",
+      "answer_needed_for": [
+        "Reviewer-specific workflows",
+        "Approval-gated actions",
+        "Audit evidence"
+      ],
+      "priority": "high"
+    },
+    {
+      "question_id": "QUESTION-005",
+      "question": "What do each approval and ticket status mean, and which transitions are allowed from each state?",
+      "why_it_matters": "Structured update proposals and action gates require deterministic state semantics.",
+      "answer_needed_for": [
+        "Workflow advancement",
+        "Record-update validation",
+        "Failure handling"
+      ],
+      "priority": "high"
+    },
+    {
+      "question_id": "QUESTION-006",
+      "question": "Why did the required-control lookup return empty mappings, and who can approve the corrected mappings?",
+      "why_it_matters": "Empty mappings cannot serve as authorization for production capabilities.",
+      "answer_needed_for": [
+        "Production control design",
+        "Governed action approval",
+        "Fail-closed behavior"
+      ],
+      "priority": "high"
+    },
+    {
+      "question_id": "QUESTION-007",
+      "question": "What threshold defines a request as approaching its SLA deadline, and which unresolved statuses qualify?",
+      "why_it_matters": "Without this rule, candidate escalation queues will be inconsistent.",
+      "answer_needed_for": [
+        "SLA queue preparation",
+        "Escalation drafts",
+        "SLA measurement"
+      ],
+      "priority": "medium"
+    },
+    {
+      "question_id": "QUESTION-008",
+      "question": "What evidence is required for approval, security review, provisioning, rejection, status change, escalation, and report distribution, and how long must it be retained?",
+      "why_it_matters": "Evidence completeness and retention determine whether later actions are safe and auditable.",
+      "answer_needed_for": [
+        "Evidence-linked summaries",
+        "Pre-provisioning gates",
+        "Record updates",
+        "Audit design"
+      ],
+      "priority": "high"
+    },
+    {
+      "question_id": "QUESTION-009",
+      "question": "What are the approved contents, aggregation level, recipient scope, and handling rules for the weekly access review report?",
+      "why_it_matters": "Draft reporting cannot be safely evaluated without a defined disclosure boundary.",
+      "answer_needed_for": [
+        "Report-generation pilot",
+        "Data minimization",
+        "Distribution approval"
+      ],
+      "priority": "medium"
+    },
+    {
+      "question_id": "QUESTION-010",
+      "question": "What emergency, exception, correction, rollback, and failed-action procedures apply to this workflow?",
+      "why_it_matters": "Higher autonomy requires a safe human path when normal prerequisites or automated checks fail.",
+      "answer_needed_for": [
+        "Production operations",
+        "Approval-gated actions",
+        "Rollback design"
+      ],
+      "priority": "high"
+    },
+    {
+      "question_id": "QUESTION-011",
+      "question": "What current handling-time, clarification, error, rework, and SLA measures can be baselined before the pilot?",
+      "why_it_matters": "Without baseline data, the organization cannot distinguish useful assistance from added review overhead.",
+      "answer_needed_for": [
+        "Value measurement",
+        "Pilot success criteria",
+        "Expansion decision"
+      ],
+      "priority": "high"
+    },
+    {
+      "question_id": "QUESTION-012",
+      "question": "What correction, missed-deficiency, false-flag, traceability, and data-exposure thresholds must the pilot meet before expansion?",
+      "why_it_matters": "The workflow needs explicit evidence-based release gates rather than subjective confidence in model output.",
+      "answer_needed_for": [
+        "Pilot pass or fail",
+        "Scope expansion",
+        "Monitoring and rollback"
+      ],
+      "priority": "high"
+    }
+  ],
+  "evidence_catalog": [
+    {
+      "evidence_id": "DOC-001",
+      "evidence_type": "workflow_document",
+      "source_title": "Process Narrative",
+      "summary": "# Process Narrative The access request review workflow manages employee requests for application, data, and system access. Managers submit access requests for employees who need new or changed permissions. The identity team reviews required intake fields, verifies employee information against the HR system, and checks whether the request involves privileged access, sensitive systems, custom roles, APIs, or security-related permissions. Requests with missing, unclear, or conflicting informatio..."
+    },
+    {
+      "evidence_id": "DOC-002",
+      "evidence_type": "workflow_document",
+      "source_title": "Current Workflow Steps",
+      "summary": "# Current Workflow Steps 1. Manager submits an access request for an employee, including employee identifier, requested system, access level, business justification, and required fields. 2. Identity analyst verifies employee identifier, employee email, manager email, role, and employment status against the HR source system. 3. Identity analyst reviews the request for privileged access, sensitive systems, custom permissions, APIs, SSO, security requirements, or system access dependencies. 4. M..."
+    },
+    {
+      "evidence_id": "DOC-003",
+      "evidence_type": "workflow_document",
+      "source_title": "Policy and Controls",
+      "summary": "# Policy and Controls - Access requests require a valid employee identifier, manager, requested system, access level, and business justification. - Requests with missing, unclear, incomplete, or conflicting intake information must be routed back for clarification. - Privileged access requires application owner approval and security review. - Access to sensitive systems requires additional review before provisioning. - Provisioning actions must not occur until required approvals are recorded. ..."
+    },
+    {
+      "evidence_id": "DOC-004",
+      "evidence_type": "workflow_document",
+      "source_title": "Sample Records",
+      "summary": "request_id,employee_identifier,employee_email,manager_email,requested_system,access_level,business_justification,approval_status,ticket_status,sla_due_date,contains_privileged_access,notes AR-1001,E-48191,alex.rivera@example.com,manager.one@example.com,Customer Data Warehouse,read_only,Needs access for monthly reporting,pending_review,intake_complete,2026-08-15,false,Manager provided standard reporting justification AR-1002,E-57203,jordan.lee@example.com,manager.two@example.com,Production Adm..."
+    },
+    {
+      "evidence_id": "POLICY-001",
+      "evidence_type": "data_classification_batch",
+      "source_title": "Batch data classification results",
+      "summary": "Policy-server classifications for workflow data elements."
+    },
+    {
+      "evidence_id": "POLICY-002",
+      "evidence_type": "required_controls_batch",
+      "source_title": "Batch required-control lookup results",
+      "summary": "Policy-server required-control lookup results for governed workflow actions."
+    }
+  ],
+  "metadata": {
+    "diagnostic_goal": "Identify the most valuable and safest AI opportunities, current readiness blockers, and a practical path to a pilot.",
+    "current_state_assessment": "Good candidate for bounded assistance with controls; not ready for autonomous decisions, provisioning, communications, or record updates.",
+    "recommended_pilot_mode": "Read-only shadow evaluation using approved minimized metadata.",
+    "sample_record_caveat": "The three records are illustrative and do not establish production frequencies, complete routing logic, or control effectiveness.",
+    "major_limitations": [
+      "No SLA escalation threshold",
+      "No complete mandatory-review criteria or sensitive-system inventory",
+      "No reviewer authorization or delegation rules",
+      "No documented workflow-state transition model",
+      "No evidence-retention duration or storage requirements",
+      "No emergency or exception process",
+      "No approved detailed model deployment and logging boundary",
+      "No established measurement baselines or acceptance thresholds"
+    ],
+    "source_scope": [
+      "Provided workflow packet",
+      "Reconciled agentic readiness blueprint",
+      "Validated LLM workflow analysis",
+      "Risk-control matrix",
+      "Human-in-the-loop design",
+      "Implementation backlog",
+      "Evidence catalog"
+    ],
+    "workflow_id": "access_request_review",
+    "run_id": "run_6ebf6bbdaee749e8be2cf4e24ecf5777",
+    "created_at": "2026-08-04T22:49:15.926316+00:00",
+    "generation_mode": "llm_generated_opportunity_diagnostic",
+    "source": "workflow_packet_reconciled_blueprint_and_validated_artifacts",
+    "governance_note": "This diagnostic is advisory. It identifies AI opportunity, readiness blockers, and implementation priorities, but does not approve automation or execute workflow actions."
+  }
+}

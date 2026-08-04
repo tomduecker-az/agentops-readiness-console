@@ -17,6 +17,7 @@ class ArtifactType(str, Enum):
     evidence_grounding_evaluation = "evidence_grounding_evaluation"
     agentic_readiness_blueprint = "agentic_readiness_blueprint"
     llm_blueprint_proposal = "llm_blueprint_proposal"
+    workflow_ai_opportunity_diagnostic = "workflow_ai_opportunity_diagnostic"
 
 
 class ArtifactStatus(str, Enum):
