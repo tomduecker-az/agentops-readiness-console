@@ -9,6 +9,7 @@ description = "Reusable workflow registry and document access logic for AgentOps
 requires-python = ">=3.12"
 dependencies = [
     "pydantic>=2.0.0",
+    "openpyxl>=3.1.0",
 ]
 
 [tool.setuptools.packages.find]
