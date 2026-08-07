@@ -1,0 +1,868 @@
+{
+  "packet_version": "workflow_packet_v1",
+  "workflow_id": "access_request_review",
+  "workflow_name": "Access Request Review",
+  "overview": {
+    "Workflow Name": "Access Request Review",
+    "Business Purpose": "Ensure employees receive appropriate application access while preserving security, approval accountability, and audit evidence.",
+    "Workflow Trigger": "A manager submits an access request for an employee who needs access to an application, role, or system capability.",
+    "Workflow Completion Criteria": "The request is approved or rejected, approved access is provisioned when applicable, the ticket is updated, and required approval/evidence records are retained.",
+    "Primary Participants": "Manager; Identity Analyst; Application Owner; Security Reviewer; IT Provisioning Specialist",
+    "Systems Involved": "Ticketing System; HRIS; Identity Provider; Application Administration Console; Reporting System",
+    "Current Pain Points": "Manual verification, incomplete requests, inconsistent evidence packets, unclear routing for privileged access, SLA pressure, and audit preparation effort.",
+    "AI Goals": "Identify missing information earlier, prepare reviewer packets, summarize model-safe validation results, flag requests needing additional review, improve SLA visibility, and improve audit readiness.",
+    "AI No-Go Areas": "AI must not approve or reject access, provision access, update systems of record, send external communications, or bypass required human review.",
+    "Known Constraints": "PII and sensitive access details must be restricted from model context unless transformed into approved derived signals. Privileged access requires human review. Write actions require approval and audit logging."
+  },
+  "workflow_steps": [
+    {
+      "step_id": "STEP-001",
+      "step_name": "Submit access request",
+      "sequence": 1,
+      "owner_role": "Manager",
+      "trigger_or_input": "Employee needs application access",
+      "activity": "Submit access request with employee, application, role, access scope, and business justification.",
+      "decision_or_rule": "Request must contain required intake fields before review can begin.",
+      "systems_used": [
+        "Ticketing System"
+      ],
+      "data_used": [
+        "request_type",
+        "request_reason",
+        "system_requested",
+        "access_scope"
+      ],
+      "output": "Submitted access request ticket",
+      "exceptions_or_escalations": "Incomplete requests returned for clarification.",
+      "current_pain_points": "Missing or vague intake data causes rework."
+    },
+    {
+      "step_id": "STEP-002",
+      "step_name": "Verify employee and manager",
+      "sequence": 2,
+      "owner_role": "Identity Analyst",
+      "trigger_or_input": "Submitted access request",
+      "activity": "Verify employee status, manager relationship, role, and employment status against HR source.",
+      "decision_or_rule": "Employee must be active and manager relationship must be valid.",
+      "systems_used": [
+        "Ticketing System",
+        "HRIS"
+      ],
+      "data_used": [
+        "employee_status",
+        "manager_verified",
+        "verification_status"
+      ],
+      "output": "Employee and manager verification result",
+      "exceptions_or_escalations": "Conflicting HR data is escalated.",
+      "current_pain_points": "Manual verification takes analyst time."
+    },
+    {
+      "step_id": "STEP-003",
+      "step_name": "Review access characteristics",
+      "sequence": 3,
+      "owner_role": "Identity Analyst",
+      "trigger_or_input": "Verified request",
+      "activity": "Review whether access is privileged, sensitive, custom, API-based, SSO-related, or security-impacting.",
+      "decision_or_rule": "Requests with privileged or sensitive characteristics require additional review.",
+      "systems_used": [
+        "Ticketing System",
+        "Application Administration Console"
+      ],
+      "data_used": [
+        "request_type",
+        "contains_privileged_access",
+        "access_scope",
+        "system_requested"
+      ],
+      "output": "Review classification",
+      "exceptions_or_escalations": "Unclear access scope returned for clarification.",
+      "current_pain_points": "Routing criteria may be inconsistently applied."
+    },
+    {
+      "step_id": "STEP-004",
+      "step_name": "Clarify missing or conflicting intake",
+      "sequence": 4,
+      "owner_role": "Identity Analyst",
+      "trigger_or_input": "Missing, unclear, or conflicting information",
+      "activity": "Return request to manager or requester for clarification.",
+      "decision_or_rule": "Clarification is required before approval routing if required data is missing.",
+      "systems_used": [
+        "Ticketing System"
+      ],
+      "data_used": [
+        "verification_status",
+        "role_mapping_status",
+        "notes"
+      ],
+      "output": "Clarification request",
+      "exceptions_or_escalations": "Repeated clarification loops may occur.",
+      "current_pain_points": "Clarification loops increase cycle time."
+    },
+    {
+      "step_id": "STEP-005",
+      "step_name": "Application owner decision",
+      "sequence": 5,
+      "owner_role": "Application Owner",
+      "trigger_or_input": "Review-ready request",
+      "activity": "Approve or reject access request based on application ownership criteria.",
+      "decision_or_rule": "Only authorized application owners can approve access.",
+      "systems_used": [
+        "Ticketing System"
+      ],
+      "data_used": [
+        "application_owner_approval",
+        "access_scope",
+        "request_reason"
+      ],
+      "output": "Application owner approval outcome",
+      "exceptions_or_escalations": "Unauthorized or unclear approvals escalated.",
+      "current_pain_points": "Approval evidence may be incomplete or inconsistent."
+    },
+    {
+      "step_id": "STEP-006",
+      "step_name": "Security review",
+      "sequence": 6,
+      "owner_role": "Security Reviewer",
+      "trigger_or_input": "Privileged, sensitive, custom, API, SSO, or security-impacting request",
+      "activity": "Review additional risk and approve, reject, or request more information.",
+      "decision_or_rule": "Security review is required for privileged or sensitive access.",
+      "systems_used": [
+        "Ticketing System",
+        "Identity Provider"
+      ],
+      "data_used": [
+        "security_review_required",
+        "security_review_status",
+        "contains_privileged_access"
+      ],
+      "output": "Security review outcome",
+      "exceptions_or_escalations": "Incomplete risk context returned for clarification.",
+      "current_pain_points": "Security review routing depends on accurate classification."
+    },
+    {
+      "step_id": "STEP-007",
+      "step_name": "Provision approved access",
+      "sequence": 7,
+      "owner_role": "IT Provisioning Specialist",
+      "trigger_or_input": "Required approvals recorded",
+      "activity": "Provision approved access in identity provider or application administration system.",
+      "decision_or_rule": "Provisioning cannot occur until required approvals are recorded.",
+      "systems_used": [
+        "Identity Provider",
+        "Application Administration Console"
+      ],
+      "data_used": [
+        "application_owner_approval",
+        "security_review_status",
+        "action_details"
+      ],
+      "output": "Provisioned access",
+      "exceptions_or_escalations": "Provisioning failures escalated.",
+      "current_pain_points": "Manual provisioning creates delay and risk of inconsistency."
+    },
+    {
+      "step_id": "STEP-008",
+      "step_name": "Update ticket and evidence",
+      "sequence": 8,
+      "owner_role": "Identity Analyst",
+      "trigger_or_input": "Provisioning complete or request rejected",
+      "activity": "Update ticket status and attach required approval, provisioning, and review evidence.",
+      "decision_or_rule": "System-of-record updates must include evidence references.",
+      "systems_used": [
+        "Ticketing System"
+      ],
+      "data_used": [
+        "current_status",
+        "approval_status",
+        "notes"
+      ],
+      "output": "Updated ticket and retained evidence",
+      "exceptions_or_escalations": "Missing evidence routed back to responsible reviewer or provisioner.",
+      "current_pain_points": "Evidence collection creates audit effort."
+    },
+    {
+      "step_id": "STEP-009",
+      "step_name": "Escalate near-SLA requests",
+      "sequence": 9,
+      "owner_role": "Identity Analyst",
+      "trigger_or_input": "Request approaches SLA threshold",
+      "activity": "Escalate requests near SLA breach to appropriate owner.",
+      "decision_or_rule": "Near-SLA requests require escalation according to operational policy.",
+      "systems_used": [
+        "Ticketing System",
+        "Reporting System"
+      ],
+      "data_used": [
+        "current_status",
+        "sla_risk"
+      ],
+      "output": "Escalation notice",
+      "exceptions_or_escalations": "Unclear SLA threshold may delay escalation.",
+      "current_pain_points": "SLA management is manual."
+    },
+    {
+      "step_id": "STEP-010",
+      "step_name": "Prepare weekly report and retain evidence",
+      "sequence": 10,
+      "owner_role": "Identity Analyst",
+      "trigger_or_input": "Weekly reporting cycle",
+      "activity": "Prepare weekly access request report and retain required evidence.",
+      "decision_or_rule": "Reports must be reviewed before distribution if they contain sensitive workflow information.",
+      "systems_used": [
+        "Reporting System",
+        "Ticketing System"
+      ],
+      "data_used": [
+        "current_status",
+        "request_type",
+        "approval_status",
+        "security_review_status"
+      ],
+      "output": "Weekly report and retained evidence",
+      "exceptions_or_escalations": "Report discrepancies require follow-up.",
+      "current_pain_points": "Reporting preparation consumes analyst time."
+    }
+  ],
+  "policy_controls": [
+    {
+      "control_id": "CTRL-001",
+      "control_name": "Minimum intake requirements",
+      "control_type": "policy",
+      "applies_to_steps": [
+        "STEP-001",
+        "STEP-004"
+      ],
+      "requirement": "Access requests must contain required intake fields before review can proceed.",
+      "approval_required": false,
+      "approval_role": "",
+      "evidence_required": "Completed request form",
+      "write_action_allowed": false,
+      "retention_requirement": "Retain with request ticket",
+      "source_reference": "Access intake procedure"
+    },
+    {
+      "control_id": "CTRL-002",
+      "control_name": "Employee and manager verification",
+      "control_type": "policy",
+      "applies_to_steps": [
+        "STEP-002"
+      ],
+      "requirement": "Employee status and manager relationship must be verified before approval routing.",
+      "approval_required": false,
+      "approval_role": "",
+      "evidence_required": "Verification result",
+      "write_action_allowed": false,
+      "retention_requirement": "Retain with request ticket",
+      "source_reference": "Identity operations procedure"
+    },
+    {
+      "control_id": "CTRL-003",
+      "control_name": "Application owner approval",
+      "control_type": "approval",
+      "applies_to_steps": [
+        "STEP-005",
+        "STEP-007"
+      ],
+      "requirement": "Application owner approval is required before access can be provisioned.",
+      "approval_required": true,
+      "approval_role": "Application Owner",
+      "evidence_required": "Recorded approval",
+      "write_action_allowed": true,
+      "retention_requirement": "Retain according to audit policy",
+      "source_reference": "Access approval policy"
+    },
+    {
+      "control_id": "CTRL-004",
+      "control_name": "Security review for privileged or sensitive access",
+      "control_type": "approval",
+      "applies_to_steps": [
+        "STEP-003",
+        "STEP-006",
+        "STEP-007"
+      ],
+      "requirement": "Privileged, sensitive, custom, API, SSO, or security-impacting access requires security review before provisioning.",
+      "approval_required": true,
+      "approval_role": "Security Reviewer",
+      "evidence_required": "Security review outcome",
+      "write_action_allowed": true,
+      "retention_requirement": "Retain according to audit policy",
+      "source_reference": "Privileged access policy"
+    },
+    {
+      "control_id": "CTRL-005",
+      "control_name": "No restricted data in model context",
+      "control_type": "data",
+      "applies_to_steps": [
+        "STEP-001",
+        "STEP-002",
+        "STEP-003",
+        "STEP-006"
+      ],
+      "requirement": "PII and sensitive access details must be excluded or transformed before model use.",
+      "approval_required": false,
+      "approval_role": "",
+      "evidence_required": "Model-context filtering log",
+      "write_action_allowed": false,
+      "retention_requirement": "Retain model input audit log",
+      "source_reference": "AI data handling policy"
+    },
+    {
+      "control_id": "CTRL-006",
+      "control_name": "Provisioning requires recorded approvals",
+      "control_type": "approval",
+      "applies_to_steps": [
+        "STEP-007"
+      ],
+      "requirement": "Provisioning cannot occur until required approval evidence is present.",
+      "approval_required": true,
+      "approval_role": "IT Provisioning Lead",
+      "evidence_required": "Approval and provisioning evidence",
+      "write_action_allowed": true,
+      "retention_requirement": "Retain according to audit policy",
+      "source_reference": "Provisioning control procedure"
+    },
+    {
+      "control_id": "CTRL-007",
+      "control_name": "System-of-record updates must be audited",
+      "control_type": "audit",
+      "applies_to_steps": [
+        "STEP-008"
+      ],
+      "requirement": "Ticket updates must record actor, timestamp, action, and evidence reference.",
+      "approval_required": true,
+      "approval_role": "Identity Operations Lead",
+      "evidence_required": "Audit event",
+      "write_action_allowed": true,
+      "retention_requirement": "Retain according to audit policy",
+      "source_reference": "Audit policy"
+    },
+    {
+      "control_id": "CTRL-008",
+      "control_name": "Report review and evidence retention",
+      "control_type": "retention",
+      "applies_to_steps": [
+        "STEP-010"
+      ],
+      "requirement": "Weekly reports and supporting evidence must be retained and reviewed before distribution if sensitive information is included.",
+      "approval_required": true,
+      "approval_role": "Identity Operations Lead",
+      "evidence_required": "Reviewed report and evidence package",
+      "write_action_allowed": true,
+      "retention_requirement": "Retain according to audit policy",
+      "source_reference": "Reporting and evidence retention policy"
+    }
+  ],
+  "data_dictionary": [
+    {
+      "field_name": "record_id",
+      "business_meaning": "Unique anonymized sample record identifier",
+      "source_system": "Sample Data",
+      "data_category": "Internal",
+      "required_for_workflow": true,
+      "model_context_allowed": true,
+      "redaction_required": false,
+      "allowed_values": [],
+      "used_in_steps": [
+        "STEP-001"
+      ],
+      "notes": "Use anonymized record IDs only"
+    },
+    {
+      "field_name": "request_type",
+      "business_meaning": "Type of access request",
+      "source_system": "Ticketing System",
+      "data_category": "Internal",
+      "required_for_workflow": true,
+      "model_context_allowed": true,
+      "redaction_required": false,
+      "allowed_values": [
+        "standard",
+        "privileged",
+        "emergency"
+      ],
+      "used_in_steps": [
+        "STEP-001",
+        "STEP-003",
+        "STEP-010"
+      ],
+      "notes": "Allowed if normalized"
+    },
+    {
+      "field_name": "request_reason",
+      "business_meaning": "Business justification for requested access",
+      "source_system": "Ticketing System",
+      "data_category": "Confidential",
+      "required_for_workflow": true,
+      "model_context_allowed": false,
+      "redaction_required": true,
+      "allowed_values": [],
+      "used_in_steps": [
+        "STEP-001",
+        "STEP-005"
+      ],
+      "notes": "Free text should be summarized or excluded unless approved"
+    },
+    {
+      "field_name": "employee_status",
+      "business_meaning": "Employment status from HR source",
+      "source_system": "HRIS",
+      "data_category": "PII",
+      "required_for_workflow": true,
+      "model_context_allowed": false,
+      "redaction_required": true,
+      "allowed_values": [
+        "active",
+        "inactive",
+        "terminated",
+        "unknown"
+      ],
+      "used_in_steps": [
+        "STEP-002"
+      ],
+      "notes": "Use derived verification status in model context"
+    },
+    {
+      "field_name": "manager_verified",
+      "business_meaning": "Whether manager relationship was verified",
+      "source_system": "HRIS",
+      "data_category": "Derived Metadata",
+      "required_for_workflow": true,
+      "model_context_allowed": true,
+      "redaction_required": false,
+      "allowed_values": [
+        "true",
+        "false"
+      ],
+      "used_in_steps": [
+        "STEP-002"
+      ],
+      "notes": "Model-safe derived signal"
+    },
+    {
+      "field_name": "role_mapping_status",
+      "business_meaning": "Whether requested access maps cleanly to an approved role",
+      "source_system": "Ticketing System",
+      "data_category": "Derived Metadata",
+      "required_for_workflow": true,
+      "model_context_allowed": true,
+      "redaction_required": false,
+      "allowed_values": [
+        "matched",
+        "missing",
+        "conflicting"
+      ],
+      "used_in_steps": [
+        "STEP-003",
+        "STEP-004"
+      ],
+      "notes": "Useful for clarification routing"
+    },
+    {
+      "field_name": "contains_privileged_access",
+      "business_meaning": "Whether requested access includes privileged access",
+      "source_system": "Ticketing System",
+      "data_category": "Sensitive Access",
+      "required_for_workflow": true,
+      "model_context_allowed": false,
+      "redaction_required": true,
+      "allowed_values": [
+        "true",
+        "false"
+      ],
+      "used_in_steps": [
+        "STEP-003",
+        "STEP-006"
+      ],
+      "notes": "Use only approved derived handling"
+    },
+    {
+      "field_name": "access_scope",
+      "business_meaning": "Scope of requested access",
+      "source_system": "Ticketing System",
+      "data_category": "Sensitive Access",
+      "required_for_workflow": true,
+      "model_context_allowed": false,
+      "redaction_required": true,
+      "allowed_values": [
+        "standard",
+        "privileged",
+        "admin",
+        "custom"
+      ],
+      "used_in_steps": [
+        "STEP-001",
+        "STEP-003",
+        "STEP-005"
+      ],
+      "notes": "Do not send raw sensitive scope unless approved"
+    },
+    {
+      "field_name": "system_requested",
+      "business_meaning": "Application or system for which access is requested",
+      "source_system": "Ticketing System",
+      "data_category": "Internal",
+      "required_for_workflow": true,
+      "model_context_allowed": true,
+      "redaction_required": false,
+      "allowed_values": [],
+      "used_in_steps": [
+        "STEP-001",
+        "STEP-003"
+      ],
+      "notes": "Allowed if not itself sensitive"
+    },
+    {
+      "field_name": "verification_status",
+      "business_meaning": "Overall verification result",
+      "source_system": "HRIS",
+      "data_category": "Derived Metadata",
+      "required_for_workflow": true,
+      "model_context_allowed": true,
+      "redaction_required": false,
+      "allowed_values": [
+        "verified",
+        "failed",
+        "missing",
+        "conflicting"
+      ],
+      "used_in_steps": [
+        "STEP-002",
+        "STEP-004"
+      ],
+      "notes": "Preferred model-safe verification signal"
+    },
+    {
+      "field_name": "application_owner_approval",
+      "business_meaning": "Application owner approval state",
+      "source_system": "Ticketing System",
+      "data_category": "Internal",
+      "required_for_workflow": true,
+      "model_context_allowed": true,
+      "redaction_required": false,
+      "allowed_values": [
+        "pending",
+        "approved",
+        "rejected",
+        "needs_clarification"
+      ],
+      "used_in_steps": [
+        "STEP-005",
+        "STEP-007",
+        "STEP-010"
+      ],
+      "notes": "Approval alone does not authorize provisioning without all required reviews"
+    },
+    {
+      "field_name": "security_review_required",
+      "business_meaning": "Whether security review is required",
+      "source_system": "Ticketing System",
+      "data_category": "Derived Metadata",
+      "required_for_workflow": true,
+      "model_context_allowed": true,
+      "redaction_required": false,
+      "allowed_values": [
+        "true",
+        "false"
+      ],
+      "used_in_steps": [
+        "STEP-003",
+        "STEP-006"
+      ],
+      "notes": "Derived routing signal"
+    },
+    {
+      "field_name": "security_review_status",
+      "business_meaning": "Security review state",
+      "source_system": "Ticketing System",
+      "data_category": "Internal",
+      "required_for_workflow": true,
+      "model_context_allowed": true,
+      "redaction_required": false,
+      "allowed_values": [
+        "not_required",
+        "pending",
+        "approved",
+        "rejected",
+        "needs_clarification"
+      ],
+      "used_in_steps": [
+        "STEP-006",
+        "STEP-007",
+        "STEP-010"
+      ],
+      "notes": "Required before provisioning for privileged or sensitive requests"
+    },
+    {
+      "field_name": "approval_status",
+      "business_meaning": "Overall approval state",
+      "source_system": "Ticketing System",
+      "data_category": "Internal",
+      "required_for_workflow": true,
+      "model_context_allowed": true,
+      "redaction_required": false,
+      "allowed_values": [
+        "pending",
+        "approved",
+        "rejected",
+        "needs_clarification"
+      ],
+      "used_in_steps": [
+        "STEP-005",
+        "STEP-007",
+        "STEP-008",
+        "STEP-010"
+      ],
+      "notes": "Must be validated against required approvals before execution"
+    },
+    {
+      "field_name": "action_details",
+      "business_meaning": "Provisioning action to execute",
+      "source_system": "Identity Provider",
+      "data_category": "Confidential",
+      "required_for_workflow": true,
+      "model_context_allowed": false,
+      "redaction_required": true,
+      "allowed_values": [],
+      "used_in_steps": [
+        "STEP-007"
+      ],
+      "notes": "Do not expose raw provisioning details to model unless approved"
+    },
+    {
+      "field_name": "current_status",
+      "business_meaning": "Current workflow status",
+      "source_system": "Ticketing System",
+      "data_category": "Internal",
+      "required_for_workflow": true,
+      "model_context_allowed": true,
+      "redaction_required": false,
+      "allowed_values": [
+        "submitted",
+        "in_review",
+        "pending_security_review",
+        "ready_to_provision",
+        "completed",
+        "returned",
+        "escalated"
+      ],
+      "used_in_steps": [
+        "STEP-008",
+        "STEP-009",
+        "STEP-010"
+      ],
+      "notes": "Controlled workflow state"
+    },
+    {
+      "field_name": "sla_risk",
+      "business_meaning": "Whether request is approaching SLA threshold",
+      "source_system": "Reporting System",
+      "data_category": "Derived Metadata",
+      "required_for_workflow": false,
+      "model_context_allowed": true,
+      "redaction_required": false,
+      "allowed_values": [
+        "low",
+        "medium",
+        "high"
+      ],
+      "used_in_steps": [
+        "STEP-009"
+      ],
+      "notes": "Useful for prioritization"
+    },
+    {
+      "field_name": "notes",
+      "business_meaning": "Free-text workflow notes",
+      "source_system": "Ticketing System",
+      "data_category": "Confidential",
+      "required_for_workflow": false,
+      "model_context_allowed": false,
+      "redaction_required": true,
+      "allowed_values": [],
+      "used_in_steps": [
+        "STEP-004",
+        "STEP-008"
+      ],
+      "notes": "Free text requires careful handling"
+    }
+  ],
+  "sample_records": [
+    {
+      "record_id": "AR-1001",
+      "request_type": "standard",
+      "request_reason": "Routine business access request",
+      "employee_status": "active",
+      "manager_verified": "true",
+      "role_mapping_status": "matched",
+      "contains_privileged_access": "false",
+      "access_scope": "standard",
+      "system_requested": "Expense Management",
+      "verification_status": "verified",
+      "application_owner_approval": "pending",
+      "security_review_required": "false",
+      "security_review_status": "not_required",
+      "approval_status": "pending",
+      "action_details": "Standard role assignment",
+      "current_status": "in_review",
+      "sla_risk": "low",
+      "notes": "Standard request ready for application owner review"
+    },
+    {
+      "record_id": "AR-1002",
+      "request_type": "privileged",
+      "request_reason": "Privileged access needed for operational support",
+      "employee_status": "active",
+      "manager_verified": "true",
+      "role_mapping_status": "matched",
+      "contains_privileged_access": "true",
+      "access_scope": "admin",
+      "system_requested": "Customer Operations Console",
+      "verification_status": "verified",
+      "application_owner_approval": "approved",
+      "security_review_required": "true",
+      "security_review_status": "pending",
+      "approval_status": "pending",
+      "action_details": "Privileged role assignment",
+      "current_status": "pending_security_review",
+      "sla_risk": "medium",
+      "notes": "Requires security review before provisioning"
+    },
+    {
+      "record_id": "AR-1003",
+      "request_type": "privileged",
+      "request_reason": "Privileged access request with incomplete role mapping",
+      "employee_status": "active",
+      "manager_verified": "true",
+      "role_mapping_status": "missing",
+      "contains_privileged_access": "true",
+      "access_scope": "custom",
+      "system_requested": "Reporting Administration",
+      "verification_status": "missing",
+      "application_owner_approval": "needs_clarification",
+      "security_review_required": "true",
+      "security_review_status": "needs_clarification",
+      "approval_status": "needs_clarification",
+      "action_details": "Custom role assignment",
+      "current_status": "returned",
+      "sla_risk": "high",
+      "notes": "Role mapping incomplete and clarification required"
+    },
+    {
+      "record_id": "AR-1004",
+      "request_type": "standard",
+      "request_reason": "Standard access request for new team member",
+      "employee_status": "active",
+      "manager_verified": "true",
+      "role_mapping_status": "matched",
+      "contains_privileged_access": "false",
+      "access_scope": "standard",
+      "system_requested": "Document Repository",
+      "verification_status": "verified",
+      "application_owner_approval": "approved",
+      "security_review_required": "false",
+      "security_review_status": "not_required",
+      "approval_status": "approved",
+      "action_details": "Standard group assignment",
+      "current_status": "ready_to_provision",
+      "sla_risk": "medium",
+      "notes": "Ready to provision after approval evidence check"
+    },
+    {
+      "record_id": "AR-1005",
+      "request_type": "emergency",
+      "request_reason": "Urgent time-sensitive access request",
+      "employee_status": "active",
+      "manager_verified": "true",
+      "role_mapping_status": "conflicting",
+      "contains_privileged_access": "true",
+      "access_scope": "privileged",
+      "system_requested": "Incident Response Tool",
+      "verification_status": "conflicting",
+      "application_owner_approval": "pending",
+      "security_review_required": "true",
+      "security_review_status": "pending",
+      "approval_status": "pending",
+      "action_details": "Privileged emergency access",
+      "current_status": "escalated",
+      "sla_risk": "high",
+      "notes": "Conflicting role mapping and SLA escalation"
+    }
+  ],
+  "goals_metrics": {
+    "Business Goals": "Reduce manual analyst preparation effort, reduce avoidable clarification loops, improve reviewer packet consistency, improve SLA visibility, and improve audit readiness.",
+    "Current Baselines": "Average handling time, clarification rate, SLA-risk count, security-review routing accuracy, reviewer correction rate, and weekly reporting effort are not fully baselined yet.",
+    "Target Improvements": "Pilot should show measurable reduction in analyst preparation time and clarification rework without increasing missed deficiencies or unsupported recommendations.",
+    "Risk Tolerance": "No autonomous approval, provisioning, system-of-record updates, report distribution, or restricted data in model context.",
+    "Pilot Constraints": "Pilot should be read-only/advisory, use model-safe derived fields, preserve human approval authority, and maintain audit evidence.",
+    "Success Criteria": "Reviewers accept AI-prepared packets as useful, corrections are tracked, no restricted data enters model context, and no required approval/provisioning control is bypassed."
+  },
+  "target_systems": [
+    {
+      "system_name": "Ticketing System",
+      "system_type": "workflow_system",
+      "read_access_possible": true,
+      "write_access_possible": true,
+      "owner_role": "Identity Operations",
+      "authentication_method": "SSO or OAuth",
+      "notes": "Ticket updates require approval/audit controls."
+    },
+    {
+      "system_name": "HRIS",
+      "system_type": "source_system",
+      "read_access_possible": true,
+      "write_access_possible": false,
+      "owner_role": "HR Operations",
+      "authentication_method": "SSO",
+      "notes": "Read-only verification source."
+    },
+    {
+      "system_name": "Identity Provider",
+      "system_type": "identity_system",
+      "read_access_possible": true,
+      "write_access_possible": true,
+      "owner_role": "IT Security",
+      "authentication_method": "Approved service account",
+      "notes": "Provisioning requires recorded approval evidence."
+    },
+    {
+      "system_name": "Application Administration Console",
+      "system_type": "execution_system",
+      "read_access_possible": true,
+      "write_access_possible": true,
+      "owner_role": "Application Owner",
+      "authentication_method": "SSO or approved integration",
+      "notes": "Application-specific access execution system."
+    },
+    {
+      "system_name": "Reporting System",
+      "system_type": "reporting_system",
+      "read_access_possible": true,
+      "write_access_possible": true,
+      "owner_role": "Identity Operations",
+      "authentication_method": "SSO",
+      "notes": "Report distribution requires review when sensitive information is included."
+    }
+  ],
+  "metadata": {
+    "source_path": "examples/templates/workflow_packet_v1_example_access_request_review.xlsx",
+    "source_file_name": "workflow_packet_v1_example_access_request_review.xlsx",
+    "sheet_names": [
+      "Allowed Values",
+      "README",
+      "Workflow Overview",
+      "Workflow Steps",
+      "Policy Controls",
+      "Data Dictionary",
+      "Sample Records",
+      "Goals & Metrics",
+      "Target Systems"
+    ],
+    "workflow_step_count": 10,
+    "policy_control_count": 8,
+    "data_field_count": 18,
+    "sample_record_count": 5,
+    "target_system_count": 5,
+    "has_goals_metrics": true
+  }
+}

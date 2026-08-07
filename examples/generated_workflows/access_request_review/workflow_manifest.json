@@ -1,0 +1,74 @@
+{
+  "workflow_id": "access_request_review",
+  "display_name": "Access Request Review",
+  "description": "Ensure employees receive appropriate application access while preserving security, approval accountability, and audit evidence.",
+  "packet_path": ".",
+  "documents": [
+    {
+      "document_id": "process_narrative",
+      "title": "Process Narrative",
+      "relative_path": "process_narrative.md",
+      "document_type": "process_narrative"
+    },
+    {
+      "document_id": "current_workflow_steps",
+      "title": "Current Workflow Steps",
+      "relative_path": "current_workflow_steps.md",
+      "document_type": "current_workflow_steps"
+    },
+    {
+      "document_id": "policy_and_controls",
+      "title": "Policy and Controls",
+      "relative_path": "policy_and_controls.md",
+      "document_type": "policy_and_controls"
+    },
+    {
+      "document_id": "sample_records",
+      "title": "Sample Records",
+      "relative_path": "sample_records.csv",
+      "document_type": "sample_records"
+    },
+    {
+      "document_id": "data_dictionary",
+      "title": "Data Dictionary",
+      "relative_path": "data_dictionary.md",
+      "document_type": "supporting_documentation"
+    },
+    {
+      "document_id": "goals_and_metrics",
+      "title": "Goals and Metrics",
+      "relative_path": "goals_and_metrics.md",
+      "document_type": "supporting_documentation"
+    },
+    {
+      "document_id": "target_systems",
+      "title": "Target Systems",
+      "relative_path": "target_systems.md",
+      "document_type": "supporting_documentation"
+    }
+  ],
+  "metadata": {
+    "source": {
+      "type": "workflow_packet_v1",
+      "packet_version": "workflow_packet_v1",
+      "source_file_name": "workflow_packet_v1_example_access_request_review.xlsx",
+      "source_path": "examples/templates/workflow_packet_v1_example_access_request_review.xlsx"
+    },
+    "workflow_step_count": 10,
+    "policy_control_count": 8,
+    "data_field_count": 18,
+    "sample_record_count": 5,
+    "target_system_count": 5,
+    "has_goals_metrics": true,
+    "files_written": [
+      "examples/generated_workflows/access_request_review/process_narrative.md",
+      "examples/generated_workflows/access_request_review/current_workflow_steps.md",
+      "examples/generated_workflows/access_request_review/policy_and_controls.md",
+      "examples/generated_workflows/access_request_review/data_dictionary.md",
+      "examples/generated_workflows/access_request_review/goals_and_metrics.md",
+      "examples/generated_workflows/access_request_review/target_systems.md",
+      "examples/generated_workflows/access_request_review/sample_records.csv",
+      "examples/generated_workflows/access_request_review/normalized_packet.json"
+    ]
+  }
+}
