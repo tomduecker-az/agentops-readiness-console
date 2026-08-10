@@ -22,6 +22,7 @@ def generate_agentic_readiness_blueprint(
     run_id: str,
     workflow_id: str,
     persist: bool = True,
+    audit_enabled: bool = True,
 ) -> dict[str, Any]:
     """Generate the primary Agentic Readiness Blueprint for a completed run.
 
@@ -29,16 +30,18 @@ def generate_agentic_readiness_blueprint(
     from previously generated and evaluated analysis artifacts.
     """
 
-    log_audit_event(
-        run_id=run_id,
-        event_type=AuditEventType.agent_started,
-        actor="blueprint_service",
-        details={
-            "workflow_id": workflow_id,
-            "agent": "agentic_readiness_blueprint_builder",
-            "generation_mode": "deterministic_from_validated_artifacts",
-        },
-    )
+    if audit_enabled:
+        log_audit_event(
+            run_id=run_id,
+            event_type=AuditEventType.agent_started,
+            actor="blueprint_service",
+            details={
+                "workflow_id": workflow_id,
+                "agent": "agentic_readiness_blueprint_builder",
+                "generation_mode": "deterministic_from_validated_artifacts",
+            },
+        )
+       
 
     artifacts_by_type = _load_artifacts_by_type(run_id=run_id)
     _validate_required_artifacts(artifacts_by_type)
@@ -93,22 +96,23 @@ def generate_agentic_readiness_blueprint(
         )
         artifact_id = artifact.artifact_id
 
-    log_audit_event(
-        run_id=run_id,
-        event_type=AuditEventType.agent_completed,
-        actor="blueprint_service",
-        details={
-            "workflow_id": workflow_id,
-            "agent": "agentic_readiness_blueprint_builder",
-            "artifact_id": artifact_id,
-            "recommendation": blueprint.executive_summary.recommendation.value,
-            "overall_score": _get_overall_score(blueprint_content),
-            "autonomy_rows": len(blueprint.step_level_autonomy_matrix),
-            "tool_capabilities": len(blueprint.tooling_blueprint),
-            "approval_gates": len(blueprint.human_approval_gates),
-            "persisted": persist,
-        },
-    )
+    if audit_enabled:
+        log_audit_event(
+            run_id=run_id,
+            event_type=AuditEventType.agent_completed,
+            actor="blueprint_service",
+            details={
+                "workflow_id": workflow_id,
+                "agent": "agentic_readiness_blueprint_builder",
+                "artifact_id": artifact_id,
+                "recommendation": blueprint.executive_summary.recommendation.value,
+                "overall_score": _get_overall_score(blueprint_content),
+                "autonomy_rows": len(blueprint.step_level_autonomy_matrix),
+                "tool_capabilities": len(blueprint.tooling_blueprint),
+                "approval_gates": len(blueprint.human_approval_gates),
+                "persisted": persist,
+            },
+        )
 
     return {
         "run_id": run_id,

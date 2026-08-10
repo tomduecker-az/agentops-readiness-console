@@ -1,0 +1,71 @@
+{
+  "status": "intake_prepared",
+  "assessment_stage": "workflow_packet_intake",
+  "run_id": "run_packet_demo_001",
+  "workflow_id": "access_request_review_packet_demo",
+  "source_workbook": "examples/templates/workflow_packet_v1_example_access_request_review.xlsx",
+  "output_dir": "examples/assessment_outputs/access_request_review_packet_demo",
+  "prepare_result": {
+    "status": "prepared",
+    "source_workbook": "examples/templates/workflow_packet_v1_example_access_request_review.xlsx",
+    "workflow_id": "access_request_review",
+    "workflow_name": "Access Request Review",
+    "installed_workflow_id": "access_request_review_packet_demo",
+    "validation": {
+      "valid": true,
+      "error_count": 0,
+      "warning_count": 0,
+      "issues": []
+    },
+    "normalized_packet_path": "examples/assessment_outputs/access_request_review_packet_demo/technical/workflow_packet_v1_example_access_request_review_normalized_packet.json",
+    "generated_workflow": {
+      "workflow_id": "access_request_review",
+      "workflow_name": "Access Request Review",
+      "output_dir": "examples/assessment_outputs/access_request_review_packet_demo/generated_workflows/access_request_review",
+      "files_written": [
+        "examples/assessment_outputs/access_request_review_packet_demo/generated_workflows/access_request_review/process_narrative.md",
+        "examples/assessment_outputs/access_request_review_packet_demo/generated_workflows/access_request_review/current_workflow_steps.md",
+        "examples/assessment_outputs/access_request_review_packet_demo/generated_workflows/access_request_review/policy_and_controls.md",
+        "examples/assessment_outputs/access_request_review_packet_demo/generated_workflows/access_request_review/data_dictionary.md",
+        "examples/assessment_outputs/access_request_review_packet_demo/generated_workflows/access_request_review/goals_and_metrics.md",
+        "examples/assessment_outputs/access_request_review_packet_demo/generated_workflows/access_request_review/target_systems.md",
+        "examples/assessment_outputs/access_request_review_packet_demo/generated_workflows/access_request_review/sample_records.csv",
+        "examples/assessment_outputs/access_request_review_packet_demo/generated_workflows/access_request_review/normalized_packet.json",
+        "examples/assessment_outputs/access_request_review_packet_demo/generated_workflows/access_request_review/workflow_manifest.json"
+      ],
+      "manifest_path": "examples/assessment_outputs/access_request_review_packet_demo/generated_workflows/access_request_review/workflow_manifest.json"
+    },
+    "install": {
+      "source_dir": "/home/tomdu/projects/agentops-readiness-console/examples/assessment_outputs/access_request_review_packet_demo/generated_workflows/access_request_review",
+      "destination_dir": "/home/tomdu/projects/agentops-readiness-console/data/workflows/access_request_review_packet_demo",
+      "workflow_id": "access_request_review_packet_demo",
+      "files_copied": 9,
+      "manifest_path": "/home/tomdu/projects/agentops-readiness-console/data/workflows/access_request_review_packet_demo/workflow_manifest.json"
+    },
+    "smoke_test": {
+      "workflow_loaded": true,
+      "workflow_id": "access_request_review_packet_demo",
+      "display_name": "Access Request Review",
+      "packet_path": "data/workflows/access_request_review_packet_demo",
+      "document_count": 7,
+      "document_ids": [
+        "process_narrative",
+        "current_workflow_steps",
+        "policy_and_controls",
+        "sample_records",
+        "data_dictionary",
+        "goals_and_metrics",
+        "target_systems"
+      ],
+      "preview_document_id": "process_narrative",
+      "preview_length": 1686
+    }
+  },
+  "analysis": {
+    "status": "not_started",
+    "reason": "Workflow packet intake is complete. Full analysis is not yet integrated into this command because upstream analysis artifacts must be generated before blueprint/diagnostic stages can run.",
+    "required_next_capability": "upstream_analysis_artifact_generation"
+  },
+  "assessment_manifest_path": "examples/assessment_outputs/access_request_review_packet_demo/assessment_manifest.json",
+  "readme_path": "examples/assessment_outputs/access_request_review_packet_demo/README.txt"
+}

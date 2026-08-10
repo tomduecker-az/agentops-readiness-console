@@ -1,8 +1,8 @@
 {
-  "workflow_id": "access_request_review_packet_demo",
+  "workflow_id": "access_request_review",
   "display_name": "Access Request Review",
   "description": "Ensure employees receive appropriate application access while preserving security, approval accountability, and audit evidence.",
-  "packet_path": "data/workflows/access_request_review_packet_demo",
+  "packet_path": ".",
   "documents": [
     {
       "document_id": "process_narrative",
@@ -52,9 +52,7 @@
       "type": "workflow_packet_v1",
       "packet_version": "workflow_packet_v1",
       "source_file_name": "workflow_packet_v1_example_access_request_review.xlsx",
-      "source_path": "examples/templates/workflow_packet_v1_example_access_request_review.xlsx",
-      "installed_workflow_id": "access_request_review_packet_demo",
-      "original_workflow_id": "access_request_review"
+      "source_path": "examples/templates/workflow_packet_v1_example_access_request_review.xlsx"
     },
     "workflow_step_count": 10,
     "policy_control_count": 8,
@@ -71,11 +69,6 @@
       "examples/assessment_outputs/access_request_review_packet_demo/generated_workflows/access_request_review/target_systems.md",
       "examples/assessment_outputs/access_request_review_packet_demo/generated_workflows/access_request_review/sample_records.csv",
       "examples/assessment_outputs/access_request_review_packet_demo/generated_workflows/access_request_review/normalized_packet.json"
-    ],
-    "installed_from": {
-      "source_dir": "/home/tomdu/projects/agentops-readiness-console/examples/assessment_outputs/access_request_review_packet_demo/generated_workflows/access_request_review",
-      "original_workflow_id": "access_request_review",
-      "install_type": "generated_workflow"
-    }
+    ]
   }
 }

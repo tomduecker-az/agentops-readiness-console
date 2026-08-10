@@ -78,6 +78,7 @@ def main() -> None:
             run_id,
             "--skip-persist",
             "--export-json",
+            "--skip-audit",
         ]
     )
     _assert_file_exists(baseline_path)

@@ -16,6 +16,11 @@ def main() -> None:
     parser.add_argument("--run-id", required=True)
     parser.add_argument("--print-json", action="store_true")
     parser.add_argument("--skip-persist", action="store_true")
+    parser.add_argument(
+        "--skip-audit",
+        action="store_true",
+        help="Skip audit event writes. Use for local/no-persistence runs.",
+    )
     parser.add_argument("--export-json", action="store_true")
 
     args = parser.parse_args()
@@ -28,6 +33,7 @@ def main() -> None:
         workflow_id=args.workflow_id,
         run_id=args.run_id,
         persist=not args.skip_persist,
+        audit_enabled=not args.skip_audit,
     )
 
     blueprint = result["blueprint"]
