@@ -1,10 +1,11 @@
 {
-  "status": "intake_prepared",
-  "assessment_stage": "workflow_packet_intake",
+  "status": "assessment_completed",
+  "assessment_stage": "workflow_packet_analysis",
   "run_id": "run_packet_demo_001",
   "workflow_id": "access_request_review_packet_demo",
   "source_workbook": "examples/templates/workflow_packet_v1_example_access_request_review.xlsx",
   "output_dir": "examples/assessment_outputs/access_request_review_packet_demo",
+  "artifacts_dir": "examples/assessment_outputs/access_request_review_packet_demo/technical/artifacts",
   "prepare_result": {
     "status": "prepared",
     "source_workbook": "examples/templates/workflow_packet_v1_example_access_request_review.xlsx",
@@ -62,9 +63,87 @@
     }
   },
   "analysis": {
-    "status": "not_started",
-    "reason": "Workflow packet intake is complete. Full analysis is not yet integrated into this command because upstream analysis artifacts must be generated before blueprint/diagnostic stages can run.",
-    "required_next_capability": "upstream_analysis_artifact_generation"
+    "status": "completed",
+    "run_llm": false,
+    "run_analysis": true,
+    "evaluation_profile_id": "access_request_review",
+    "steps": [
+      {
+        "step_name": "llm_shadow_evaluation",
+        "status": "completed",
+        "command": [
+          "/home/tomdu/projects/agentops-readiness-console/services/api/.venv/bin/python",
+          "-m",
+          "scripts.evaluate_llm_shadow_analysis",
+          "--workflow-id",
+          "access_request_review_packet_demo",
+          "--evaluation-profile-id",
+          "access_request_review",
+          "--run-id",
+          "run_packet_demo_001",
+          "--artifacts-dir",
+          "examples/assessment_outputs/access_request_review_packet_demo/technical/artifacts",
+          "--skip-persist"
+        ]
+      },
+      {
+        "step_name": "mcp_operational_evaluation",
+        "status": "completed",
+        "command": [
+          "/home/tomdu/projects/agentops-readiness-console/services/api/.venv/bin/python",
+          "-m",
+          "scripts.evaluate_mcp_operational_readiness",
+          "--workflow-id",
+          "access_request_review_packet_demo",
+          "--run-id",
+          "run_packet_demo_001",
+          "--artifacts-dir",
+          "examples/assessment_outputs/access_request_review_packet_demo/technical/artifacts",
+          "--skip-persist"
+        ]
+      },
+      {
+        "step_name": "evidence_grounding_evaluation",
+        "status": "completed",
+        "command": [
+          "/home/tomdu/projects/agentops-readiness-console/services/api/.venv/bin/python",
+          "-m",
+          "scripts.evaluate_evidence_grounding",
+          "--workflow-id",
+          "access_request_review_packet_demo",
+          "--run-id",
+          "run_packet_demo_001",
+          "--artifacts-dir",
+          "examples/assessment_outputs/access_request_review_packet_demo/technical/artifacts",
+          "--skip-persist"
+        ]
+      },
+      {
+        "step_name": "agentic_readiness_blueprint",
+        "status": "completed",
+        "command": [
+          "/home/tomdu/projects/agentops-readiness-console/services/api/.venv/bin/python",
+          "-m",
+          "scripts.generate_agentic_readiness_blueprint",
+          "--workflow-id",
+          "access_request_review_packet_demo",
+          "--run-id",
+          "run_packet_demo_001",
+          "--artifacts-dir",
+          "examples/assessment_outputs/access_request_review_packet_demo/technical/artifacts",
+          "--skip-persist",
+          "--skip-audit",
+          "--export-json"
+        ]
+      }
+    ],
+    "artifact_paths": {
+      "llm_workflow_analysis": "examples/assessment_outputs/access_request_review_packet_demo/technical/artifacts/llm_workflow_analysis.json",
+      "llm_shadow_evaluation": "examples/assessment_outputs/access_request_review_packet_demo/technical/artifacts/llm_shadow_evaluation.json",
+      "mcp_operational_evaluation": "examples/assessment_outputs/access_request_review_packet_demo/technical/artifacts/mcp_operational_evaluation.json",
+      "evidence_grounding_evaluation": "examples/assessment_outputs/access_request_review_packet_demo/technical/artifacts/evidence_grounding_evaluation.json",
+      "agentic_readiness_blueprint": "examples/assessment_outputs/access_request_review_packet_demo/technical/artifacts/agentic_readiness_blueprint.json"
+    }
   },
   "assessment_manifest_path": "examples/assessment_outputs/access_request_review_packet_demo/assessment_manifest.json",
   "readme_path": "examples/assessment_outputs/access_request_review_packet_demo/README.txt"

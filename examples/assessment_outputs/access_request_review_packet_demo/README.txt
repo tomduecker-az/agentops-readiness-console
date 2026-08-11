@@ -1,18 +1,22 @@
-Workflow Packet Assessment Intake
+Workflow Packet Assessment
 
-Status: intake_prepared
+Status: assessment_completed
 Run ID: run_packet_demo_001
 Workflow ID: access_request_review_packet_demo
 Source Workbook: examples/templates/workflow_packet_v1_example_access_request_review.xlsx
 
-Generated Artifacts
-- Assessment manifest: assessment_manifest.json
+Generated Intake Artifacts
+- Assessment manifest: examples/assessment_outputs/access_request_review_packet_demo/assessment_manifest.json
 - Normalized packet: examples/assessment_outputs/access_request_review_packet_demo/technical/workflow_packet_v1_example_access_request_review_normalized_packet.json
 - Generated workflow directory: examples/assessment_outputs/access_request_review_packet_demo/generated_workflows/access_request_review
 - Installed workflow ID: access_request_review_packet_demo
 
-Current Analysis Status
-- not_started
+Analysis Status
+- completed
 
-Next Step
-- Add upstream analysis artifact generation so this command can run the full blueprint and diagnostic pipeline.
+Local Analysis Artifacts
+- llm_workflow_analysis: examples/assessment_outputs/access_request_review_packet_demo/technical/artifacts/llm_workflow_analysis.json
+- llm_shadow_evaluation: examples/assessment_outputs/access_request_review_packet_demo/technical/artifacts/llm_shadow_evaluation.json
+- mcp_operational_evaluation: examples/assessment_outputs/access_request_review_packet_demo/technical/artifacts/mcp_operational_evaluation.json
+- evidence_grounding_evaluation: examples/assessment_outputs/access_request_review_packet_demo/technical/artifacts/evidence_grounding_evaluation.json
+- agentic_readiness_blueprint: examples/assessment_outputs/access_request_review_packet_demo/technical/artifacts/agentic_readiness_blueprint.json

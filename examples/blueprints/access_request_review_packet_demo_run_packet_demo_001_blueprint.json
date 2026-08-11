@@ -2,7 +2,7 @@
   "blueprint_version": "0.1.0",
   "workflow_id": "access_request_review_packet_demo",
   "run_id": "run_packet_demo_001",
-  "created_at": "2026-08-11T18:11:07.476389+00:00",
+  "created_at": "2026-08-11T20:27:53.812474+00:00",
   "executive_summary": {
     "workflow_name": "access_request_review_packet_demo",
     "recommendation": "good_candidate_with_controls",
@@ -952,6 +952,7 @@
   ],
   "metadata": {
     "source_artifacts": [
+      "agentic_readiness_blueprint",
       "evidence_grounding_evaluation",
       "llm_shadow_evaluation",
       "llm_workflow_analysis",

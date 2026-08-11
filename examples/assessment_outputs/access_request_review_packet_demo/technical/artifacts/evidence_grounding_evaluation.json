@@ -60,6 +60,6 @@
       "details": "workflow_id=access_request_review_packet_demo, mismatches=[]"
     }
   ],
-  "created_at": "2026-08-11T17:51:44.174979+00:00",
+  "created_at": "2026-08-11T20:27:53.458063+00:00",
   "evaluation_note": "This evaluation checks whether the LLM analysis includes valid evidence references tied to the MCP-retrieved evidence catalog. It complements the output-quality and MCP-operational evaluations."
 }

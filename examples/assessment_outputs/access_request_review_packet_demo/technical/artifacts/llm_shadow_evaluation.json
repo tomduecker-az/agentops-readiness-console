@@ -66,6 +66,6 @@
       "details": "found_prohibited_terms=[]"
     }
   ],
-  "created_at": "2026-08-11T17:51:31.950827+00:00",
+  "created_at": "2026-08-11T20:27:52.725287+00:00",
   "evaluation_note": "This evaluation checks the advisory LLM shadow artifact for structure, workflow specificity, risk quality, missing-information analysis, grounding, governance boundaries, and domain leakage. It does not replace human review."
 }
