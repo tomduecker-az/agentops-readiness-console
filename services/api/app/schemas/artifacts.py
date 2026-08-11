@@ -18,6 +18,7 @@ class ArtifactType(str, Enum):
     agentic_readiness_blueprint = "agentic_readiness_blueprint"
     llm_blueprint_proposal = "llm_blueprint_proposal"
     workflow_ai_opportunity_diagnostic = "workflow_ai_opportunity_diagnostic"
+    client_assessment_report = "client_assessment_report"
 
 
 class ArtifactStatus(str, Enum):
