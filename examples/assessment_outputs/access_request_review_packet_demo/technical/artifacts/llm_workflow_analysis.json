@@ -1,0 +1,797 @@
+{
+  "workflow_summary": "The workflow begins when a manager submits an access request and proceeds through intake completeness checks, employee and manager verification, access-characteristic classification, clarification where needed, application-owner decision, conditional security review, human provisioning, ticket and evidence update, SLA escalation, and weekly reporting. The workflow is suitable for a constrained read-only advisory pilot that uses approved derived fields to identify deficiencies, prepare reviewer packets, flag routing needs, and support SLA visibility. It is not ready for autonomous decisions, provisioning, record updates, communications, escalation, or report distribution because these actions require human authority, evidence, and audit controls.",
+  "key_process_observations": [
+    {
+      "observation": "The end-to-end workflow, principal roles, systems, and completion criteria are substantially documented.",
+      "workflow_evidence": "The packet identifies ten steps owned by the Manager, Identity Analyst, Application Owner, Security Reviewer, and IT Provisioning Specialist. Completion requires a decision, applicable provisioning, ticket update, and retention of approval and evidence records.",
+      "why_it_matters": "This provides a sufficient process skeleton for designing an advisory pilot and locating required human review points.",
+      "evidence_references": [
+        "DOC-001",
+        "DOC-002"
+      ]
+    },
+    {
+      "observation": "The best-supported AI role is reviewer preparation rather than decision-making or execution.",
+      "workflow_evidence": "The stated AI goals include identifying missing information, preparing reviewer packets, summarizing model-safe validation results, flagging additional-review needs, and improving SLA and audit visibility. The no-go areas prohibit AI approval, rejection, provisioning, system-of-record updates, and external communications.",
+      "why_it_matters": "The pilot should generate recommendations and evidence summaries while leaving governed decisions and actions outside the model.",
+      "evidence_references": [
+        "DOC-001",
+        "DOC-006"
+      ]
+    },
+    {
+      "observation": "Verification and classification are prerequisite controls before approval routing.",
+      "workflow_evidence": "Employee status and manager relationship must be verified before approval routing. Requests with privileged, sensitive, custom, API, SSO, or security-impacting characteristics require additional security review.",
+      "why_it_matters": "AI-prepared packets should explicitly distinguish verification results, unresolved deficiencies, and required review routing without making the authoritative determination itself.",
+      "evidence_references": [
+        "DOC-002",
+        "DOC-003"
+      ]
+    },
+    {
+      "observation": "Provisioning depends on multiple approval conditions rather than a single overall approval field.",
+      "workflow_evidence": "Application-owner approval is required before provisioning, and qualifying requests also require a security-review outcome. The data dictionary warns that application-owner approval alone does not authorize provisioning and that overall approval status must be validated against required approvals.",
+      "why_it_matters": "A simple model prediction or reliance on approval_status could miss a required security review. Approval completeness should be enforced deterministically outside the model.",
+      "evidence_references": [
+        "DOC-002",
+        "DOC-003",
+        "DOC-005"
+      ]
+    },
+    {
+      "observation": "Clarification, escalation, ticket updates, and report distribution are governed workflow actions.",
+      "workflow_evidence": "The process produces clarification requests, escalation notices, updated tickets, and weekly reports. Ticket updates require approval and an audit event, while sensitive reports require review before distribution.",
+      "why_it_matters": "The model may draft or recommend these outputs, but a human-controlled workflow service must authorize and execute them.",
+      "evidence_references": [
+        "DOC-001",
+        "DOC-002",
+        "DOC-003",
+        "DOC-006"
+      ]
+    },
+    {
+      "observation": "The sample records exercise standard, privileged, incomplete, ready-to-provision, emergency, and SLA-risk scenarios, but they do not establish operational performance.",
+      "workflow_evidence": "The five sample records include pending application-owner review, pending security review, clarification, ready-to-provision, and escalated states. Separately, the packet states that handling time, clarification rate, routing accuracy, reviewer correction rate, SLA-risk count, and reporting effort are not fully baselined.",
+      "why_it_matters": "The records are useful for acceptance-test cases but are too limited to validate accuracy, exception coverage, or expected benefits.",
+      "evidence_references": [
+        "DOC-004",
+        "DOC-006"
+      ]
+    }
+  ],
+  "data_sensitivity_observations": [
+    {
+      "field_or_data_type": "Employee identity and HR data",
+      "sensitivity_reason": "employee_status is classified as PII and prohibited from model context in the workflow data dictionary. The policy classification also blocks employee_identifier, employee_email, and manager_email as PII.",
+      "recommended_handling": "Keep raw identity and HR attributes outside model context. Perform verification in a controlled service and expose only approved derived signals such as manager_verified and verification_status.",
+      "workflow_evidence": "CTRL-005 requires PII and sensitive access details to be excluded or transformed. The data dictionary identifies manager_verified and verification_status as model-safe derived metadata.",
+      "evidence_references": [
+        "DOC-003",
+        "DOC-005",
+        "POLICY-001"
+      ]
+    },
+    {
+      "field_or_data_type": "Access scope and privileged-access details",
+      "sensitivity_reason": "contains_privileged_access and access_scope are classified as Sensitive Access, disallowed in raw model context, and subject to redaction.",
+      "recommended_handling": "Derive an approved routing signal outside the model, such as security_review_required, and do not expose raw scope or privileged-access details unless a separately approved transformation is defined.",
+      "workflow_evidence": "The model-safe data dictionary permits security_review_required while blocking contains_privileged_access and access_scope. Security review is mandatory for qualifying requests.",
+      "evidence_references": [
+        "DOC-003",
+        "DOC-005",
+        "POLICY-001"
+      ]
+    },
+    {
+      "field_or_data_type": "Business justification and workflow notes",
+      "sensitivity_reason": "request_reason and notes are confidential free-text fields, are not allowed in model context, and require redaction. Free text may contain unanticipated sensitive information.",
+      "recommended_handling": "Exclude raw free text by default. If a summary is necessary, create it through an approved preprocessing and review process, log the transformation, and prevent the original text from entering model context.",
+      "workflow_evidence": "The data dictionary says request_reason should be summarized or excluded unless approved and that notes require careful handling. The policy classification also marks business_justification as confidential and free_text_notes as requiring redaction.",
+      "evidence_references": [
+        "DOC-005",
+        "POLICY-001"
+      ]
+    },
+    {
+      "field_or_data_type": "Provisioning details, approval evidence, and provisioning records",
+      "sensitivity_reason": "action_details is confidential and blocked from model context. The policy classification also treats approval_evidence and provisioning_records as confidential and blocked pending review.",
+      "recommended_handling": "Provide the model only evidence-presence indicators and normalized statuses. Retain raw evidence and provisioning records in controlled repositories and present them directly to authorized human reviewers outside model context.",
+      "workflow_evidence": "Provisioning requires recorded approval evidence, and ticket updates must retain evidence references. Raw action_details is explicitly prohibited from model context.",
+      "evidence_references": [
+        "DOC-003",
+        "DOC-005",
+        "POLICY-001"
+      ]
+    },
+    {
+      "field_or_data_type": "System/application identifier and employment-status naming variants",
+      "sensitivity_reason": "The workflow dictionary permits system_requested as Internal when the system name is not itself sensitive and blocks employee_status as PII. The policy classification separately defaults requested_system to confidential and permits employment_status as internal. The packet does not establish whether these differently named fields are equivalent.",
+      "recommended_handling": "Resolve field mappings and classification precedence before implementation. Until resolved, apply the more restrictive treatment to requested-system and employment-status variants.",
+      "workflow_evidence": "The workflow and policy classifications provide different outcomes for similarly named elements, and the required-control lookup does not resolve those differences.",
+      "evidence_references": [
+        "DOC-005",
+        "POLICY-001",
+        "POLICY-002"
+      ]
+    }
+  ],
+  "risk_observations": [
+    {
+      "risk": "Restricted data could enter model context through raw tickets, HR attributes, free text, access details, or evidence attachments.",
+      "risk_category": "data privacy and confidentiality",
+      "severity": "high",
+      "evidence_references": [
+        "DOC-003",
+        "DOC-004",
+        "DOC-005",
+        "POLICY-001"
+      ],
+      "workflow_evidence": "The sample records contain request reasons, employee status, privileged-access indicators, access scope, action details, and notes, several of which the data dictionary prohibits from model context. CTRL-005 requires filtering and a model-context filtering log.",
+      "recommended_control": "Use a deny-by-default context builder with a versioned allowlist of approved fields, deterministic transformation of derived signals, attachment exclusion, redaction testing, and retained input-filtering logs."
+    },
+    {
+      "risk": "Incorrect access classification could omit a required security review.",
+      "risk_category": "authorization and routing",
+      "severity": "high",
+      "evidence_references": [
+        "DOC-001",
+        "DOC-002",
+        "DOC-003",
+        "DOC-004"
+      ],
+      "workflow_evidence": "Security-review routing depends on accurate identification of privileged, sensitive, custom, API, SSO, or security-impacting access. The packet identifies inconsistent routing as a pain point, and the samples include privileged and emergency cases with pending or conflicting states.",
+      "recommended_control": "Implement authoritative routing rules outside the model. Permit the model to flag uncertainty or recommend review, but never allow it to suppress a rule-triggered security review."
+    },
+    {
+      "risk": "Provisioning could occur based on an incomplete or oversimplified approval state.",
+      "risk_category": "access control execution",
+      "severity": "high",
+      "evidence_references": [
+        "DOC-002",
+        "DOC-003",
+        "DOC-005",
+        "DOC-007"
+      ],
+      "workflow_evidence": "Provisioning systems support write access, while policy requires recorded application-owner approval and, when applicable, security-review evidence before provisioning. The overall approval state must be validated against all required approvals.",
+      "recommended_control": "Place a non-model approval-completeness gate in front of provisioning. Require human provisioning authority and immutable evidence references before enabling any execution path."
+    },
+    {
+      "risk": "Model-generated ticket changes, clarification requests, escalation notices, or report distribution could bypass approval and audit requirements.",
+      "risk_category": "governed actions",
+      "severity": "high",
+      "evidence_references": [
+        "DOC-001",
+        "DOC-002",
+        "DOC-003",
+        "DOC-006",
+        "DOC-007"
+      ],
+      "workflow_evidence": "The relevant systems have write capability, but the workflow prohibits autonomous system-of-record updates and communications. Ticket updates require actor, timestamp, action, and evidence reference; sensitive reports require review.",
+      "recommended_control": "Keep the model read-only. Route every proposed communication, escalation, record update, and distribution through a human approval interface and a separately controlled execution service with audit logging."
+    },
+    {
+      "risk": "Unclear SLA thresholds and routing recipients could produce late, premature, or misdirected escalation recommendations.",
+      "risk_category": "operational performance",
+      "severity": "medium",
+      "evidence_references": [
+        "DOC-002",
+        "DOC-004",
+        "DOC-006"
+      ],
+      "workflow_evidence": "STEP-009 says near-SLA requests must be escalated according to operational policy but notes that unclear thresholds may delay escalation. Samples contain low, medium, and high sla_risk values without threshold definitions.",
+      "recommended_control": "Define deterministic SLA thresholds, calendars, priority rules, and authorized recipients before enabling escalation recommendations. Require an Identity Analyst to approve sending any escalation."
+    },
+    {
+      "risk": "Conflicting or incomplete data-classification mappings could cause unsafe field inclusion.",
+      "risk_category": "data governance",
+      "severity": "high",
+      "evidence_references": [
+        "DOC-003",
+        "DOC-005",
+        "POLICY-001",
+        "POLICY-002"
+      ],
+      "workflow_evidence": "Similarly named fields receive different classifications across the workflow dictionary and policy results. The required-control lookup returned no mapped controls for the queried governed actions, while the workflow packet separately defines eight controls.",
+      "recommended_control": "Establish an approved canonical data schema, classification owner, and precedence rule. Treat unresolved fields as blocked and map packet controls to the governed action catalog before production use."
+    },
+    {
+      "risk": "Pilot value and safety may be difficult to demonstrate because operational baselines are incomplete.",
+      "risk_category": "measurement and model oversight",
+      "severity": "medium",
+      "evidence_references": [
+        "DOC-006"
+      ],
+      "workflow_evidence": "Average handling time, clarification rate, SLA-risk count, routing accuracy, correction rate, and reporting effort are not fully baselined, although measurable improvement without increased missed deficiencies is required.",
+      "recommended_control": "Collect a baseline before or during a shadow-mode period and track reviewer acceptance, corrections, false negatives, routing disagreement, restricted-data incidents, and preparation-time changes."
+    },
+    {
+      "risk": "Incomplete approval, provisioning, and review evidence could undermine audit readiness.",
+      "risk_category": "audit and retention",
+      "severity": "medium",
+      "evidence_references": [
+        "DOC-001",
+        "DOC-002",
+        "DOC-003"
+      ],
+      "workflow_evidence": "Inconsistent evidence packets and audit preparation effort are current pain points. Policies require recorded approval, security-review outcome, provisioning evidence, ticket audit events, and reviewed report evidence packages.",
+      "recommended_control": "Use a deterministic evidence checklist keyed to request type and routing outcome. Allow the model to identify missing references, but require humans and source systems to validate and retain the actual evidence."
+    }
+  ],
+  "control_recommendations": [
+    {
+      "control": "Model-context allowlist and filtering log",
+      "control_type": "preventive data control",
+      "applies_to": "STEP-001, STEP-002, STEP-003, STEP-004, STEP-005, STEP-006, STEP-007, and STEP-008 inputs used for AI assistance",
+      "implementation_note": "Construct model input only from explicitly approved fields such as normalized request_type, manager_verified, role_mapping_status, verification_status, security_review_required, approval states, current_status, and sla_risk. Block raw PII, justifications, access scope, privileged indicators, action details, notes, attachments, and evidence. Retain the field-level filtering log required by CTRL-005.",
+      "evidence_references": [
+        "DOC-003",
+        "DOC-005",
+        "POLICY-001"
+      ]
+    },
+    {
+      "control": "Authoritative completeness and verification checks",
+      "control_type": "preventive policy control",
+      "applies_to": "STEP-001, STEP-002, and STEP-004",
+      "implementation_note": "Evaluate required-field presence and HR verification through deterministic services. The model may summarize failures and draft clarification content but must not override verification results or advance a deficient request.",
+      "evidence_references": [
+        "DOC-002",
+        "DOC-003",
+        "DOC-005"
+      ]
+    },
+    {
+      "control": "Deterministic security-review routing",
+      "control_type": "preventive authorization control",
+      "applies_to": "STEP-003, STEP-006, and STEP-007",
+      "implementation_note": "Encode the approved criteria for privileged, sensitive, custom, API, SSO, and security-impacting requests outside the model. Model output may add a conservative review flag but may not remove a required security-review flag.",
+      "evidence_references": [
+        "DOC-002",
+        "DOC-003"
+      ]
+    },
+    {
+      "control": "Approval-completeness gate before provisioning",
+      "control_type": "approval and execution control",
+      "applies_to": "STEP-005, STEP-006, and STEP-007",
+      "implementation_note": "Require recorded application-owner approval and any required security-review outcome before an IT Provisioning Specialist can act. Keep policy evaluation and execution outside the model and require approval and provisioning evidence.",
+      "evidence_references": [
+        "DOC-002",
+        "DOC-003",
+        "DOC-005",
+        "DOC-007"
+      ]
+    },
+    {
+      "control": "Separation of advisory and write-execution planes",
+      "control_type": "technical access control",
+      "applies_to": "Provisioning, ticket updates, clarification, escalation, record modification, and report distribution",
+      "implementation_note": "Give the AI component read-only access to sanitized views. Use a separate human-authorized service for writes, least-privilege credentials owned by the relevant system owner, and no direct model access to write-capable tools.",
+      "evidence_references": [
+        "DOC-001",
+        "DOC-006",
+        "DOC-007"
+      ]
+    },
+    {
+      "control": "Audited ticket and evidence update",
+      "control_type": "detective audit control",
+      "applies_to": "STEP-008",
+      "implementation_note": "Require Identity Operations Lead approval for governed ticket writes and capture actor, timestamp, action, evidence reference, proposed content, approved content, and execution result. The model may prepare a draft only.",
+      "evidence_references": [
+        "DOC-002",
+        "DOC-003",
+        "DOC-007"
+      ]
+    },
+    {
+      "control": "Human-approved communication and escalation queue",
+      "control_type": "approval control",
+      "applies_to": "STEP-004 and STEP-009",
+      "implementation_note": "Place draft clarification and escalation notices in a review queue. An Identity Analyst must verify the deficiency, recipient, SLA basis, and content before any message or status change is sent.",
+      "evidence_references": [
+        "DOC-001",
+        "DOC-002",
+        "DOC-006"
+      ]
+    },
+    {
+      "control": "Report review, minimization, and retention",
+      "control_type": "distribution and retention control",
+      "applies_to": "STEP-010",
+      "implementation_note": "Generate reports from approved normalized fields, minimize sensitive content, reconcile discrepancies, and require Identity Operations Lead review before distribution when sensitive workflow information is included. Retain the reviewed report and supporting evidence package.",
+      "evidence_references": [
+        "DOC-002",
+        "DOC-003",
+        "DOC-005",
+        "DOC-007"
+      ]
+    },
+    {
+      "control": "Reviewer correction and safety monitoring",
+      "control_type": "detective quality control",
+      "applies_to": "All AI-prepared packets and recommendations",
+      "implementation_note": "Record reviewer acceptance, corrections, missed deficiencies, unsupported recommendations, routing disagreement, context-filter failures, and preparation time. Use these records for pilot evaluation rather than permitting online autonomous policy changes.",
+      "evidence_references": [
+        "DOC-006"
+      ]
+    }
+  ],
+  "hitl_recommendations": [
+    {
+      "review_point": "Application-owner access decision",
+      "human_reviewer": "Authorized Application Owner",
+      "agent_allowed_before_approval": "Prepare a sanitized reviewer packet, identify missing fields, summarize approved derived validation results, and present existing approval status.",
+      "blocked_without_approval": "Approving or rejecting the request, recording the decision, or enabling provisioning.",
+      "required_evidence": "Recorded application-owner approval or rejection from an authorized Application Owner.",
+      "evidence_references": [
+        "DOC-002",
+        "DOC-003"
+      ]
+    },
+    {
+      "review_point": "Security review for qualifying access",
+      "human_reviewer": "Security Reviewer",
+      "agent_allowed_before_approval": "Flag a request as potentially requiring additional review, present the authoritative security_review_required signal, and summarize model-safe status information.",
+      "blocked_without_approval": "Security approval or rejection, removal of a required review, and progression to provisioning for a qualifying request.",
+      "required_evidence": "Recorded security-review outcome retained according to the applicable audit requirement.",
+      "evidence_references": [
+        "DOC-001",
+        "DOC-002",
+        "DOC-003",
+        "DOC-005"
+      ]
+    },
+    {
+      "review_point": "Provisioning authorization and execution",
+      "human_reviewer": "IT Provisioning Specialist, with the recorded approval evidence required by the IT Provisioning Lead control",
+      "agent_allowed_before_approval": "Report whether model-safe approval statuses appear complete and identify missing evidence references.",
+      "blocked_without_approval": "Provisioning access, invoking write operations in the Identity Provider or Application Administration Console, or marking provisioning complete.",
+      "required_evidence": "Recorded application-owner approval, required security-review outcome, approval-completeness validation, and provisioning evidence.",
+      "evidence_references": [
+        "DOC-002",
+        "DOC-003",
+        "DOC-007"
+      ]
+    },
+    {
+      "review_point": "Ticket status and evidence update",
+      "human_reviewer": "Identity Operations Lead, with update preparation or verification by the Identity Analyst",
+      "agent_allowed_before_approval": "Draft a proposed status summary and identify missing approval, review, or provisioning evidence references.",
+      "blocked_without_approval": "Updating the ticket, attaching evidence, changing controlled workflow status, or creating another workflow record.",
+      "required_evidence": "Approved update plus an audit event recording actor, timestamp, action, and evidence reference.",
+      "evidence_references": [
+        "DOC-002",
+        "DOC-003",
+        "DOC-007"
+      ]
+    },
+    {
+      "review_point": "Clarification and SLA escalation communication",
+      "human_reviewer": "Identity Analyst",
+      "agent_allowed_before_approval": "Identify missing or conflicting model-safe fields, prioritize by sla_risk, and draft proposed clarification or escalation text.",
+      "blocked_without_approval": "Sending the communication, returning or escalating the request, selecting an unverified recipient, or changing ticket status.",
+      "required_evidence": "Human-confirmed deficiency or SLA condition, approved recipient, approved content, and the applicable workflow record.",
+      "evidence_references": [
+        "DOC-001",
+        "DOC-002",
+        "DOC-005",
+        "DOC-006"
+      ]
+    },
+    {
+      "review_point": "Weekly report distribution",
+      "human_reviewer": "Identity Operations Lead",
+      "agent_allowed_before_approval": "Prepare a draft report from approved normalized fields, identify discrepancies, and assemble evidence references.",
+      "blocked_without_approval": "Distributing the report, updating the reporting system, or including unreviewed sensitive information.",
+      "required_evidence": "Reviewed report and supporting evidence package, including confirmation of sensitive-information handling before distribution.",
+      "evidence_references": [
+        "DOC-002",
+        "DOC-003",
+        "DOC-006",
+        "DOC-007"
+      ]
+    }
+  ],
+  "implementation_recommendations": [
+    {
+      "title": "Resolve the canonical data schema and classification precedence",
+      "priority": "high",
+      "description": "Map workflow fields to policy-classified elements, resolve differences such as system_requested versus requested_system and employee_status versus employment_status, and approve a deny-by-default model-context allowlist. Treat unresolved mappings as blocked.",
+      "suggested_owner": "Identity Operations with HR Operations, IT Security, and AI governance review",
+      "approval_required": true,
+      "evidence_references": [
+        "DOC-003",
+        "DOC-005",
+        "POLICY-001",
+        "POLICY-002"
+      ]
+    },
+    {
+      "title": "Build a read-only sanitized data view",
+      "priority": "high",
+      "description": "Create a controlled view containing only approved normalized and derived signals. Exclude raw PII, sensitive access details, free text, provisioning actions, approval evidence, and provisioning records, and retain a model-input filtering log.",
+      "suggested_owner": "Identity Operations and IT Security",
+      "approval_required": true,
+      "evidence_references": [
+        "DOC-003",
+        "DOC-005",
+        "DOC-006",
+        "POLICY-001"
+      ]
+    },
+    {
+      "title": "Implement deterministic workflow gates outside the model",
+      "priority": "high",
+      "description": "Encode intake completeness, HR verification, security-review routing, and approval completeness in controlled workflow logic. The model should consume resulting statuses and produce advisory summaries only.",
+      "suggested_owner": "Identity Operations and IT Security",
+      "approval_required": true,
+      "evidence_references": [
+        "DOC-002",
+        "DOC-003",
+        "DOC-005"
+      ]
+    },
+    {
+      "title": "Deploy an advisory reviewer-packet pilot in shadow mode",
+      "priority": "high",
+      "description": "Use the model to identify model-safe deficiencies, assemble status summaries, flag potential additional review, and draft reviewer packets without sending messages or writing to any system. Compare outputs with human decisions and corrections.",
+      "suggested_owner": "Identity Operations",
+      "approval_required": true,
+      "evidence_references": [
+        "DOC-001",
+        "DOC-006",
+        "DOC-007"
+      ]
+    },
+    {
+      "title": "Create human approval queues for all governed actions",
+      "priority": "high",
+      "description": "Provide separate review queues for clarification, application-owner decisions, security review, provisioning, ticket updates, SLA escalations, and report distribution. Execution should occur only after the documented human approval and evidence requirements are satisfied.",
+      "suggested_owner": "Identity Operations with relevant system owners",
+      "approval_required": true,
+      "evidence_references": [
+        "DOC-001",
+        "DOC-002",
+        "DOC-003",
+        "DOC-007"
+      ]
+    },
+    {
+      "title": "Baseline and instrument pilot metrics",
+      "priority": "medium",
+      "description": "Measure preparation time, clarification rate, SLA-risk count, security-review routing accuracy, reviewer correction rate, weekly reporting effort, missed deficiencies, unsupported recommendations, and restricted-data incidents before judging readiness for expansion.",
+      "suggested_owner": "Identity Operations",
+      "approval_required": false,
+      "evidence_references": [
+        "DOC-006"
+      ]
+    },
+    {
+      "title": "Define acceptance tests from documented scenarios",
+      "priority": "medium",
+      "description": "Use the sample standard, privileged, clarification, ready-to-provision, emergency, and escalated records as initial test cases. Add tests ensuring that privileged requests cannot bypass security review, incomplete requests do not advance, and no governed action executes from model output.",
+      "suggested_owner": "Identity Operations and IT Security",
+      "approval_required": true,
+      "evidence_references": [
+        "DOC-003",
+        "DOC-004",
+        "DOC-006"
+      ]
+    },
+    {
+      "title": "Reconcile packet controls with the governed action catalog",
+      "priority": "high",
+      "description": "The packet defines eight controls, but the required-control lookup returned no mapped controls for the queried actions. Obtain governance review before production and establish authoritative control mappings rather than treating an empty lookup as permission.",
+      "suggested_owner": "AI governance and control owners",
+      "approval_required": true,
+      "evidence_references": [
+        "DOC-003",
+        "POLICY-002"
+      ]
+    }
+  ],
+  "missing_information": [
+    "The exact required intake schema, validation rules, and acceptable values are not fully specified. STEP-001 names employee, application, role, access scope, and business justification, but the packet does not provide a complete field-level intake contract. Evidence: DOC-002, DOC-005.",
+    "The authoritative definitions and routing logic for sensitive, custom, API, SSO, security-impacting, and emergency access are not fully documented. Evidence: DOC-002, DOC-003, DOC-004.",
+    "SLA thresholds, business calendars, escalation timing, authorized recipients, and handling rules for low, medium, and high sla_risk are not provided. Evidence: DOC-002, DOC-004, DOC-006.",
+    "The authoritative source for determining whether an Application Owner is authorized, including delegation and unavailable-owner handling, is not specified. Evidence: DOC-002, DOC-003.",
+    "Retention periods and approved repositories for request tickets, model-input logs, approvals, security outcomes, provisioning evidence, audit events, and weekly reports are not stated beyond general retention instructions. Evidence: DOC-003.",
+    "The canonical mapping and precedence between similarly named workflow and policy fields, including system_requested/requested_system and employee_status/employment_status, are unresolved. Evidence: DOC-005, POLICY-001.",
+    "The permitted authentication scopes, service-account permissions, credential management, and technical audit interfaces for the write-capable target systems are not documented. Evidence: DOC-007.",
+    "Operational performance baselines and acceptable safety thresholds for missed deficiencies, unsupported recommendations, and routing errors are not fully established. Evidence: DOC-006.",
+    "The report audience, approved distribution channels, sensitivity determination method, and required report template are not specified. Evidence: DOC-002, DOC-003, DOC-007.",
+    "The required-control service returned no control mappings for the queried governed actions, so the relationship between the packet controls and the broader policy catalog remains unresolved. Evidence: DOC-003, POLICY-002.",
+    "The five targeted searches returned no additional results; therefore, no supplementary evidence was retrieved for approval routing, SLA rules, audit retention, clarification handling, or HR verification details beyond the packet documents. Evidence: DOC-001, DOC-002, DOC-003, POLICY-002."
+  ],
+  "grounding_notes": [
+    "All workflow claims are based on the seven retrieved packet documents and the two policy evidence records in the evidence catalog.",
+    "The sample records are treated as illustrative test scenarios, not as production prevalence, control effectiveness, or performance evidence.",
+    "The empty required-control lookup in POLICY-002 is treated as a policy-mapping gap, not as evidence that governed actions require no controls, because DOC-003 explicitly defines applicable controls.",
+    "Where similarly named data elements have different classifications, the analysis does not assume equivalence and recommends restrictive handling until the mapping is approved.",
+    "Recommendations preserve the packet requirement that the model remain advisory and that policy enforcement, approval authority, communications, system writes, and provisioning remain outside the model."
+  ],
+  "hallucination_risk_notes": [
+    "No specific SLA duration, escalation recipient, retention period, integration scope, or application-owner directory was inferred because these details are absent.",
+    "No additional participant, system, approval role, or exception path was introduced beyond the retrieved evidence.",
+    "Suggested owners that combine documented system owners or governance review are implementation recommendations, not claims that those joint ownership arrangements already exist.",
+    "A field described as model-safe remains subject to the unresolved classification mappings and approved context-filter design; model-context permission was not generalized beyond the documented fields.",
+    "The workflow identifier inside DOC-001 is access_request_review, while the requested packet identifier is access_request_review_packet_demo; no assumption was made about whether this naming difference has operational significance."
+  ],
+  "confidence_by_section": {
+    "workflow_understanding": "High: the packet provides a ten-step process, roles, systems, outputs, decisions, and exceptions.",
+    "data_sensitivity": "High for explicitly documented fields; medium where workflow and policy naming variants produce unresolved classification differences.",
+    "risk_identification": "High for restricted-data, approval, provisioning, audit, and governed-action risks; medium for operational risks lacking thresholds or baselines.",
+    "control_mapping": "Medium-high for controls explicitly defined in DOC-003; reduced because POLICY-002 returned no governed-action mappings.",
+    "implementation_planning": "Medium-high for a read-only advisory pilot; production planning remains dependent on the identified schema, SLA, retention, authorization, and policy-mapping gaps."
+  },
+  "metadata": {
+    "analysis_mode": "mcp_llm_shadow_bounded",
+    "workflow_id": "access_request_review_packet_demo",
+    "model": "gpt-5.6-sol",
+    "reasoning_effort": "high",
+    "created_at": "2026-08-11T17:39:54.756322+00:00",
+    "source": "bounded_mcp_tool_retrieved_context",
+    "tool_call_count": 15,
+    "tool_trace": [
+      {
+        "tool_name": "document_server.list_documents",
+        "mcp_tool_name": "list_documents",
+        "server": "document",
+        "status": "executed",
+        "arguments": {
+          "workflow_id": "access_request_review_packet_demo"
+        }
+      },
+      {
+        "tool_name": "document_server.read_document",
+        "mcp_tool_name": "read_document",
+        "server": "document",
+        "status": "executed",
+        "arguments": {
+          "workflow_id": "access_request_review_packet_demo",
+          "document_id": "process_narrative"
+        }
+      },
+      {
+        "tool_name": "document_server.read_document",
+        "mcp_tool_name": "read_document",
+        "server": "document",
+        "status": "executed",
+        "arguments": {
+          "workflow_id": "access_request_review_packet_demo",
+          "document_id": "current_workflow_steps"
+        }
+      },
+      {
+        "tool_name": "document_server.read_document",
+        "mcp_tool_name": "read_document",
+        "server": "document",
+        "status": "executed",
+        "arguments": {
+          "workflow_id": "access_request_review_packet_demo",
+          "document_id": "policy_and_controls"
+        }
+      },
+      {
+        "tool_name": "document_server.read_document",
+        "mcp_tool_name": "read_document",
+        "server": "document",
+        "status": "executed",
+        "arguments": {
+          "workflow_id": "access_request_review_packet_demo",
+          "document_id": "sample_records"
+        }
+      },
+      {
+        "tool_name": "document_server.read_document",
+        "mcp_tool_name": "read_document",
+        "server": "document",
+        "status": "executed",
+        "arguments": {
+          "workflow_id": "access_request_review_packet_demo",
+          "document_id": "data_dictionary"
+        }
+      },
+      {
+        "tool_name": "document_server.read_document",
+        "mcp_tool_name": "read_document",
+        "server": "document",
+        "status": "executed",
+        "arguments": {
+          "workflow_id": "access_request_review_packet_demo",
+          "document_id": "goals_and_metrics"
+        }
+      },
+      {
+        "tool_name": "document_server.read_document",
+        "mcp_tool_name": "read_document",
+        "server": "document",
+        "status": "executed",
+        "arguments": {
+          "workflow_id": "access_request_review_packet_demo",
+          "document_id": "target_systems"
+        }
+      },
+      {
+        "tool_name": "document_server.search_documents",
+        "mcp_tool_name": "search_documents",
+        "server": "document",
+        "status": "executed",
+        "arguments": {
+          "workflow_id": "access_request_review_packet_demo",
+          "query": "approval requirements security review provisioning human approval write actions"
+        }
+      },
+      {
+        "tool_name": "document_server.search_documents",
+        "mcp_tool_name": "search_documents",
+        "server": "document",
+        "status": "executed",
+        "arguments": {
+          "workflow_id": "access_request_review_packet_demo",
+          "query": "SLA deadline escalation identity team lead weekly access review report"
+        }
+      },
+      {
+        "tool_name": "document_server.search_documents",
+        "mcp_tool_name": "search_documents",
+        "server": "document",
+        "status": "executed",
+        "arguments": {
+          "workflow_id": "access_request_review_packet_demo",
+          "query": "audit evidence retention approvals provisioning rejected requests reviewer information"
+        }
+      },
+      {
+        "tool_name": "document_server.search_documents",
+        "mcp_tool_name": "search_documents",
+        "server": "document",
+        "status": "executed",
+        "arguments": {
+          "workflow_id": "access_request_review_packet_demo",
+          "query": "missing unclear incomplete conflicting information clarification"
+        }
+      },
+      {
+        "tool_name": "document_server.search_documents",
+        "mcp_tool_name": "search_documents",
+        "server": "document",
+        "status": "executed",
+        "arguments": {
+          "workflow_id": "access_request_review_packet_demo",
+          "query": "HR source verification employee identifier manager email role employment status"
+        }
+      },
+      {
+        "tool_name": "policy_server.classify_data_elements",
+        "mcp_tool_name": "classify_data_elements",
+        "server": "policy",
+        "status": "executed",
+        "arguments": {
+          "data_elements": [
+            "employee_identifier",
+            "employee_email",
+            "manager_email",
+            "employee_role",
+            "employment_status",
+            "requested_system",
+            "access_level",
+            "privileged_access_indicator",
+            "business_justification",
+            "approval_status",
+            "ticket_status",
+            "sla_due_date",
+            "free_text_notes",
+            "approval_evidence",
+            "provisioning_records"
+          ]
+        }
+      },
+      {
+        "tool_name": "policy_server.get_required_controls_for_actions",
+        "mcp_tool_name": "get_required_controls_for_actions",
+        "server": "policy",
+        "status": "executed",
+        "arguments": {
+          "workflow_steps": [
+            "AI-assisted intake review using access request and HR verification data",
+            "application owner approval or rejection of requested access",
+            "security review for privileged sensitive custom or security-related access",
+            "provisioning approved access in identity provider and target systems",
+            "updating ticket status approval evidence and provisioning evidence",
+            "routing clarification requests or communications to the manager",
+            "escalating requests approaching the SLA deadline",
+            "preparing and distributing weekly access review reports",
+            "creating or modifying workflow records or project issues",
+            "model-context handling for employee access request data"
+          ]
+        }
+      }
+    ],
+    "evidence_catalog_index": [
+      {
+        "evidence_id": "DOC-001",
+        "evidence_type": "workflow_document",
+        "workflow_id": "access_request_review_packet_demo",
+        "source_id": "process_narrative",
+        "source_title": "Process Narrative",
+        "query": null,
+        "summary": "# Process Narrative **Workflow ID:** `access_request_review` **Workflow Name:** Access Request Review **Packet Version:** workflow_packet_v1 ## Workflow Overview ### Business Purpose Ensure employees receive appropriate application access while preserving security, approval accountability, and audit evidence. ### Workflow Trigger A manager submits an access request for an employee who needs access to an application, role, or system capability. ### Workflow Completion Criteria The request is a..."
+      },
+      {
+        "evidence_id": "DOC-002",
+        "evidence_type": "workflow_document",
+        "workflow_id": "access_request_review_packet_demo",
+        "source_id": "current_workflow_steps",
+        "source_title": "Current Workflow Steps",
+        "query": null,
+        "summary": "# Current Workflow Steps | Sequence | Step ID | Step Name | Owner Role | Output | |---:|---|---|---|---| | 1 | STEP-001 | Submit access request | Manager | Submitted access request ticket | | 2 | STEP-002 | Verify employee and manager | Identity Analyst | Employee and manager verification result | | 3 | STEP-003 | Review access characteristics | Identity Analyst | Review classification | | 4 | STEP-004 | Clarify missing or conflicting intake | Identity Analyst | Clarification request | | 5 | ..."
+      },
+      {
+        "evidence_id": "DOC-003",
+        "evidence_type": "workflow_document",
+        "workflow_id": "access_request_review_packet_demo",
+        "source_id": "policy_and_controls",
+        "source_title": "Policy and Controls",
+        "query": null,
+        "summary": "# Policy and Controls | Control ID | Control Name | Type | Applies To Steps | Approval Required | Write Action Allowed | |---|---|---|---|---|---| | CTRL-001 | Minimum intake requirements | policy | STEP-001; STEP-004 | false | false | | CTRL-002 | Employee and manager verification | policy | STEP-002 | false | false | | CTRL-003 | Application owner approval | approval | STEP-005; STEP-007 | true | true | | CTRL-004 | Security review for privileged or sensitive access | approval | STEP-003; S..."
+      },
+      {
+        "evidence_id": "DOC-004",
+        "evidence_type": "workflow_document",
+        "workflow_id": "access_request_review_packet_demo",
+        "source_id": "sample_records",
+        "source_title": "Sample Records",
+        "query": null,
+        "summary": "record_id,request_type,request_reason,employee_status,manager_verified,role_mapping_status,contains_privileged_access,access_scope,system_requested,verification_status,application_owner_approval,security_review_required,security_review_status,approval_status,action_details,current_status,sla_risk,notes AR-1001,standard,Routine business access request,active,true,matched,false,standard,Expense Management,verified,pending,false,not_required,pending,Standard role assignment,in_review,low,Standar..."
+      },
+      {
+        "evidence_id": "DOC-005",
+        "evidence_type": "workflow_document",
+        "workflow_id": "access_request_review_packet_demo",
+        "source_id": "data_dictionary",
+        "source_title": "Data Dictionary",
+        "query": null,
+        "summary": "# Data Dictionary | Field Name | Category | Source System | Model Context Allowed | Redaction Required | Used In Steps | |---|---|---|---|---|---| | record_id | Internal | Sample Data | true | false | STEP-001 | | request_type | Internal | Ticketing System | true | false | STEP-001; STEP-003; STEP-010 | | request_reason | Confidential | Ticketing System | false | true | STEP-001; STEP-005 | | employee_status | PII | HRIS | false | true | STEP-002 | | manager_verified | Derived Metadata | HRIS..."
+      },
+      {
+        "evidence_id": "DOC-006",
+        "evidence_type": "workflow_document",
+        "workflow_id": "access_request_review_packet_demo",
+        "source_id": "goals_and_metrics",
+        "source_title": "Goals and Metrics",
+        "query": null,
+        "summary": "# Goals and Metrics ## Business Goals Reduce manual analyst preparation effort, reduce avoidable clarification loops, improve reviewer packet consistency, improve SLA visibility, and improve audit readiness. ## Current Baselines Average handling time, clarification rate, SLA-risk count, security-review routing accuracy, reviewer correction rate, and weekly reporting effort are not fully baselined yet. ## Target Improvements Pilot should show measurable reduction in analyst preparation time an..."
+      },
+      {
+        "evidence_id": "DOC-007",
+        "evidence_type": "workflow_document",
+        "workflow_id": "access_request_review_packet_demo",
+        "source_id": "target_systems",
+        "source_title": "Target Systems",
+        "query": null,
+        "summary": "# Target Systems | System Name | Type | Read Access Possible | Write Access Possible | Owner Role | Authentication Method | |---|---|---|---|---|---| | Ticketing System | workflow_system | true | true | Identity Operations | SSO or OAuth | | HRIS | source_system | true | false | HR Operations | SSO | | Identity Provider | identity_system | true | true | IT Security | Approved service account | | Application Administration Console | execution_system | true | true | Application Owner | SSO or a..."
+      },
+      {
+        "evidence_id": "POLICY-001",
+        "evidence_type": "data_classification_batch",
+        "workflow_id": "access_request_review_packet_demo",
+        "source_id": "policy_server.classify_data_elements",
+        "source_title": "Batch data classification results",
+        "query": null,
+        "summary": "Policy-server classifications for workflow data elements."
+      },
+      {
+        "evidence_id": "POLICY-002",
+        "evidence_type": "required_controls_batch",
+        "workflow_id": "access_request_review_packet_demo",
+        "source_id": "policy_server.get_required_controls_for_actions",
+        "source_title": "Batch required-control lookup results",
+        "query": null,
+        "summary": "Policy-server required-control lookup results for governed workflow actions."
+      }
+    ],
+    "governance_note": "This artifact is advisory bounded MCP shadow analysis only. The application retrieved workflow and policy context through controlled MCP tools. The model did not receive direct filesystem access and does not replace deterministic policy checks, approval requirements, or write-action controls."
+  }
+}

@@ -2,15 +2,15 @@ import argparse
 import json
 from datetime import UTC, datetime
 from typing import Any
-
 from audit_core import AuditEventType
 from fastapi.testclient import TestClient
-
 from app.llm.shadow_analysis import run_llm_shadow_analysis
 from app.main import app
 from app.schemas.artifacts import ArtifactType
 from app.services.artifact_service import create_artifact
 from app.services.audit_service import log_audit_event
+from pathlib import Path
+from scripts.local_artifacts import load_local_artifacts, write_local_artifact
 
 
 EVALUATION_PROFILES = {
@@ -77,14 +77,29 @@ EVALUATION_PROFILES = {
 
 def main() -> None:
     args = _parse_args()
-    profile = EVALUATION_PROFILES[args.workflow_id]
+    if args.artifacts_dir and not args.run_id:
+        raise ValueError("--run-id is required when --artifacts-dir is provided.")
+
+    profile_id = args.evaluation_profile_id or args.workflow_id
+
+    if profile_id not in EVALUATION_PROFILES:
+        available_profiles = ", ".join(sorted(EVALUATION_PROFILES))
+        raise ValueError(
+            f"No LLM shadow evaluation profile configured for '{profile_id}'. "
+            f"Use --evaluation-profile-id with one of: {available_profiles}"
+        )
+
+    profile = EVALUATION_PROFILES[profile_id]
     client = TestClient(app)
 
     if args.run_id:
         run_id = args.run_id
         print(f"\n1. Evaluating existing run: {run_id}")
 
-        artifacts = _get_artifacts(client=client, run_id=run_id)
+        if args.artifacts_dir:
+            artifacts = load_local_artifacts(Path(args.artifacts_dir))
+        else:
+            artifacts = _get_artifacts(client=client, run_id=run_id)
         llm_artifact = _find_artifact(
             artifacts=artifacts,
             artifact_type=ArtifactType.llm_workflow_analysis.value,
@@ -150,7 +165,18 @@ def main() -> None:
     print(f"Model: {evaluation['model']}")
     print(f"Passed: {evaluation['passed']}")
 
-    if not args.skip_persist:
+    if args.artifacts_dir:
+        print("\nWriting LLM shadow evaluation local artifact...")
+
+        output_path = write_local_artifact(
+            artifacts_dir=Path(args.artifacts_dir),
+            artifact_type=ArtifactType.llm_shadow_evaluation.value,
+            content=evaluation,
+        )
+
+        print(f"- local_artifact_path: {output_path}")
+
+    elif not args.skip_persist:
         print("\nPersisting evaluation artifact...")
 
         log_audit_event(
@@ -564,7 +590,16 @@ def _parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--workflow-id",
         default="access_request_review",
-        choices=sorted(EVALUATION_PROFILES.keys()),
+        help="Workflow ID to evaluate.",
+    )
+
+    parser.add_argument(
+        "--evaluation-profile-id",
+        default=None,
+        help=(
+            "Evaluation profile to use. Defaults to --workflow-id. "
+            "Use this when evaluating a generated workflow with a different workflow ID."
+        ),
     )
 
     parser.add_argument(
@@ -574,6 +609,12 @@ def _parse_args() -> argparse.Namespace:
             "Existing run_id containing an llm_workflow_analysis artifact. "
             "When omitted, a new governed baseline run and LLM shadow analysis are created."
         ),
+    )
+
+    parser.add_argument(
+        "--artifacts-dir",
+        default=None,
+        help="Load input artifacts from a local directory instead of /runs/{run_id}/artifacts.",
     )
 
     parser.add_argument(

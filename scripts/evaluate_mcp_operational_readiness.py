@@ -2,14 +2,14 @@ import argparse
 import json
 from datetime import UTC, datetime
 from typing import Any
-
 from audit_core import AuditEventType
 from fastapi.testclient import TestClient
-
 from app.main import app
 from app.schemas.artifacts import ArtifactType
 from app.services.artifact_service import create_artifact
 from app.services.audit_service import log_audit_event
+from pathlib import Path
+from scripts.local_artifacts import load_local_artifacts, write_local_artifact
 
 
 _ALLOWED_TOOL_NAMES = {
@@ -44,7 +44,10 @@ def main() -> None:
 
     print(f"\n1. Evaluating MCP operational readiness for run: {args.run_id}")
 
-    artifacts = _get_artifacts(client=client, run_id=args.run_id)
+    if args.artifacts_dir:
+        artifacts = load_local_artifacts(Path(args.artifacts_dir))
+    else:
+        artifacts = _get_artifacts(client=client, run_id=args.run_id)
     llm_artifact = _find_latest_llm_artifact(artifacts=artifacts)
 
     if llm_artifact is None:
@@ -82,7 +85,18 @@ def main() -> None:
     )
     print(f"Passed: {evaluation['passed']}")
 
-    if not args.skip_persist:
+    if args.artifacts_dir:
+        print("\nWriting MCP operational evaluation local artifact...")
+
+        output_path = write_local_artifact(
+            artifacts_dir=Path(args.artifacts_dir),
+            artifact_type=ArtifactType.mcp_operational_evaluation.value,
+            content=evaluation,
+        )
+
+        print(f"- local_artifact_path: {output_path}")
+
+    elif not args.skip_persist:
         print("\nPersisting MCP operational evaluation artifact...")
 
         log_audit_event(
@@ -488,6 +502,12 @@ def _parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--skip-persist",
         action="store_true",
+    )
+
+    parser.add_argument(
+        "--artifacts-dir",
+        default=None,
+        help="Load input artifacts from a local directory instead of /runs/{run_id}/artifacts.",
     )
 
     parser.add_argument(

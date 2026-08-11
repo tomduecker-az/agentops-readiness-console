@@ -13,6 +13,7 @@ from app.services.audit_service import log_audit_event
 from workflow_core import list_documents, read_document
 
 
+
 class BlueprintGenerationError(RuntimeError):
     pass
 
@@ -23,6 +24,7 @@ def generate_agentic_readiness_blueprint(
     workflow_id: str,
     persist: bool = True,
     audit_enabled: bool = True,
+    artifacts_by_type: dict[str, list[dict[str, Any]]] | None = None,
 ) -> dict[str, Any]:
     """Generate the primary Agentic Readiness Blueprint for a completed run.
 
@@ -41,9 +43,10 @@ def generate_agentic_readiness_blueprint(
                 "generation_mode": "deterministic_from_validated_artifacts",
             },
         )
-       
 
-    artifacts_by_type = _load_artifacts_by_type(run_id=run_id)
+    if artifacts_by_type is None:
+        artifacts_by_type = _load_artifacts_by_type(run_id=run_id)
+
     _validate_required_artifacts(artifacts_by_type)
 
     workflow_documents = _load_workflow_documents(workflow_id=workflow_id)
@@ -68,19 +71,20 @@ def generate_agentic_readiness_blueprint(
     blueprint_content = blueprint.model_dump(mode="json")
 
     if not validation_succeeded:
-        log_audit_event(
-            run_id=run_id,
-            event_type=AuditEventType.policy_violation,
-            actor="blueprint_service",
-            details={
-                "workflow_id": workflow_id,
-                "agent": "agentic_readiness_blueprint_builder",
-                "reason": "blueprint_safety_validation_failed",
-                "issues": validation_issue_payload,
-                "blueprint_safety_validation_passed": validation_succeeded,
-                "blueprint_safety_validation_issue_count": len(validation_issues),
-            },
-        )
+        if audit_enabled:
+            log_audit_event(
+                run_id=run_id,
+                event_type=AuditEventType.policy_violation,
+                actor="blueprint_service",
+                details={
+                    "workflow_id": workflow_id,
+                    "agent": "agentic_readiness_blueprint_builder",
+                    "reason": "blueprint_safety_validation_failed",
+                    "issues": validation_issue_payload,
+                    "blueprint_safety_validation_passed": validation_succeeded,
+                    "blueprint_safety_validation_issue_count": len(validation_issues),
+                },
+            )
 
         raise BlueprintGenerationError(
             "Cannot persist Agentic Readiness Blueprint because safety validation failed."

@@ -43,24 +43,29 @@ Rules:
 def run_mcp_llm_shadow_analysis(
     run_id: str,
     workflow_id: str,
+    *,
+    persist: bool = True,
+    audit_enabled: bool = True,
 ) -> dict[str, Any]:
     settings = get_settings()
 
-    log_audit_event(
-        run_id=run_id,
-        event_type=AuditEventType.agent_started,
-        actor=_AGENT_NAME,
-        details={
-            "workflow_id": workflow_id,
-            "analysis_mode": "mcp_llm_shadow_bounded",
-            "model": settings.openai_model,
-            "reasoning_effort": settings.openai_reasoning_effort,
-        },
-    )
+    if audit_enabled:
+        log_audit_event(
+            run_id=run_id,
+            event_type=AuditEventType.agent_started,
+            actor=_AGENT_NAME,
+            details={
+                "workflow_id": workflow_id,
+                "analysis_mode": "mcp_llm_shadow_bounded",
+                "model": settings.openai_model,
+                "reasoning_effort": settings.openai_reasoning_effort,
+            },
+        )
 
     mcp_context, tool_trace = build_mcp_retrieved_context(
         run_id=run_id,
         workflow_id=workflow_id,
+        audit_enabled=audit_enabled,
     )
     evidence_catalog_index = _build_evidence_catalog_index(mcp_context)
 
@@ -102,30 +107,35 @@ def run_mcp_llm_shadow_analysis(
         ),
     }
 
-    artifact = create_artifact(
-        run_id=run_id,
-        artifact_type=ArtifactType.llm_workflow_analysis,
-        content=analysis,
-    )
+    artifact_id = f"local_{ArtifactType.llm_workflow_analysis.value}"
 
-    log_audit_event(
-        run_id=run_id,
-        event_type=AuditEventType.agent_completed,
-        actor=_AGENT_NAME,
-        details={
-            "workflow_id": workflow_id,
-            "analysis_mode": "mcp_llm_shadow_bounded",
-            "artifact_id": artifact.artifact_id,
-            "tool_call_count": len(tool_trace),
-            "risk_observation_count": len(analysis.get("risk_observations", [])),
-            "implementation_recommendation_count": len(
-                analysis.get("implementation_recommendations", [])
-            ),
-        },
-    )
+    if persist:
+        artifact = create_artifact(
+            run_id=run_id,
+            artifact_type=ArtifactType.llm_workflow_analysis,
+            content=analysis,
+        )
+        artifact_id = artifact.artifact_id
+
+    if audit_enabled:
+        log_audit_event(
+            run_id=run_id,
+            event_type=AuditEventType.agent_completed,
+            actor=_AGENT_NAME,
+            details={
+                "workflow_id": workflow_id,
+                "analysis_mode": "mcp_llm_shadow_bounded",
+                "artifact_id": artifact_id,
+                "tool_call_count": len(tool_trace),
+                "risk_observation_count": len(analysis.get("risk_observations", [])),
+                "implementation_recommendation_count": len(
+                    analysis.get("implementation_recommendations", [])
+                ),
+            },
+        )
 
     return {
-        "artifact_id": artifact.artifact_id,
+        "artifact_id": artifact_id,
         "run_id": run_id,
         "workflow_id": workflow_id,
         "analysis": analysis,

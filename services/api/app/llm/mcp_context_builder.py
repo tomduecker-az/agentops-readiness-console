@@ -54,6 +54,8 @@ CONTROL_ACTIONS = [
 def build_mcp_retrieved_context(
     run_id: str,
     workflow_id: str,
+    *,
+    audit_enabled: bool = True,
 ) -> tuple[dict[str, Any], list[dict[str, Any]]]:
     tool_trace: list[dict[str, Any]] = []
 
@@ -64,6 +66,7 @@ def build_mcp_retrieved_context(
         mcp_tool_name="list_documents",
         arguments={"workflow_id": workflow_id},
         tool_trace=tool_trace,
+        audit_enabled=audit_enabled,
     )
 
     document_contents = []
@@ -82,6 +85,7 @@ def build_mcp_retrieved_context(
                     "document_id": document_id,
                 },
                 tool_trace=tool_trace,
+                audit_enabled=audit_enabled,
             )
         )
 
@@ -101,6 +105,7 @@ def build_mcp_retrieved_context(
                         "query": query,
                     },
                     tool_trace=tool_trace,
+                    audit_enabled=audit_enabled,
                 ),
             }
         )
@@ -112,6 +117,7 @@ def build_mcp_retrieved_context(
         mcp_tool_name="classify_data_elements",
         arguments={"data_elements": DATA_ELEMENTS},
         tool_trace=tool_trace,
+        audit_enabled=audit_enabled,
     )
 
     required_controls = _call_governed_tool(
@@ -121,6 +127,7 @@ def build_mcp_retrieved_context(
         mcp_tool_name="get_required_controls_for_actions",
         arguments={"workflow_steps": CONTROL_ACTIONS},
         tool_trace=tool_trace,
+        audit_enabled=audit_enabled,
     )
     evidence_catalog = build_evidence_catalog(
         workflow_id=workflow_id,
@@ -159,6 +166,8 @@ def _call_governed_tool(
     mcp_tool_name: str,
     arguments: dict[str, Any],
     tool_trace: list[dict[str, Any]],
+    *,
+    audit_enabled: bool = True,
 ) -> Any:
     permission = call_mcp_tool(
         server="policy",
@@ -170,19 +179,20 @@ def _call_governed_tool(
         },
     )
 
-    log_audit_event(
-        run_id=run_id,
-        event_type=AuditEventType.policy_checked,
-        actor="tool_policy_guardian",
-        details={
-            "tool_name": policy_tool_name,
-            "agent_name": _AGENT_NAME,
-            "decision": permission.get("decision"),
-            "requires_human_approval": permission.get("requires_human_approval"),
-            "rationale": permission.get("rationale"),
-            "analysis_mode": "mcp_llm_shadow_bounded",
-        },
-    )
+    if audit_enabled:
+        log_audit_event(
+            run_id=run_id,
+            event_type=AuditEventType.policy_checked,
+            actor="tool_policy_guardian",
+            details={
+                "tool_name": policy_tool_name,
+                "agent_name": _AGENT_NAME,
+                "decision": permission.get("decision"),
+                "requires_human_approval": permission.get("requires_human_approval"),
+                "rationale": permission.get("rationale"),
+                "analysis_mode": "mcp_llm_shadow_bounded",
+            },
+        )
 
     if not _is_allowed(permission):
         raise PermissionError(
@@ -197,17 +207,18 @@ def _call_governed_tool(
 
     safe_arguments = _safe_arguments(arguments)
 
-    log_audit_event(
-        run_id=run_id,
-        event_type=AuditEventType.tool_called,
-        actor=_AGENT_NAME,
-        details={
-            "tool_name": policy_tool_name,
-            "mcp_tool_name": mcp_tool_name,
-            "arguments": safe_arguments,
-            "analysis_mode": "mcp_llm_shadow_bounded",
-        },
-    )
+    if audit_enabled:
+        log_audit_event(
+            run_id=run_id,
+            event_type=AuditEventType.tool_called,
+            actor=_AGENT_NAME,
+            details={
+                "tool_name": policy_tool_name,
+                "mcp_tool_name": mcp_tool_name,
+                "arguments": safe_arguments,
+                "analysis_mode": "mcp_llm_shadow_bounded",
+            },
+        )
 
     tool_trace.append(
         {

@@ -1,0 +1,71 @@
+{
+  "evaluation_type": "llm_shadow_analysis",
+  "workflow_id": "access_request_review_packet_demo",
+  "run_id": "run_packet_demo_001",
+  "llm_artifact_id": "local_llm_workflow_analysis",
+  "model": "gpt-5.6-sol",
+  "score": 92,
+  "max_score": 100,
+  "minimum_score": 80,
+  "passed": true,
+  "checks": [
+    {
+      "name": "Required LLM artifact sections present",
+      "passed": true,
+      "earned_points": 10,
+      "max_points": 10,
+      "details": "missing_sections=[]"
+    },
+    {
+      "name": "Output is specific to the access-request workflow",
+      "passed": true,
+      "earned_points": 10,
+      "max_points": 10,
+      "details": "matched_groups=['group_1', 'group_2', 'group_3', 'group_4', 'group_5', 'group_6']"
+    },
+    {
+      "name": "Risk observations are specific and useful",
+      "passed": true,
+      "earned_points": 14,
+      "max_points": 15,
+      "details": "risk_count=8, high_risk_count=5, matched_theme_groups=['group_1', 'group_2', 'group_3', 'group_4', 'group_6']"
+    },
+    {
+      "name": "Missing-information analysis is substantive",
+      "passed": false,
+      "earned_points": 8,
+      "max_points": 15,
+      "details": "missing_information_count=11, matched_theme_groups=['group_2', 'group_4']"
+    },
+    {
+      "name": "Grounding and hallucination controls are present",
+      "passed": true,
+      "earned_points": 15,
+      "max_points": 15,
+      "details": "grounding_note_count=5, hallucination_risk_note_count=5, caution_language_present=True"
+    },
+    {
+      "name": "Implementation recommendations are actionable",
+      "passed": true,
+      "earned_points": 10,
+      "max_points": 10,
+      "details": "recommendation_count=8, approval_required_count=7, high_priority_count=6, owner_count=8"
+    },
+    {
+      "name": "Governance boundaries are clearly represented",
+      "passed": true,
+      "earned_points": 15,
+      "max_points": 15,
+      "details": "matched_governance_groups=['group_1', 'group_2', 'group_3', 'group_4', 'group_5']"
+    },
+    {
+      "name": "No domain leakage from prior examples",
+      "passed": true,
+      "earned_points": 10,
+      "max_points": 10,
+      "details": "found_prohibited_terms=[]"
+    }
+  ],
+  "created_at": "2026-08-11T17:51:31.950827+00:00",
+  "evaluation_note": "This evaluation checks the advisory LLM shadow artifact for structure, workflow specificity, risk quality, missing-information analysis, grounding, governance boundaries, and domain leakage. It does not replace human review."
+}

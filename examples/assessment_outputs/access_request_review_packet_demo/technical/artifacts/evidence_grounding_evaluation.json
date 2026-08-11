@@ -1,0 +1,65 @@
+{
+  "evaluation_type": "evidence_grounding",
+  "workflow_id": "access_request_review_packet_demo",
+  "run_id": "run_packet_demo_001",
+  "llm_artifact_id": "local_llm_workflow_analysis",
+  "analysis_mode": "mcp_llm_shadow_bounded",
+  "evidence_item_count": 9,
+  "score": 105,
+  "max_score": 110,
+  "minimum_score": 85,
+  "passed": true,
+  "checks": [
+    {
+      "name": "Evidence catalog index is present",
+      "passed": true,
+      "earned_points": 15,
+      "max_points": 15,
+      "details": "evidence_item_count=9, evidence_id_count=9"
+    },
+    {
+      "name": "Evidence index is lightweight and reviewable",
+      "passed": true,
+      "earned_points": 10,
+      "max_points": 10,
+      "details": "entries_with_full_content=[], entries_missing_summary=[]"
+    },
+    {
+      "name": "Major analysis sections include evidence references",
+      "passed": true,
+      "earned_points": 20,
+      "max_points": 20,
+      "details": "referenced_items=42, total_items=42, coverage=1.00, section_counts={'key_process_observations': {'total': 6, 'referenced': 6}, 'data_sensitivity_observations': {'total': 5, 'referenced': 5}, 'risk_observations': {'total': 8, 'referenced': 8}, 'control_recommendations': {'total': 9, 'referenced': 9}, 'hitl_recommendations': {'total': 6, 'referenced': 6}, 'implementation_recommendations': {'total': 8, 'referenced': 8}}"
+    },
+    {
+      "name": "All evidence references resolve to the evidence catalog",
+      "passed": true,
+      "earned_points": 20,
+      "max_points": 20,
+      "details": "observed_reference_count=9, valid_evidence_id_count=9, invalid_refs=[]"
+    },
+    {
+      "name": "Evidence references use multiple evidence types",
+      "passed": true,
+      "earned_points": 10,
+      "max_points": 15,
+      "details": "observed_evidence_types=['data_classification_batch', 'required_controls_batch', 'workflow_document']"
+    },
+    {
+      "name": "High-value sections are evidence-grounded",
+      "passed": true,
+      "earned_points": 20,
+      "max_points": 20,
+      "details": "section_results={'risk_observations': {'total': 8, 'referenced': 8, 'coverage': 1.0, 'threshold': 0.9, 'passed': True}, 'control_recommendations': {'total': 9, 'referenced': 9, 'coverage': 1.0, 'threshold': 0.8, 'passed': True}, 'hitl_recommendations': {'total': 6, 'referenced': 6, 'coverage': 1.0, 'threshold': 0.8, 'passed': True}, 'implementation_recommendations': {'total': 8, 'referenced': 8, 'coverage': 1.0, 'threshold': 0.8, 'passed': True}}"
+    },
+    {
+      "name": "Evidence catalog stays within workflow scope",
+      "passed": true,
+      "earned_points": 10,
+      "max_points": 10,
+      "details": "workflow_id=access_request_review_packet_demo, mismatches=[]"
+    }
+  ],
+  "created_at": "2026-08-11T17:51:44.174979+00:00",
+  "evaluation_note": "This evaluation checks whether the LLM analysis includes valid evidence references tied to the MCP-retrieved evidence catalog. It complements the output-quality and MCP-operational evaluations."
+}
