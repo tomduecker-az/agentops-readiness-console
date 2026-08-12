@@ -29,11 +29,11 @@
     </div>
 
     {% if run_status %}
-      <div class="meta-row">
-        <div class="meta-label">Run status</div>
-        <div class="meta-value">
-          {{ run_status.status }} · {{ run_status.stage }}
-        </div>
+      <div class="run-state state-{{ run_status.status }}">
+        <div class="run-state-label">Run status</div>
+        <div class="run-state-title">{{ run_status.status }}</div>
+        <div class="run-state-stage">{{ run_status.stage }}</div>
+        <div class="run-state-message">{{ run_status.message }}</div>
       </div>
     {% endif %}
 
@@ -173,7 +173,8 @@
       {% endif %}
 
       {% if is_run_active %}
-        <section class="next-steps run-panel">
+        <section class="next-steps run-panel active-run-panel">
+          <div class="eyebrow">Assessment in progress</div>
           <h2>Full assessment running</h2>
           <p>
             The assessment pipeline is running in the background. This page refreshes every
@@ -181,15 +182,92 @@
           </p>
 
           {% if run_status %}
-            <div class="run-status-box">
-              <div class="summary-label">Current status</div>
-              <div class="summary-value">{{ run_status.status }}</div>
-              <div class="summary-detail">{{ run_status.message }}</div>
+            <div class="progress-stack">
+              <div class="progress-row completed">
+                <div class="progress-dot"></div>
+                <div>
+                  <div class="progress-title">Workspace prepared</div>
+                  <div class="progress-detail">Workbook accepted, validated, normalized, and converted.</div>
+                </div>
+              </div>
+
+              <div class="progress-row active">
+                <div class="progress-dot"></div>
+                <div>
+                  <div class="progress-title">{{ run_status.status }} · {{ run_status.stage }}</div>
+                  <div class="progress-detail">{{ run_status.message }}</div>
+                </div>
+              </div>
+
+              <div class="progress-row pending">
+                <div class="progress-dot"></div>
+                <div>
+                  <div class="progress-title">Report pending</div>
+                  <div class="progress-detail">The client-facing report will appear here when generation completes.</div>
+                </div>
+              </div>
             </div>
           {% endif %}
         </section>
+      {% elif run_status and run_status.status == "failed" %}
+        <section class="next-steps run-panel failed-run-panel">
+          <div class="eyebrow">Assessment failed</div>
+          <h2>Full assessment did not complete</h2>
+          <p>
+            The assessment pipeline stopped before producing a completed report. Review the
+            message below, adjust the run options or input workbook, and try again.
+          </p>
+
+          <div class="run-status-box">
+            <div class="summary-label">Failure message</div>
+            <div class="summary-value">failed</div>
+            <div class="summary-detail">{{ run_status.message }}</div>
+          </div>
+
+          <form
+            class="run-form"
+            action="/assessments/{{ workflow_id }}/{{ run_id }}/run-full"
+            method="post"
+          >
+            <label for="evaluation_profile_id">Evaluation profile ID</label>
+            <input
+              id="evaluation_profile_id"
+              name="evaluation_profile_id"
+              type="text"
+              value="access_request_review"
+              required
+            >
+
+            <label class="checkbox">
+              <input type="checkbox" name="run_llm" value="true" checked>
+              <span>
+                Run fresh LLM workflow analysis
+                <div class="help">Costs API credits. Required for a new uploaded workbook.</div>
+              </span>
+            </label>
+
+            <label class="checkbox">
+              <input type="checkbox" name="export_client_report" value="true" checked>
+              <span>
+                Generate client-facing report
+                <div class="help">Costs API credits. Produces the report shown in the UI.</div>
+              </span>
+            </label>
+
+            <label class="checkbox">
+              <input type="checkbox" name="confirm_api_cost" value="true" required>
+              <span>
+                I understand this may incur API cost.
+                <div class="help">Use this only when you are ready to spend credits on a full run.</div>
+              </span>
+            </label>
+
+            <button class="button" type="submit">Retry Full Assessment</button>
+          </form>
+        </section>
       {% else %}
         <section class="next-steps run-panel">
+          <div class="eyebrow">Ready for full analysis</div>
           <h2>Run full assessment</h2>
           <p>
             The workspace is prepared. When you are ready, run the full assessment to generate

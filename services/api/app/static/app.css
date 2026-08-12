@@ -421,6 +421,112 @@ pre {
   margin-top: 18px;
 }
 
+.run-state {
+  margin-top: 18px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 16px;
+  background: #fafafa;
+}
+
+.run-state-label {
+  font-size: 12px;
+  font-weight: 850;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+}
+
+.run-state-title {
+  margin-top: 6px;
+  font-size: 22px;
+  font-weight: 900;
+  text-transform: capitalize;
+}
+
+.run-state-stage {
+  margin-top: 4px;
+  color: var(--muted);
+  font-weight: 700;
+}
+
+.run-state-message {
+  margin-top: 10px;
+  color: #374151;
+  line-height: 1.45;
+  font-size: 14px;
+}
+
+.state-queued,
+.state-running {
+  background: #f8fafc;
+}
+
+.state-completed {
+  background: #f0fdf4;
+}
+
+.state-failed {
+  background: #fef2f2;
+}
+
+.active-run-panel {
+  border-color: #cbd5e1;
+}
+
+.failed-run-panel {
+  border-color: #fecaca;
+  background: #fff7f7;
+}
+
+.progress-stack {
+  display: grid;
+  gap: 14px;
+  margin-top: 22px;
+}
+
+.progress-row {
+  display: grid;
+  grid-template-columns: 18px minmax(0, 1fr);
+  gap: 12px;
+  align-items: start;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 16px;
+  background: white;
+}
+
+.progress-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 999px;
+  margin-top: 5px;
+  background: #d1d5db;
+}
+
+.progress-row.completed .progress-dot {
+  background: #16a34a;
+}
+
+.progress-row.active .progress-dot {
+  background: #2563eb;
+}
+
+.progress-row.pending .progress-dot {
+  background: #d1d5db;
+}
+
+.progress-title {
+  font-weight: 850;
+}
+
+.progress-detail {
+  margin-top: 4px;
+  color: var(--muted);
+  line-height: 1.45;
+  font-size: 14px;
+}
+
 .run-form .button {
   margin-top: 22px;
 }
