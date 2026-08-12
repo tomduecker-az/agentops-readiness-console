@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block title %}AI Workflow Assessment{% endblock %}
+
+{% block content %}
+<section class="hero">
+  <div class="card">
+    <div class="eyebrow">Local AI readiness analysis</div>
+    <h1>Turn a workflow packet into an AI implementation assessment.</h1>
+    <p>
+      Upload a completed Workflow Packet workbook and generate a client-facing report
+      that identifies the safest first AI build, required controls, readiness gaps,
+      and executive decisions.
+    </p>
+
+    <div class="actions">
+      <a class="button" href="/assessments/new">Start New Assessment</a>
+      {% if demo_report_exists %}
+        <a class="button secondary" href="/demo/access-review">View Demo Report</a>
+      {% endif %}
+    </div>
+  </div>
+
+  <aside class="card">
+    <div class="stat">
+      <div class="stat-label">Input</div>
+      <div class="stat-value">Workflow Packet</div>
+    </div>
+    <div class="stat">
+      <div class="stat-label">Output</div>
+      <div class="stat-value">Readiness Report</div>
+    </div>
+    <div class="stat">
+      <div class="stat-label">First use case</div>
+      <div class="stat-value">Read-only copilot</div>
+    </div>
+    <div class="stat">
+      <div class="stat-label">Mode</div>
+      <div class="stat-value">Local-first</div>
+    </div>
+  </aside>
+</section>
+{% endblock %}

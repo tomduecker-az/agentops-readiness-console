@@ -1,0 +1,285 @@
+:root {
+  --bg: #f6f7f9;
+  --card: #ffffff;
+  --text: #111827;
+  --muted: #5b6472;
+  --line: #e5e7eb;
+  --soft: #f3f4f6;
+  --accent: #111827;
+  --accent-soft: #eef2ff;
+  --radius: 18px;
+  --shadow: 0 14px 34px rgba(15, 23, 42, 0.07);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+a {
+  color: inherit;
+}
+
+.header {
+  border-bottom: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.86);
+  backdrop-filter: blur(10px);
+}
+
+.header-inner {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 18px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.brand {
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.nav {
+  display: flex;
+  gap: 18px;
+  font-size: 14px;
+  color: var(--muted);
+}
+
+.nav a {
+  text-decoration: none;
+}
+
+.main {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 48px 24px 72px;
+}
+
+.hero {
+  display: grid;
+  grid-template-columns: 1.35fr 0.65fr;
+  gap: 24px;
+  align-items: stretch;
+}
+
+.card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 30px;
+}
+
+.eyebrow {
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 12px;
+}
+
+h1 {
+  margin: 0;
+  font-size: 42px;
+  line-height: 1.05;
+  letter-spacing: -0.04em;
+}
+
+h2 {
+  margin: 0 0 16px;
+  font-size: 24px;
+  letter-spacing: -0.02em;
+}
+
+h3 {
+  margin-top: 28px;
+  font-size: 19px;
+}
+
+p {
+  line-height: 1.65;
+  color: var(--muted);
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 28px;
+}
+
+.button {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 44px;
+  padding: 0 18px;
+  border-radius: 12px;
+  background: var(--accent);
+  color: white;
+  font-weight: 800;
+  text-decoration: none;
+  border: 1px solid var(--accent);
+  cursor: pointer;
+  font-size: 15px;
+}
+
+.button.secondary {
+  background: white;
+  color: var(--accent);
+}
+
+.stat {
+  padding: 16px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.stat:last-child {
+  border-bottom: 0;
+}
+
+.stat-label {
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.stat-value {
+  font-size: 20px;
+  font-weight: 850;
+  margin-top: 4px;
+}
+
+.form {
+  max-width: 760px;
+}
+
+label {
+  display: block;
+  margin-top: 20px;
+  font-weight: 750;
+}
+
+input[type="text"],
+input[type="file"] {
+  width: 100%;
+  margin-top: 8px;
+  padding: 13px 14px;
+  border-radius: 12px;
+  border: 1px solid #d1d5db;
+  background: white;
+  font-size: 16px;
+}
+
+.checkbox {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  margin-top: 18px;
+  font-weight: 600;
+}
+
+.checkbox input {
+  width: 18px;
+  height: 18px;
+  margin-top: 2px;
+}
+
+.help {
+  font-size: 14px;
+  color: var(--muted);
+  margin-top: 6px;
+}
+
+.result-shell {
+  display: grid;
+  grid-template-columns: 280px minmax(0, 1fr);
+  gap: 24px;
+}
+
+.sidebar {
+  position: sticky;
+  top: 24px;
+  align-self: start;
+}
+
+.meta-row {
+  padding: 12px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.meta-label {
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.meta-value {
+  font-weight: 750;
+  overflow-wrap: anywhere;
+  margin-top: 4px;
+}
+
+.report {
+  background: white;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 38px;
+  line-height: 1.65;
+}
+
+.report h1 {
+  font-size: 34px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid var(--line);
+}
+
+.report h2 {
+  margin-top: 36px;
+  padding-top: 12px;
+}
+
+.report p,
+.report li {
+  color: #374151;
+}
+
+.report strong {
+  color: #111827;
+}
+
+.error {
+  border-left: 5px solid #991b1b;
+}
+
+pre {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  background: var(--soft);
+  border-radius: 12px;
+  padding: 16px;
+  font-size: 13px;
+}
+
+@media (max-width: 820px) {
+  .hero,
+  .result-shell {
+    grid-template-columns: 1fr;
+  }
+
+  h1 {
+    font-size: 34px;
+  }
+
+  .report {
+    padding: 24px;
+  }
+}

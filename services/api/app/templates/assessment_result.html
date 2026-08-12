@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<section class="result-shell">
+  <aside class="card sidebar">
+    <div class="eyebrow">Assessment result</div>
+    <h2>{{ title }}</h2>
+
+    <div class="meta-row">
+      <div class="meta-label">Workflow</div>
+      <div class="meta-value">{{ workflow_id }}</div>
+    </div>
+
+    <div class="meta-row">
+      <div class="meta-label">Run ID</div>
+      <div class="meta-value">{{ run_id }}</div>
+    </div>
+
+    <div class="meta-row">
+      <div class="meta-label">Output folder</div>
+      <div class="meta-value">{{ output_dir }}</div>
+    </div>
+
+    {% if report_path %}
+      <div class="meta-row">
+        <div class="meta-label">Report file</div>
+        <div class="meta-value">{{ report_path }}</div>
+      </div>
+    {% endif %}
+
+    <div class="actions">
+      <a class="button secondary" href="/assessments/new">New Assessment</a>
+      <a class="button secondary" href="/">Home</a>
+    </div>
+  </aside>
+
+  {% if report_html %}
+    <article class="report">
+      {{ report_html | safe }}
+    </article>
+  {% else %}
+    <article class="card">
+      <h1>No report generated</h1>
+      <p>
+        The assessment completed, but no client-facing report file was found.
+        Generate a fresh client report or open the technical output folder.
+      </p>
+
+      {% if result %}
+        <h3>Assessment result</h3>
+        <pre>{{ result }}</pre>
+      {% endif %}
+    </article>
+  {% endif %}
+</section>
+{% endblock %}

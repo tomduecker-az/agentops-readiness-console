@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<div class="card error">
+  <div class="eyebrow">Error</div>
+  <h1>{{ title }}</h1>
+  <p>{{ message }}</p>
+
+  <div class="actions">
+    <a class="button secondary" href="/assessments/new">Back to New Assessment</a>
+    <a class="button secondary" href="/">Home</a>
+  </div>
+</div>
+{% endblock %}

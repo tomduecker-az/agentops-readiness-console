@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>{% block title %}AI Workflow Assessment{% endblock %}</title>
+  <link rel="stylesheet" href="/static/app.css">
+</head>
+<body>
+  <header class="header">
+    <div class="header-inner">
+      <div class="brand">AI Workflow Assessment</div>
+      <nav class="nav">
+        <a href="/">Home</a>
+        <a href="/assessments/new">New Assessment</a>
+        <a href="/demo/access-review">Demo Report</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="main">
+    {% block content %}{% endblock %}
+  </main>
+</body>
+</html>

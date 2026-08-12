@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+{% block title %}New Assessment{% endblock %}
+
+{% block content %}
+<div class="card form">
+  <div class="eyebrow">New assessment</div>
+  <h1>Upload a workflow packet.</h1>
+  <p>
+    The local app will prepare the workbook, run the assessment pipeline,
+    and display a report when complete.
+  </p>
+
+  <form action="/assessments" method="post" enctype="multipart/form-data">
+    <label for="assessment_name">Assessment name</label>
+    <input
+      id="assessment_name"
+      name="assessment_name"
+      type="text"
+      value="{{ default_workflow_id }}"
+      required
+    >
+    <div class="help">
+      This becomes the local workflow ID and output folder name.
+    </div>
+
+    <label for="evaluation_profile_id">Evaluation profile ID</label>
+    <input
+      id="evaluation_profile_id"
+      name="evaluation_profile_id"
+      type="text"
+      value="{{ default_evaluation_profile_id }}"
+      required
+    >
+    <div class="help">
+      For the current demo workbook, use access_request_review.
+    </div>
+
+    <label for="workbook">Completed Workflow Packet workbook</label>
+    <input
+      id="workbook"
+      name="workbook"
+      type="file"
+      accept=".xlsx"
+      required
+    >
+
+    <label class="checkbox">
+      <input type="checkbox" name="run_llm" value="true">
+      <span>
+        Run fresh LLM workflow analysis
+        <div class="help">Costs API credits. Leave unchecked only when a matching local artifact already exists.</div>
+      </span>
+    </label>
+
+    <label class="checkbox">
+      <input type="checkbox" name="export_client_report" value="true">
+      <span>
+        Generate fresh client-facing report
+        <div class="help">Costs API credits. Use only when you need a new report.</div>
+      </span>
+    </label>
+
+    <div class="actions">
+      <button class="button" type="submit">Run Assessment</button>
+      <a class="button secondary" href="/demo/access-review">View Demo Report</a>
+    </div>
+  </form>
+</div>
+{% endblock %}
