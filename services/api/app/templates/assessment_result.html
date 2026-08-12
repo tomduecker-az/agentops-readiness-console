@@ -1,6 +1,11 @@
 {% extends "base.html" %}
 
 {% block title %}{{ title }}{% endblock %}
+{% block head_extra %}
+  {% if is_run_active %}
+    <meta http-equiv="refresh" content="5">
+  {% endif %}
+{% endblock %}
 
 {% block content %}
 <section class="result-shell">
@@ -167,54 +172,72 @@
         </section>
       {% endif %}
 
-      <section class="next-steps run-panel">
-        <h2>Run full assessment</h2>
-        <p>
-          The workspace is prepared. When you are ready, run the full assessment to generate
-          the analysis artifacts, blueprint, and client-facing report.
-        </p>
+      {% if is_run_active %}
+        <section class="next-steps run-panel">
+          <h2>Full assessment running</h2>
+          <p>
+            The assessment pipeline is running in the background. This page refreshes every
+            five seconds and will display the report when it is ready.
+          </p>
 
-        <form
-          class="run-form"
-          action="/assessments/{{ workflow_id }}/{{ run_id }}/run-full"
-          method="post"
-        >
-          <label for="evaluation_profile_id">Evaluation profile ID</label>
-          <input
-            id="evaluation_profile_id"
-            name="evaluation_profile_id"
-            type="text"
-            value="access_request_review"
-            required
+          {% if run_status %}
+            <div class="run-status-box">
+              <div class="summary-label">Current status</div>
+              <div class="summary-value">{{ run_status.status }}</div>
+              <div class="summary-detail">{{ run_status.message }}</div>
+            </div>
+          {% endif %}
+        </section>
+      {% else %}
+        <section class="next-steps run-panel">
+          <h2>Run full assessment</h2>
+          <p>
+            The workspace is prepared. When you are ready, run the full assessment to generate
+            the analysis artifacts, blueprint, and client-facing report.
+          </p>
+
+          <form
+            class="run-form"
+            action="/assessments/{{ workflow_id }}/{{ run_id }}/run-full"
+            method="post"
           >
+            <label for="evaluation_profile_id">Evaluation profile ID</label>
+            <input
+              id="evaluation_profile_id"
+              name="evaluation_profile_id"
+              type="text"
+              value="access_request_review"
+              required
+            >
 
-          <label class="checkbox">
-            <input type="checkbox" name="run_llm" value="true" checked>
-            <span>
-              Run fresh LLM workflow analysis
-              <div class="help">Costs API credits. Required for a new uploaded workbook.</div>
-            </span>
-          </label>
+            <label class="checkbox">
+              <input type="checkbox" name="run_llm" value="true" checked>
+              <span>
+                Run fresh LLM workflow analysis
+                <div class="help">Costs API credits. Required for a new uploaded workbook.</div>
+              </span>
+            </label>
 
-          <label class="checkbox">
-            <input type="checkbox" name="export_client_report" value="true" checked>
-            <span>
-              Generate client-facing report
-              <div class="help">Costs API credits. Produces the report shown in the UI.</div>
-            </span>
-          </label>
+            <label class="checkbox">
+              <input type="checkbox" name="export_client_report" value="true" checked>
+              <span>
+                Generate client-facing report
+                <div class="help">Costs API credits. Produces the report shown in the UI.</div>
+              </span>
+            </label>
 
-          <label class="checkbox">
-            <input type="checkbox" name="confirm_api_cost" value="true" required>
-            <span>
-              I understand this may incur API cost.
-              <div class="help">Use this only when you are ready to spend credits on a full run.</div>
-            </span>
-          </label>
+            <label class="checkbox">
+              <input type="checkbox" name="confirm_api_cost" value="true" required>
+              <span>
+                I understand this may incur API cost.
+                <div class="help">Use this only when you are ready to spend credits on a full run.</div>
+              </span>
+            </label>
 
-          <button class="button" type="submit">Run Full Assessment</button>
-        </form>
-      </section>
+            <button class="button" type="submit">Run Full Assessment</button>
+          </form>
+        </section>
+      {% endif %}
 
       {% if result %}
         <details class="technical-details">

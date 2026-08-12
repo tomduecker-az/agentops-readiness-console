@@ -7,8 +7,9 @@ from pathlib import Path
 
 import markdown as markdown_lib
 from fastapi import APIRouter, File, Form, Request, UploadFile
-from fastapi.responses import FileResponse, HTMLResponse
+from fastapi.responses import FileResponse, HTMLResponse, RedirectResponse
 from fastapi.templating import Jinja2Templates
+from fastapi import APIRouter, BackgroundTasks, File, Form, Request, UploadFile
 
 from app.services.assessment_orchestrator import (
     AssessmentOptions,
@@ -235,16 +236,18 @@ async def view_assessment_run(
         run_status=run_status,
     )
 
-@router.post("/assessments/{workflow_id}/{run_id}/run-full", response_class=HTMLResponse)
+
+@router.post("/assessments/{workflow_id}/{run_id}/run-full")
 async def run_full_assessment(
     request: Request,
+    background_tasks: BackgroundTasks,
     workflow_id: str,
     run_id: str,
     evaluation_profile_id: str = Form("access_request_review"),
     run_llm: bool = Form(False),
     export_client_report: bool = Form(False),
     confirm_api_cost: bool = Form(False),
-) -> HTMLResponse:
+):
     run = get_local_assessment_run(
         output_root=_LOCAL_OUTPUT_ROOT,
         workflow_id=workflow_id,
@@ -291,73 +294,32 @@ async def run_full_assessment(
             status_code=400,
         )
 
-    try:
-        write_run_status(
-            run,
-            status="running",
-            stage="full_assessment",
-            message="Full assessment pipeline started.",
-            details={
-                "run_analysis": True,
-                "run_llm": run_llm,
-                "export_client_report": export_client_report,
-                "evaluation_profile_id": evaluation_profile_id,
-            },
-        )
+    write_run_status(
+        run,
+        status="queued",
+        stage="full_assessment",
+        message="Full assessment queued.",
+        details={
+            "run_analysis": True,
+            "run_llm": run_llm,
+            "export_client_report": export_client_report,
+            "evaluation_profile_id": evaluation_profile_id,
+        },
+    )
 
-        result = run_workflow_packet_assessment(
-            AssessmentOptions(
-                workbook_path=run.workbook_path,
-                workflow_id=run.workflow_id,
-                run_id=run.run_id,
-                output_dir=run.output_dir,
-                overwrite=True,
-                run_llm=run_llm,
-                run_analysis=True,
-                evaluation_profile_id=evaluation_profile_id,
-                export_client_report=export_client_report,
-            )
-        )
-
-        write_run_status(
-            run,
-            status="completed",
-            stage="completed",
-            message="Full assessment completed successfully.",
-            details={
-                "assessment_status": result.get("status"),
-                "analysis_status": result.get("analysis", {}).get("status"),
-                "report_paths": result.get("analysis", {}).get("report_paths", {}),
-            },
-        )
-
-    except Exception as exc:
-        write_run_status(
-            run,
-            status="failed",
-            stage="full_assessment",
-            message=str(exc),
-        )
-
-        return _error_response(
-            request=request,
-            title="Full assessment failed",
-            message=str(exc),
-            status_code=500,
-        )
-
-    report_path = client_report_path(run)
-
-    return _report_response(
-        request=request,
-        title="Assessment Result",
+    background_tasks.add_task(
+        _execute_full_assessment_background,
         workflow_id=run.workflow_id,
         run_id=run.run_id,
-        output_dir=run.output_dir,
-        report_path=report_path if report_path.is_file() else None,
-        result=result,
-        run_status=read_run_status(run),
+        evaluation_profile_id=evaluation_profile_id,
+        run_llm=run_llm,
+        export_client_report=export_client_report,
     )
+
+    return RedirectResponse(
+        url=f"/assessments/{run.workflow_id}/{run.run_id}",
+        status_code=303,
+    )        
 
 
 @router.get("/demo/access-review", response_class=HTMLResponse)
@@ -456,6 +418,67 @@ async def download_assessment_package(
         filename=f"{workflow_id}_{run_id}_assessment_package.zip",
     )
 
+def _execute_full_assessment_background(
+    *,
+    workflow_id: str,
+    run_id: str,
+    evaluation_profile_id: str,
+    run_llm: bool,
+    export_client_report: bool,
+) -> None:
+    run = get_local_assessment_run(
+        output_root=_LOCAL_OUTPUT_ROOT,
+        workflow_id=workflow_id,
+        run_id=run_id,
+    )
+
+    try:
+        write_run_status(
+            run,
+            status="running",
+            stage="full_assessment",
+            message="Full assessment pipeline is running.",
+            details={
+                "run_analysis": True,
+                "run_llm": run_llm,
+                "export_client_report": export_client_report,
+                "evaluation_profile_id": evaluation_profile_id,
+            },
+        )
+
+        result = run_workflow_packet_assessment(
+            AssessmentOptions(
+                workbook_path=run.workbook_path,
+                workflow_id=run.workflow_id,
+                run_id=run.run_id,
+                output_dir=run.output_dir,
+                overwrite=True,
+                run_llm=run_llm,
+                run_analysis=True,
+                evaluation_profile_id=evaluation_profile_id,
+                export_client_report=export_client_report,
+            )
+        )
+
+        write_run_status(
+            run,
+            status="completed",
+            stage="completed",
+            message="Full assessment completed successfully.",
+            details={
+                "assessment_status": result.get("status"),
+                "analysis_status": result.get("analysis", {}).get("status"),
+                "report_paths": result.get("analysis", {}).get("report_paths", {}),
+            },
+        )
+
+    except Exception as exc:
+        write_run_status(
+            run,
+            status="failed",
+            stage="full_assessment",
+            message=str(exc),
+        )
 
 def _report_response(
     *,
@@ -488,6 +511,11 @@ def _report_response(
         manifest_download_url = f"/assessments/{workflow_id}/{run_id}/manifest.json"
         package_download_url = f"/assessments/{workflow_id}/{run_id}/package.zip"
 
+    is_run_active = bool(
+        run_status
+        and run_status.get("status") in {"queued", "running"}
+    )    
+
     return templates.TemplateResponse(
         "assessment_result.html",
         {
@@ -504,6 +532,7 @@ def _report_response(
             "report_download_url": report_download_url if report_path else None,
             "manifest_download_url": manifest_download_url,
             "package_download_url": package_download_url,
+            "is_run_active": is_run_active,
         },
     )
 

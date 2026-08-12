@@ -413,6 +413,14 @@ pre {
   margin-top: 18px;
 }
 
+.run-status-box {
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 18px;
+  background: white;
+  margin-top: 18px;
+}
+
 .run-form .button {
   margin-top: 22px;
 }
