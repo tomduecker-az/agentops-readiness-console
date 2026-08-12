@@ -235,6 +235,130 @@ async def view_assessment_run(
         run_status=run_status,
     )
 
+@router.post("/assessments/{workflow_id}/{run_id}/run-full", response_class=HTMLResponse)
+async def run_full_assessment(
+    request: Request,
+    workflow_id: str,
+    run_id: str,
+    evaluation_profile_id: str = Form("access_request_review"),
+    run_llm: bool = Form(False),
+    export_client_report: bool = Form(False),
+    confirm_api_cost: bool = Form(False),
+) -> HTMLResponse:
+    run = get_local_assessment_run(
+        output_root=_LOCAL_OUTPUT_ROOT,
+        workflow_id=workflow_id,
+        run_id=run_id,
+    )
+
+    if not run.output_dir.exists():
+        return _error_response(
+            request=request,
+            title="Assessment run not found",
+            message=f"No local assessment run exists at {run.output_dir}",
+            status_code=404,
+        )
+
+    if not run.workbook_path.exists():
+        return _error_response(
+            request=request,
+            title="Uploaded workbook not found",
+            message=f"Expected uploaded workbook at {run.workbook_path}",
+            status_code=404,
+        )
+
+    if (run_llm or export_client_report) and not confirm_api_cost:
+        return _error_response(
+            request=request,
+            title="API cost confirmation required",
+            message=(
+                "Fresh LLM workflow analysis or client report generation may incur API cost. "
+                "Confirm API cost before running the full assessment."
+            ),
+            status_code=400,
+        )
+
+    existing_llm_artifact = run.artifacts_dir / "llm_workflow_analysis.json"
+
+    if not run_llm and not existing_llm_artifact.exists():
+        return _error_response(
+            request=request,
+            title="LLM workflow analysis required",
+            message=(
+                "This run does not have an existing LLM workflow analysis artifact. "
+                "Enable fresh LLM workflow analysis to run the full assessment."
+            ),
+            status_code=400,
+        )
+
+    try:
+        write_run_status(
+            run,
+            status="running",
+            stage="full_assessment",
+            message="Full assessment pipeline started.",
+            details={
+                "run_analysis": True,
+                "run_llm": run_llm,
+                "export_client_report": export_client_report,
+                "evaluation_profile_id": evaluation_profile_id,
+            },
+        )
+
+        result = run_workflow_packet_assessment(
+            AssessmentOptions(
+                workbook_path=run.workbook_path,
+                workflow_id=run.workflow_id,
+                run_id=run.run_id,
+                output_dir=run.output_dir,
+                overwrite=True,
+                run_llm=run_llm,
+                run_analysis=True,
+                evaluation_profile_id=evaluation_profile_id,
+                export_client_report=export_client_report,
+            )
+        )
+
+        write_run_status(
+            run,
+            status="completed",
+            stage="completed",
+            message="Full assessment completed successfully.",
+            details={
+                "assessment_status": result.get("status"),
+                "analysis_status": result.get("analysis", {}).get("status"),
+                "report_paths": result.get("analysis", {}).get("report_paths", {}),
+            },
+        )
+
+    except Exception as exc:
+        write_run_status(
+            run,
+            status="failed",
+            stage="full_assessment",
+            message=str(exc),
+        )
+
+        return _error_response(
+            request=request,
+            title="Full assessment failed",
+            message=str(exc),
+            status_code=500,
+        )
+
+    report_path = client_report_path(run)
+
+    return _report_response(
+        request=request,
+        title="Assessment Result",
+        workflow_id=run.workflow_id,
+        run_id=run.run_id,
+        output_dir=run.output_dir,
+        report_path=report_path if report_path.is_file() else None,
+        result=result,
+        run_status=read_run_status(run),
+    )
+
 
 @router.get("/demo/access-review", response_class=HTMLResponse)
 async def demo_access_review_report(request: Request) -> HTMLResponse:

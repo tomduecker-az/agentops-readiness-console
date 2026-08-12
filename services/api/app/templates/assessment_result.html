@@ -23,6 +23,15 @@
       <div class="meta-value">{{ output_dir }}</div>
     </div>
 
+    {% if run_status %}
+      <div class="meta-row">
+        <div class="meta-label">Run status</div>
+        <div class="meta-value">
+          {{ run_status.status }} · {{ run_status.stage }}
+        </div>
+      </div>
+    {% endif %}
+
     {% if report_path %}
       <div class="meta-row">
         <div class="meta-label">Report file</div>
@@ -158,13 +167,53 @@
         </section>
       {% endif %}
 
-      <section class="next-steps">
-        <h2>Next step</h2>
+      <section class="next-steps run-panel">
+        <h2>Run full assessment</h2>
         <p>
-          Run a full assessment when you are ready to spend API credits. Enable assessment
-          analysis, fresh LLM workflow analysis, and client report generation to produce
-          the client-facing report.
+          The workspace is prepared. When you are ready, run the full assessment to generate
+          the analysis artifacts, blueprint, and client-facing report.
         </p>
+
+        <form
+          class="run-form"
+          action="/assessments/{{ workflow_id }}/{{ run_id }}/run-full"
+          method="post"
+        >
+          <label for="evaluation_profile_id">Evaluation profile ID</label>
+          <input
+            id="evaluation_profile_id"
+            name="evaluation_profile_id"
+            type="text"
+            value="access_request_review"
+            required
+          >
+
+          <label class="checkbox">
+            <input type="checkbox" name="run_llm" value="true" checked>
+            <span>
+              Run fresh LLM workflow analysis
+              <div class="help">Costs API credits. Required for a new uploaded workbook.</div>
+            </span>
+          </label>
+
+          <label class="checkbox">
+            <input type="checkbox" name="export_client_report" value="true" checked>
+            <span>
+              Generate client-facing report
+              <div class="help">Costs API credits. Produces the report shown in the UI.</div>
+            </span>
+          </label>
+
+          <label class="checkbox">
+            <input type="checkbox" name="confirm_api_cost" value="true" required>
+            <span>
+              I understand this may incur API cost.
+              <div class="help">Use this only when you are ready to spend credits on a full run.</div>
+            </span>
+          </label>
+
+          <button class="button" type="submit">Run Full Assessment</button>
+        </form>
       </section>
 
       {% if result %}
