@@ -30,10 +30,23 @@
       </div>
     {% endif %}
 
-    <div class="actions">
+    <div class="actions vertical">
+      {% if report_download_url %}
+        <a class="button" href="{{ report_download_url }}">Download Report</a>
+      {% endif %}
+
+      {% if manifest_download_url %}
+        <a class="button secondary" href="{{ manifest_download_url }}">Download Manifest</a>
+      {% endif %}
+
+      {% if package_download_url %}
+        <a class="button secondary" href="{{ package_download_url }}">Download Package</a>
+      {% endif %}
+
       <a class="button secondary" href="/assessments/new">New Assessment</a>
       <a class="button secondary" href="/">Home</a>
     </div>
+  
   </aside>
 
   {% if report_html %}

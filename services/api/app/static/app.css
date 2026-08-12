@@ -117,6 +117,14 @@ p {
   margin-top: 28px;
 }
 
+.actions.vertical {
+  flex-direction: column;
+}
+
+.actions.vertical .button {
+  width: 100%;
+}
+
 .button {
   display: inline-flex;
   justify-content: center;

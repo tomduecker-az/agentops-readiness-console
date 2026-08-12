@@ -2,11 +2,12 @@ from __future__ import annotations
 
 import re
 from datetime import UTC, datetime
+import shutil
 from pathlib import Path
 
 import markdown as markdown_lib
 from fastapi import APIRouter, File, Form, Request, UploadFile
-from fastapi.responses import HTMLResponse
+from fastapi.responses import FileResponse, HTMLResponse
 from fastapi.templating import Jinja2Templates
 
 from app.services.assessment_orchestrator import (
@@ -152,6 +153,82 @@ async def demo_access_review_report(request: Request) -> HTMLResponse:
         result=None,
     )
 
+@router.get("/demo/access-review/report.md")
+async def download_demo_report() -> FileResponse:
+    if not _DEMO_REPORT_PATH.exists():
+        raise FileNotFoundError(f"Demo report not found: {_DEMO_REPORT_PATH}")
+
+    return FileResponse(
+        path=_DEMO_REPORT_PATH,
+        media_type="text/markdown",
+        filename="access_review_packet_copilot_demo_report.md",
+    )
+
+
+@router.get("/assessments/{workflow_id}/{run_id}/report.md")
+async def download_assessment_report(
+    workflow_id: str,
+    run_id: str,
+) -> FileResponse:
+    assessment_dir = _assessment_dir(workflow_id, run_id)
+    report_path = assessment_dir / "reports" / "client_assessment_report.md"
+
+    if not report_path.exists():
+        raise FileNotFoundError(f"Report not found: {report_path}")
+
+    return FileResponse(
+        path=report_path,
+        media_type="text/markdown",
+        filename=f"{workflow_id}_{run_id}_client_assessment_report.md",
+    )
+
+
+@router.get("/assessments/{workflow_id}/{run_id}/manifest.json")
+async def download_assessment_manifest(
+    workflow_id: str,
+    run_id: str,
+) -> FileResponse:
+    assessment_dir = _assessment_dir(workflow_id, run_id)
+    manifest_path = assessment_dir / "assessment_manifest.json"
+
+    if not manifest_path.exists():
+        raise FileNotFoundError(f"Manifest not found: {manifest_path}")
+
+    return FileResponse(
+        path=manifest_path,
+        media_type="application/json",
+        filename=f"{workflow_id}_{run_id}_assessment_manifest.json",
+    )
+
+
+@router.get("/assessments/{workflow_id}/{run_id}/package.zip")
+async def download_assessment_package(
+    workflow_id: str,
+    run_id: str,
+) -> FileResponse:
+    assessment_dir = _assessment_dir(workflow_id, run_id)
+
+    if not assessment_dir.exists():
+        raise FileNotFoundError(f"Assessment folder not found: {assessment_dir}")
+
+    zip_base = assessment_dir.parent / f"{run_id}_assessment_package"
+    zip_path = Path(f"{zip_base}.zip")
+
+    if zip_path.exists():
+        zip_path.unlink()
+
+    shutil.make_archive(
+        base_name=str(zip_base),
+        format="zip",
+        root_dir=assessment_dir,
+    )
+
+    return FileResponse(
+        path=zip_path,
+        media_type="application/zip",
+        filename=f"{workflow_id}_{run_id}_assessment_package.zip",
+    )
+
 
 def _report_response(
     *,
@@ -173,6 +250,17 @@ def _report_response(
             extensions=["tables", "fenced_code"],
         )
 
+    is_demo = workflow_id == "access_request_review_packet_demo"
+
+    if is_demo:
+        report_download_url = "/demo/access-review/report.md"
+        manifest_download_url = None
+        package_download_url = None
+    else:
+        report_download_url = f"/assessments/{workflow_id}/{run_id}/report.md"
+        manifest_download_url = f"/assessments/{workflow_id}/{run_id}/manifest.json"
+        package_download_url = f"/assessments/{workflow_id}/{run_id}/package.zip"
+
     return templates.TemplateResponse(
         "assessment_result.html",
         {
@@ -184,6 +272,9 @@ def _report_response(
             "report_path": report_path,
             "report_html": report_html,
             "result": result,
+            "report_download_url": report_download_url if report_path else None,
+            "manifest_download_url": manifest_download_url,
+            "package_download_url": package_download_url,
         },
     )
 
@@ -205,6 +296,11 @@ def _error_response(
         status_code=status_code,
     )
 
+def _assessment_dir(workflow_id: str, run_id: str) -> Path:
+    safe_workflow_id = _slug(workflow_id)
+    safe_run_id = _slug(run_id)
+
+    return _LOCAL_OUTPUT_ROOT / safe_workflow_id / safe_run_id
 
 def _slug(value: str) -> str:
     value = value.strip().lower()
