@@ -46,7 +46,6 @@
       <a class="button secondary" href="/assessments/new">New Assessment</a>
       <a class="button secondary" href="/">Home</a>
     </div>
-  
   </aside>
 
   {% if report_html %}
@@ -54,16 +53,125 @@
       {{ report_html | safe }}
     </article>
   {% else %}
-    <article class="card">
-      <h1>No report generated</h1>
+    <article class="card workspace-card">
+      <div class="eyebrow">Workspace prepared</div>
+      <h1>Assessment workspace created</h1>
+
       <p>
-        The assessment completed, but no client-facing report file was found.
-        Generate a fresh client report or open the technical output folder.
+        The workbook was accepted, validated, normalized, and converted into a local
+        workflow assessment workspace. No client-facing report was generated for this run.
       </p>
 
+      {% if workspace_summary %}
+        <section class="summary-grid">
+          <div class="summary-tile">
+            <div class="summary-label">Validation</div>
+            <div class="summary-value">{{ workspace_summary.validation_label }}</div>
+            <div class="summary-detail">
+              {{ workspace_summary.error_count }} errors · {{ workspace_summary.warning_count }} warnings
+            </div>
+          </div>
+
+          <div class="summary-tile">
+            <div class="summary-label">Workflow docs</div>
+            <div class="summary-value">
+              {% if workspace_summary.registered_document_count %}
+                {{ workspace_summary.registered_document_count }}
+              {% else %}
+                {{ workspace_summary.generated_file_count }}
+              {% endif %}
+            </div>
+            <div class="summary-detail">generated / registered documents</div>
+          </div>
+
+          <div class="summary-tile">
+            <div class="summary-label">Analysis</div>
+            <div class="summary-value">{{ workspace_summary.analysis_status }}</div>
+            <div class="summary-detail">
+              {{ workspace_summary.artifact_count }} artifacts · {{ workspace_summary.report_count }} reports
+            </div>
+          </div>
+        </section>
+
+        <section class="info-panel">
+          <h2>Workspace contents</h2>
+
+          <div class="workspace-list">
+            <div class="workspace-item">
+              <div>
+                <div class="workspace-title">Normalized workflow packet</div>
+                <div class="workspace-subtitle">
+                  Canonical JSON representation of the uploaded workbook
+                </div>
+              </div>
+              <div class="status-pill">Created</div>
+            </div>
+
+            <div class="workspace-item">
+              <div>
+                <div class="workspace-title">Generated workflow documents</div>
+                <div class="workspace-subtitle">
+                  {% if workspace_summary.registered_document_count %}
+                    {{ workspace_summary.registered_document_count }} documents registered for analysis
+                  {% else %}
+                    {{ workspace_summary.generated_file_count }} documents generated
+                  {% endif %}
+                </div>
+              </div>
+              <div class="status-pill">Ready</div>
+            </div>
+
+            <div class="workspace-item">
+              <div>
+                <div class="workspace-title">Assessment manifest</div>
+                <div class="workspace-subtitle">
+                  Run metadata, artifact paths, and local output package details
+                </div>
+              </div>
+              <div class="status-pill">Ready</div>
+            </div>
+          </div>
+
+          <details class="technical-details compact">
+            <summary>Show workspace file paths</summary>
+
+            <div class="info-row">
+              <div class="info-label">Installed workflow ID</div>
+              <div class="info-value">{{ workspace_summary.installed_workflow_id }}</div>
+            </div>
+
+            <div class="info-row">
+              <div class="info-label">Normalized packet</div>
+              <div class="info-value">{{ workspace_summary.normalized_packet_path }}</div>
+            </div>
+
+            <div class="info-row">
+              <div class="info-label">Generated workflow directory</div>
+              <div class="info-value">{{ workspace_summary.generated_workflow_dir }}</div>
+            </div>
+
+            <div class="info-row">
+              <div class="info-label">Manifest</div>
+              <div class="info-value">{{ workspace_summary.manifest_path }}</div>
+            </div>
+          </details>
+        </section>
+      {% endif %}
+
+      <section class="next-steps">
+        <h2>Next step</h2>
+        <p>
+          Run a full assessment when you are ready to spend API credits. Enable assessment
+          analysis, fresh LLM workflow analysis, and client report generation to produce
+          the client-facing report.
+        </p>
+      </section>
+
       {% if result %}
-        <h3>Assessment result</h3>
-        <pre>{{ result }}</pre>
+        <details class="technical-details">
+          <summary>Show technical result JSON</summary>
+          <pre>{{ result }}</pre>
+        </details>
       {% endif %}
     </article>
   {% endif %}
