@@ -199,3 +199,11 @@ coverage/
 *.p12
 *.json.key
 service-account*.json
+
+# Local assessment app runtime output
+local_assessments/
+
+# Local UI-generated workflow installs
+data/workflows/*_local/
+data/workflows/*_local_*/
+data/workflows/*_local_test/
