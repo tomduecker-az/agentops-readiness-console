@@ -46,10 +46,22 @@
     >
 
     <label class="checkbox">
+      <input type="checkbox" name="run_analysis" value="true">
+      <span>
+        Run assessment analysis
+        <div class="help">
+          Runs local evaluators and blueprint generation. Requires an LLM workflow analysis artifact.
+        </div>
+      </span>
+    </label>
+
+    <label class="checkbox">
       <input type="checkbox" name="run_llm" value="true">
       <span>
         Run fresh LLM workflow analysis
-        <div class="help">Costs API credits. Leave unchecked only when a matching local artifact already exists.</div>
+        <div class="help">
+          Costs API credits. Use this for a fresh uploaded workbook when running full analysis.
+        </div>
       </span>
     </label>
 
@@ -57,7 +69,9 @@
       <input type="checkbox" name="export_client_report" value="true">
       <span>
         Generate fresh client-facing report
-        <div class="help">Costs API credits. Use only when you need a new report.</div>
+        <div class="help">
+          Costs API credits. Requires assessment analysis.
+        </div>
       </span>
     </label>
 
