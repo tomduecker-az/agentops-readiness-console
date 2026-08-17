@@ -13,6 +13,7 @@ CLIENT_ASSESSMENT_REPORT_SCHEMA: dict[str, Any] = {
     "additionalProperties": False,
     "required": [
         "report_title",
+        "executive_brief",
         "assessment_verdict",
         "executive_summary",
         "recommended_product_concept",
@@ -33,6 +34,61 @@ CLIENT_ASSESSMENT_REPORT_SCHEMA: dict[str, Any] = {
     ],
     "properties": {
         "report_title": {"type": "string"},
+        "executive_brief": {
+            "type": "object",
+            "additionalProperties": False,
+            "required": [
+                "recommendation",
+                "first_build",
+                "why_this_first",
+                "estimated_effort",
+                "estimated_cost",
+                "roi_value_hypothesis",
+                "executive_decisions",
+            ],
+            "properties": {
+                "recommendation": {"type": "string"},
+                "first_build": {"type": "string"},
+                "why_this_first": {"type": "string"},
+                "estimated_effort": {
+                    "type": "object",
+                    "additionalProperties": False,
+                    "required": ["duration", "workstreams", "confidence"],
+                    "properties": {
+                        "duration": {"type": "string"},
+                        "workstreams": {"type": "array", "items": {"type": "string"}},
+                        "confidence": {"type": "string"},
+                    },
+                },
+                "estimated_cost": {
+                    "type": "object",
+                    "additionalProperties": False,
+                    "required": ["range", "assumptions", "confidence"],
+                    "properties": {
+                        "range": {"type": "string"},
+                        "assumptions": {"type": "array", "items": {"type": "string"}},
+                        "confidence": {"type": "string"},
+                    },
+                },
+                "roi_value_hypothesis": {
+                    "type": "object",
+                    "additionalProperties": False,
+                    "required": [
+                        "expected_value",
+                        "not_counted_yet",
+                        "inputs_needed_to_quantify",
+                        "confidence",
+                    ],
+                    "properties": {
+                        "expected_value": {"type": "array", "items": {"type": "string"}},
+                        "not_counted_yet": {"type": "array", "items": {"type": "string"}},
+                        "inputs_needed_to_quantify": {"type": "array", "items": {"type": "string"}},
+                        "confidence": {"type": "string"},
+                    },
+                },
+                "executive_decisions": {"type": "array", "items": {"type": "string"}},
+            },
+        },
         "executive_summary": {"type": "string"},
         "recommended_product_concept": {
             "type": "object",
@@ -245,6 +301,9 @@ def generate_client_assessment_report(
         [
             f"Create a client-facing AI workflow assessment report for workflow_id={workflow_id}, run_id={run_id}.",
             "The report should be readable, strategic, and specific to the workflow.",
+            "Start with a one-page executive brief suitable for a C-level reader.",
+            "The executive brief must answer: proceed or not, what to build first, why, what it will take, what it may cost if assumptions allow, expected ROI/value, and what decisions are needed.",
+            "For cost and ROI, do not fake precision. Provide ranges, confidence, assumptions, and inputs needed to quantify when exact values are not supported.",
             "Use the provided materials as evidence. Do not invent facts not supported by these materials.",
             "You may offer strategic interpretation and future-state recommendations when clearly grounded in the materials.",
             "The PACKET QUALITY REVIEW is mandatory governance evidence when provided.",
@@ -274,6 +333,8 @@ def generate_client_assessment_report(
         schema_name="client_assessment_report",
     )
 
+    _validate_executive_brief(report)
+
     report["metadata"] = {
         **report.get("metadata", {}),
         "workflow_id": workflow_id,
@@ -297,11 +358,44 @@ def generate_client_assessment_report(
     return report
 
 
+def _validate_executive_brief(report: dict[str, Any]) -> None:
+    executive_brief = report.get("executive_brief")
+
+    if not isinstance(executive_brief, dict):
+        raise ValueError("Generated report is missing executive_brief.")
+
+    required_string_fields = [
+        "recommendation",
+        "first_build",
+        "why_this_first",
+    ]
+
+    for field_name in required_string_fields:
+        value = executive_brief.get(field_name)
+        if not isinstance(value, str) or not value.strip():
+            raise ValueError(f"Generated executive_brief.{field_name} is blank.")
+
+    executive_decisions = executive_brief.get("executive_decisions")
+    if not isinstance(executive_decisions, list) or not executive_decisions:
+        raise ValueError("Generated executive_brief.executive_decisions is blank.")
+
+    for object_field in [
+        "estimated_effort",
+        "estimated_cost",
+        "roi_value_hypothesis",
+    ]:
+        value = executive_brief.get(object_field)
+        if not isinstance(value, dict):
+            raise ValueError(f"Generated executive_brief.{object_field} is missing.")
+
+
 def render_client_assessment_report_markdown(report: dict[str, Any]) -> str:
     lines: list[str] = []
 
     lines.append(f"# {report.get('report_title', 'AI Workflow Assessment Report')}")
     lines.append("")
+
+    _render_executive_brief(lines, report.get("executive_brief", {}))
 
     _section(lines, "Assessment Verdict", report.get("assessment_verdict"))
     _section(lines, "Executive Summary", report.get("executive_summary"))
@@ -451,6 +545,59 @@ def render_client_assessment_report_markdown(report: dict[str, Any]) -> str:
     _section(lines, "Closing Recommendation", report.get("closing_recommendation"))
 
     return "\n".join(lines).strip() + "\n"
+
+
+def _render_executive_brief(lines: list[str], executive_brief: dict[str, Any]) -> None:
+    lines.append("## Executive Brief")
+    lines.append("")
+
+    lines.append(f"**Recommendation:** {executive_brief.get('recommendation', '')}")
+    lines.append("")
+    lines.append(f"**First build:** {executive_brief.get('first_build', '')}")
+    lines.append("")
+    lines.append(f"**Why this first:** {executive_brief.get('why_this_first', '')}")
+    lines.append("")
+
+    estimated_effort = executive_brief.get("estimated_effort", {})
+    lines.append("**Estimated effort:**")
+    lines.append("")
+    lines.append(f"- Duration: {estimated_effort.get('duration', '')}")
+    lines.append(f"- Confidence: {estimated_effort.get('confidence', '')}")
+    lines.append("- Workstreams:")
+    for item in estimated_effort.get("workstreams", []):
+        lines.append(f"  - {item}")
+    lines.append("")
+
+    estimated_cost = executive_brief.get("estimated_cost", {})
+    lines.append("**Estimated cost:**")
+    lines.append("")
+    lines.append(f"- Range: {estimated_cost.get('range', '')}")
+    lines.append(f"- Confidence: {estimated_cost.get('confidence', '')}")
+    lines.append("- Assumptions:")
+    for item in estimated_cost.get("assumptions", []):
+        lines.append(f"  - {item}")
+    lines.append("")
+
+    roi = executive_brief.get("roi_value_hypothesis", {})
+    lines.append("**ROI / value hypothesis:**")
+    lines.append("")
+    lines.append(f"- Confidence: {roi.get('confidence', '')}")
+    lines.append("- Expected value:")
+    for item in roi.get("expected_value", []):
+        lines.append(f"  - {item}")
+    lines.append("- Not counted yet:")
+    for item in roi.get("not_counted_yet", []):
+        lines.append(f"  - {item}")
+    lines.append("- Inputs needed to quantify:")
+    for item in roi.get("inputs_needed_to_quantify", []):
+        lines.append(f"  - {item}")
+    lines.append("")
+
+    lines.append("**Executive decisions needed:**")
+    lines.append("")
+    for item in executive_brief.get("executive_decisions", []):
+        lines.append(f"- {item}")
+    lines.append("")
 
 
 def _section(lines: list[str], title: str, content: str | None) -> None:
