@@ -8,6 +8,10 @@ from pathlib import Path
 from typing import Any
 
 from scripts.prepare_workflow_packet_v1 import prepare_workflow_packet_v1
+from app.llm.packet_adversarial_reviewer import generate_packet_adversarial_review
+from app.services.packet_claim_graph import build_packet_claim_graph
+from app.services.packet_quality_review_service import build_packet_quality_review
+from app.services.packet_quality_rules import run_packet_quality_rules
 
 
 @dataclass(frozen=True)
@@ -57,6 +61,41 @@ def run_workflow_packet_assessment(
         raise ValueError("export_client_report requires run_analysis=True.")
 
     analysis_steps: list[dict[str, Any]] = []
+
+    normalized_packet_path = Path(prepare_result["normalized_packet_path"])
+    normalized_packet = json.loads(normalized_packet_path.read_text(encoding="utf-8"))
+
+    packet_claim_graph = build_packet_claim_graph(normalized_packet)
+    packet_claim_graph_path = artifacts_dir / "packet_claim_graph.json"
+    packet_claim_graph_path.write_text(
+        json.dumps(packet_claim_graph, indent=2, default=str),
+        encoding="utf-8",
+    )
+    analysis_steps.append(
+        {
+            "step_name": "packet_claim_graph",
+            "status": "completed",
+            "command": ["internal", "build_packet_claim_graph"],
+            "artifact_path": str(packet_claim_graph_path),
+        }
+    )
+
+    packet_quality_deterministic_review = run_packet_quality_rules(packet_claim_graph)
+    packet_quality_deterministic_review_path = (
+        artifacts_dir / "packet_quality_deterministic_review.json"
+    )
+    packet_quality_deterministic_review_path.write_text(
+        json.dumps(packet_quality_deterministic_review, indent=2, default=str),
+        encoding="utf-8",
+    )
+    analysis_steps.append(
+        {
+            "step_name": "packet_quality_deterministic_review",
+            "status": "completed",
+            "command": ["internal", "run_packet_quality_rules"],
+            "artifact_path": str(packet_quality_deterministic_review_path),
+        }
+    )
 
     if options.run_llm:
         _run_module(
@@ -151,6 +190,43 @@ def run_workflow_packet_assessment(
         )
 
         if options.export_client_report:
+            packet_adversarial_review = generate_packet_adversarial_review(
+                packet_claim_graph=packet_claim_graph,
+                deterministic_review=packet_quality_deterministic_review,
+            )
+            packet_adversarial_review_path = artifacts_dir / "packet_adversarial_review.json"
+            packet_adversarial_review_path.write_text(
+                json.dumps(packet_adversarial_review, indent=2, default=str),
+                encoding="utf-8",
+            )
+            analysis_steps.append(
+                {
+                    "step_name": "packet_adversarial_review",
+                    "status": "completed",
+                    "command": ["internal", "generate_packet_adversarial_review"],
+                    "artifact_path": str(packet_adversarial_review_path),
+                }
+            )
+
+            packet_quality_review = build_packet_quality_review(
+                packet_claim_graph=packet_claim_graph,
+                deterministic_review=packet_quality_deterministic_review,
+                adversarial_review=packet_adversarial_review,
+            )
+            packet_quality_review_path = artifacts_dir / "packet_quality_review.json"
+            packet_quality_review_path.write_text(
+                json.dumps(packet_quality_review, indent=2, default=str),
+                encoding="utf-8",
+            )
+            analysis_steps.append(
+                {
+                    "step_name": "packet_quality_review",
+                    "status": "completed",
+                    "command": ["internal", "build_packet_quality_review"],
+                    "artifact_path": str(packet_quality_review_path),
+                }
+            )
+
             _run_module(
                 [
                     "scripts.run_client_assessment_report",
@@ -162,6 +238,8 @@ def run_workflow_packet_assessment(
                     str(artifacts_dir),
                     "--normalized-packet-path",
                     prepare_result["normalized_packet_path"],
+                    "--packet-quality-review-path",
+                    str(packet_quality_review_path),
                     "--reports-dir",
                     str(reports_dir),
                 ],
@@ -234,6 +312,10 @@ def _run_module(
 
 def _artifact_paths(artifacts_dir: Path) -> dict[str, str]:
     artifact_names = [
+        "packet_claim_graph",
+        "packet_quality_deterministic_review",
+        "packet_adversarial_review",
+        "packet_quality_review",
         "llm_workflow_analysis",
         "llm_shadow_evaluation",
         "mcp_operational_evaluation",
