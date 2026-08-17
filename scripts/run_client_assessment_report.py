@@ -21,6 +21,7 @@ def main() -> None:
     parser.add_argument("--run-id", required=True)
     parser.add_argument("--artifacts-dir", required=True)
     parser.add_argument("--normalized-packet-path", required=True)
+    parser.add_argument("--packet-quality-review-path", required=False)
     parser.add_argument("--reports-dir", required=True)
     parser.add_argument("--print-json", action="store_true")
 
@@ -43,6 +44,15 @@ def main() -> None:
         artifact_type=ArtifactType.agentic_readiness_blueprint.value,
     )
 
+    packet_quality_review = None
+    if args.packet_quality_review_path:
+        packet_quality_review = _read_json(Path(args.packet_quality_review_path))
+    else:
+        packet_quality_review = _optional_artifact_content(
+            artifacts=artifacts,
+            artifact_type="packet_quality_review",
+        )
+
     print("Generating client assessment report...")
     print(f"- workflow_id: {args.workflow_id}")
     print(f"- run_id: {args.run_id}")
@@ -53,6 +63,7 @@ def main() -> None:
         normalized_packet=normalized_packet,
         llm_workflow_analysis=llm_workflow_analysis,
         agentic_readiness_blueprint=agentic_readiness_blueprint,
+        packet_quality_review=packet_quality_review,
     )
 
     report_json_path = write_local_artifact(
@@ -90,6 +101,20 @@ def _required_artifact_content(
                 return content
 
     raise FileNotFoundError(f"Missing required local artifact: {artifact_type}.json")
+
+
+def _optional_artifact_content(
+    *,
+    artifacts: list[dict[str, Any]],
+    artifact_type: str,
+) -> dict[str, Any] | None:
+    for artifact in artifacts:
+        if artifact.get("artifact_type") == artifact_type:
+            content = artifact.get("content")
+            if isinstance(content, dict):
+                return content
+
+    return None
 
 
 if __name__ == "__main__":

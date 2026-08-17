@@ -231,8 +231,15 @@ def generate_client_assessment_report(
     normalized_packet: dict[str, Any],
     llm_workflow_analysis: dict[str, Any],
     agentic_readiness_blueprint: dict[str, Any],
+    packet_quality_review: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     settings = get_settings()
+
+    packet_quality_review_prompt = (
+        json.dumps(packet_quality_review, indent=2, default=str)
+        if packet_quality_review
+        else "Not provided."
+    )
 
     user_prompt = "\n\n".join(
         [
@@ -240,6 +247,10 @@ def generate_client_assessment_report(
             "The report should be readable, strategic, and specific to the workflow.",
             "Use the provided materials as evidence. Do not invent facts not supported by these materials.",
             "You may offer strategic interpretation and future-state recommendations when clearly grounded in the materials.",
+            "The PACKET QUALITY REVIEW is mandatory governance evidence when provided.",
+            "You must explicitly address every reconciled critical/high packet-quality finding in the assessment verdict, executive summary, recommended first build, controls, roadmap, or open questions.",
+            "Do not claim the workflow is model-safe, release-ready, automation-ready, or suitable for the recommended first build unless the report explains how critical packet-quality findings are constrained, remediated, or excluded from scope.",
+            "Do not bury critical packet-quality findings only in open questions.",
             "Return only the structured JSON requested by the schema.",
             "",
             "NORMALIZED WORKFLOW PACKET:",
@@ -250,6 +261,9 @@ def generate_client_assessment_report(
             "",
             "AGENTIC READINESS BLUEPRINT:",
             json.dumps(agentic_readiness_blueprint, indent=2, default=str),
+            "",
+            "PACKET QUALITY REVIEW:",
+            packet_quality_review_prompt,
         ]
     )
 
@@ -272,6 +286,11 @@ def generate_client_assessment_report(
             "normalized_packet",
             "llm_workflow_analysis",
             "agentic_readiness_blueprint",
+            *(
+                ["packet_quality_review"]
+                if packet_quality_review
+                else []
+            ),
         ],
     }
 
