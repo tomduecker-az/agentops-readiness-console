@@ -314,8 +314,8 @@ async def run_full_assessment(
         workflow_id=run.workflow_id,
         run_id=run.run_id,
         evaluation_profile_id=DEFAULT_EVALUATION_PROFILE_ID,
-        run_llm=False,
-        export_client_report=False,
+        run_llm=run_llm,
+        export_client_report=export_client_report,
     )
 
     return RedirectResponse(

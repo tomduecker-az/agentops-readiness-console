@@ -155,6 +155,8 @@ def run_workflow_packet_assessment(
             ],
             step_name="llm_shadow_evaluation",
             analysis_steps=analysis_steps,
+            allow_failure=True,
+            expected_artifact_path=artifacts_dir / "llm_shadow_evaluation.json",
         )
 
         _run_module(
@@ -308,21 +310,48 @@ def _run_module(
     *,
     step_name: str,
     analysis_steps: list[dict[str, Any]],
+    allow_failure: bool = False,
+    expected_artifact_path: Path | None = None,
 ) -> None:
     command = [sys.executable, "-m", *args]
 
     print(f"\nRunning assessment step: {step_name}")
     print("+ " + " ".join(command))
 
-    subprocess.run(command, check=True)
+    completed_process = subprocess.run(command, check=False)
 
-    analysis_steps.append(
-        {
-            "step_name": step_name,
-            "status": "completed",
-            "command": command,
-        }
-    )
+    step_status = "completed"
+    warning = None
+
+    if completed_process.returncode != 0:
+        expected_artifact_exists = (
+            expected_artifact_path is not None and expected_artifact_path.exists()
+        )
+
+        if allow_failure and expected_artifact_exists:
+            step_status = "completed_with_warnings"
+            warning = (
+                "Command returned a non-zero exit code, but the expected local artifact "
+                "was created. Continuing assessment."
+            )
+            print(f"WARNING: {step_name}: {warning}")
+        else:
+            completed_process.check_returncode()
+
+    step_result = {
+        "step_name": step_name,
+        "status": step_status,
+        "command": command,
+        "returncode": completed_process.returncode,
+    }
+
+    if warning:
+        step_result["warning"] = warning
+
+    if expected_artifact_path is not None:
+        step_result["expected_artifact_path"] = str(expected_artifact_path)
+
+    analysis_steps.append(step_result)
 
 
 def _artifact_paths(artifacts_dir: Path) -> dict[str, str]:
