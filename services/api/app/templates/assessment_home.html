@@ -1,43 +1,52 @@
 {% extends "base.html" %}
 
-{% block title %}AI Workflow Assessment{% endblock %}
-
 {% block content %}
 <section class="hero">
-  <div class="card">
-    <div class="eyebrow">Local AI readiness analysis</div>
-    <h1>Turn a workflow packet into an AI implementation assessment.</h1>
-    <p>
-      Upload a completed Workflow Packet workbook and generate a client-facing report
-      that identifies the safest first AI build, required controls, readiness gaps,
-      and executive decisions.
+  <div class="hero-copy">
+    <p class="eyebrow">AI Workflow Assessment</p>
+
+    <h1>Assess whether a workflow is ready for AI-assisted automation.</h1>
+
+    <p class="hero-lede">
+      Upload a workflow packet, validate the structure, surface packet-quality issues,
+      and generate an executive-ready assessment report.
     </p>
 
-    <div class="actions">
-      <a class="button" href="/assessments/new">Start New Assessment</a>
-      {% if demo_report_exists %}
-        <a class="button secondary" href="/demo/access-review">View Demo Report</a>
-      {% endif %}
+    <div class="hero-actions">
+      <a class="button button-primary" href="/assessments/new">
+        Upload and validate packet
+      </a>
+
+      <a class="button button-secondary" href="/demo/access-review">
+        View demo report
+      </a>
     </div>
   </div>
+</section>
 
-  <aside class="card">
-    <div class="stat">
-      <div class="stat-label">Input</div>
-      <div class="stat-value">Workflow Packet</div>
-    </div>
-    <div class="stat">
-      <div class="stat-label">Output</div>
-      <div class="stat-value">Readiness Report</div>
-    </div>
-    <div class="stat">
-      <div class="stat-label">First use case</div>
-      <div class="stat-value">Read-only copilot</div>
-    </div>
-    <div class="stat">
-      <div class="stat-label">Mode</div>
-      <div class="stat-value">Local-first</div>
-    </div>
-  </aside>
+<section class="panel-grid">
+  <article class="panel-card">
+    <h2>1. Validate the packet</h2>
+    <p>
+      The app parses the workbook, normalizes the packet, generates workflow evidence,
+      builds a claim graph, and runs deterministic packet-quality checks.
+    </p>
+  </article>
+
+  <article class="panel-card">
+    <h2>2. Review readiness</h2>
+    <p>
+      From the assessment page, run AI-assisted analysis with visible progress tracking
+      and reusable artifacts.
+    </p>
+  </article>
+
+  <article class="panel-card">
+    <h2>3. Generate the report</h2>
+    <p>
+      Produce a client-facing assessment with an executive brief, recommended first build,
+      risk findings, effort assumptions, and value hypothesis.
+    </p>
+  </article>
 </section>
 {% endblock %}

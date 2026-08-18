@@ -14,6 +14,10 @@ from app.services.packet_quality_review_service import build_packet_quality_revi
 from app.services.packet_quality_rules import run_packet_quality_rules
 
 
+DEFAULT_EVALUATION_PROFILE_ID = "access_request_review"
+SUPPORTED_EVALUATION_PROFILE_IDS = {DEFAULT_EVALUATION_PROFILE_ID}
+
+
 @dataclass(frozen=True)
 class AssessmentOptions:
     workbook_path: Path
@@ -59,6 +63,19 @@ def run_workflow_packet_assessment(
 
     if options.export_client_report and not options.run_analysis:
         raise ValueError("export_client_report requires run_analysis=True.")
+
+    evaluation_profile_id = (
+        options.evaluation_profile_id or DEFAULT_EVALUATION_PROFILE_ID
+        if options.run_analysis
+        else options.evaluation_profile_id
+    )
+
+    if evaluation_profile_id and evaluation_profile_id not in SUPPORTED_EVALUATION_PROFILE_IDS:
+        supported_profiles = ", ".join(sorted(SUPPORTED_EVALUATION_PROFILE_IDS))
+        raise ValueError(
+            f"Unsupported evaluation_profile_id '{evaluation_profile_id}'. "
+            f"Supported evaluation profiles: {supported_profiles}."
+        )
 
     analysis_steps: list[dict[str, Any]] = []
 
@@ -122,8 +139,6 @@ def run_workflow_packet_assessment(
                 f"Missing local LLM workflow analysis artifact: {llm_artifact_path}. "
                 "Run with run_llm=True or provide an existing local artifact bundle."
             )
-
-        evaluation_profile_id = options.evaluation_profile_id or options.workflow_id
 
         _run_module(
             [
@@ -269,7 +284,7 @@ def run_workflow_packet_assessment(
             "run_llm": options.run_llm,
             "run_analysis": options.run_analysis,
             "export_client_report": options.export_client_report,
-            "evaluation_profile_id": options.evaluation_profile_id,
+            "evaluation_profile_id": evaluation_profile_id,
             "steps": analysis_steps,
             "artifact_paths": _artifact_paths(artifacts_dir),
             "report_paths": _report_paths(reports_dir),

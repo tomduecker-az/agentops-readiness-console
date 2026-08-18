@@ -13,6 +13,7 @@ from fastapi import APIRouter, BackgroundTasks, File, Form, Request, UploadFile
 
 from app.services.assessment_orchestrator import (
     AssessmentOptions,
+    DEFAULT_EVALUATION_PROFILE_ID,
     run_workflow_packet_assessment,
 )
 from app.services.local_run_store import (
@@ -33,6 +34,7 @@ router = APIRouter(tags=["assessment-ui"])
 _REPO_ROOT = Path(__file__).resolve().parents[4]
 _TEMPLATES_DIR = Path(__file__).resolve().parents[1] / "templates"
 _LOCAL_OUTPUT_ROOT = _REPO_ROOT / "local_assessments"
+_TEMPLATE_WORKBOOK_PATH = _REPO_ROOT / "examples" / "templates" / "workflow_packet_v1.xlsx"
 
 _DEMO_REPORT_PATH = (
     _REPO_ROOT
@@ -64,7 +66,7 @@ async def new_assessment(request: Request) -> HTMLResponse:
         {
             "request": request,
             "default_workflow_id": "access_request_review_local",
-            "default_evaluation_profile_id": "access_request_review",
+            "default_evaluation_profile_id": DEFAULT_EVALUATION_PROFILE_ID,
         },
     )
 
@@ -74,7 +76,7 @@ async def create_assessment(
     request: Request,
     workbook: UploadFile = File(...),
     assessment_name: str = Form(...),
-    evaluation_profile_id: str = Form("access_request_review"),
+    evaluation_profile_id: str = Form(DEFAULT_EVALUATION_PROFILE_ID),
     run_analysis: bool = Form(False),
     run_llm: bool = Form(False),
     export_client_report: bool = Form(False),
@@ -147,10 +149,10 @@ async def create_assessment(
                 run_id=run.run_id,
                 output_dir=run.output_dir,
                 overwrite=True,
-                run_llm=run_llm,
-                run_analysis=run_analysis,
-                evaluation_profile_id=evaluation_profile_id,
-                export_client_report=export_client_report,
+                run_llm=False,
+                run_analysis=False,
+                evaluation_profile_id=DEFAULT_EVALUATION_PROFILE_ID,
+                export_client_report=False,
             )
         )
 
@@ -243,7 +245,7 @@ async def run_full_assessment(
     background_tasks: BackgroundTasks,
     workflow_id: str,
     run_id: str,
-    evaluation_profile_id: str = Form("access_request_review"),
+    evaluation_profile_id: str = Form(DEFAULT_EVALUATION_PROFILE_ID),
     run_llm: bool = Form(False),
     export_client_report: bool = Form(False),
     confirm_api_cost: bool = Form(False),
@@ -311,15 +313,27 @@ async def run_full_assessment(
         _execute_full_assessment_background,
         workflow_id=run.workflow_id,
         run_id=run.run_id,
-        evaluation_profile_id=evaluation_profile_id,
-        run_llm=run_llm,
-        export_client_report=export_client_report,
+        evaluation_profile_id=DEFAULT_EVALUATION_PROFILE_ID,
+        run_llm=False,
+        export_client_report=False,
     )
 
     return RedirectResponse(
         url=f"/assessments/{run.workflow_id}/{run.run_id}",
         status_code=303,
     )        
+
+
+@router.get("/templates/workflow-packet-v1.xlsx")
+async def download_workflow_packet_template() -> FileResponse:
+    if not _TEMPLATE_WORKBOOK_PATH.exists():
+        raise FileNotFoundError(f"Workflow Packet template not found: {_TEMPLATE_WORKBOOK_PATH}")
+
+    return FileResponse(
+        path=_TEMPLATE_WORKBOOK_PATH,
+        media_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        filename="workflow_packet_v1.xlsx",
+    )
 
 
 @router.get("/demo/access-review", response_class=HTMLResponse)

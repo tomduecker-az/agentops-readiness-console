@@ -1,84 +1,96 @@
 {% extends "base.html" %}
 
-{% block title %}New Assessment{% endblock %}
-
 {% block content %}
-<div class="card form">
-  <div class="eyebrow">New assessment</div>
-  <h1>Upload a workflow packet.</h1>
-  <p>
-    The local app will prepare the workbook, run the assessment pipeline,
-    and display a report when complete.
-  </p>
+<section class="page-shell">
+  <div class="page-header">
+    <p class="eyebrow">New Assessment</p>
+    <h1>Start a workflow assessment</h1>
+    <p>
+      A completed .xlsx Workflow Packet is required. Download the blank template if you
+      need one, complete the workbook, then upload the completed packet for validation.
+    </p>
+  </div>
 
-  <form action="/assessments" method="post" enctype="multipart/form-data">
-    <label for="assessment_name">Assessment name</label>
-    <input
-      id="assessment_name"
-      name="assessment_name"
-      type="text"
-      value="{{ default_workflow_id }}"
-      required
-    >
-    <div class="help">
-      This becomes the local workflow ID and output folder name.
-    </div>
+  <div class="assessment-intake-grid">
+    <aside class="card muted-card">
+      <p class="eyebrow">Need to create a packet first?</p>
+      <h2>Download the blank template</h2>
+      <p class="field-help">
+        Use the template to capture the workflow overview, steps, controls, data fields,
+        sample records, goals, and target systems. Complete the workbook before uploading.
+      </p>
 
-    <label for="evaluation_profile_id">Evaluation profile ID</label>
-    <input
-      id="evaluation_profile_id"
-      name="evaluation_profile_id"
-      type="text"
-      value="{{ default_evaluation_profile_id }}"
-      required
-    >
-    <div class="help">
-      For the current demo workbook, use access_request_review.
-    </div>
+      <a class="button button-secondary template-download-button" href="/templates/workflow-packet-v1.xlsx">
+        Download template
+      </a>
 
-    <label for="workbook">Completed Workflow Packet workbook</label>
-    <input
-      id="workbook"
-      name="workbook"
-      type="file"
-      accept=".xlsx"
-      required
-    >
+      <hr class="section-divider" />
 
-    <label class="checkbox">
-      <input type="checkbox" name="run_analysis" value="true">
-      <span>
-        Run assessment analysis
-        <div class="help">
-          Runs local evaluators and blueprint generation. Requires an LLM workflow analysis artifact.
+      <h2>What validation does</h2>
+      <ol class="step-list">
+        <li>
+          <strong>Checks workbook structure</strong>
+          and required packet sections.
+        </li>
+        <li>
+          <strong>Creates a normalized packet</strong>
+          for internal analysis.
+        </li>
+        <li>
+          <strong>Generates workflow evidence</strong>
+          used by later AI analysis.
+        </li>
+        <li>
+          <strong>Builds a claim graph</strong>
+          and runs deterministic packet-quality checks.
+        </li>
+      </ol>
+    </aside>
+
+    <section class="card primary-upload-card">
+      <p class="eyebrow">Already have a completed packet?</p>
+      <h2>Upload it for validation</h2>
+      <p class="field-help">
+        Upload only a completed .xlsx Workflow Packet. AI analysis and report generation
+        happen after validation on the assessment result page.
+      </p>
+
+      <form action="/assessments" method="post" enctype="multipart/form-data" class="stacked-form">
+        <div class="form-field">
+          <label for="assessment_name">Assessment name</label>
+          <input
+            id="assessment_name"
+            name="assessment_name"
+            type="text"
+            placeholder="Example: Public Records Request"
+            required
+          />
+          <p class="field-help">
+            Use a short descriptive name. This becomes the local assessment folder name.
+          </p>
         </div>
-      </span>
-    </label>
 
-    <label class="checkbox">
-      <input type="checkbox" name="run_llm" value="true">
-      <span>
-        Run fresh LLM workflow analysis
-        <div class="help">
-          Costs API credits. Use this for a fresh uploaded workbook when running full analysis.
+        <div class="form-field upload-field">
+          <label for="workbook">Completed Workflow Packet workbook</label>
+          <div class="upload-box">
+            <input
+              id="workbook"
+              name="workbook"
+              type="file"
+              accept=".xlsx"
+              required
+            />
+            <p class="field-help">
+              Required file type: .xlsx Workflow Packet workbook.
+            </p>
+          </div>
         </div>
-      </span>
-    </label>
 
-    <label class="checkbox">
-      <input type="checkbox" name="export_client_report" value="true">
-      <span>
-        Generate fresh client-facing report
-        <div class="help">
-          Costs API credits. Requires assessment analysis.
-        </div>
-      </span>
-    </label>
-
-    <div class="actions">
-      <button class="button" type="submit">Run Assessment</button>
-      <a class="button secondary" href="/demo/access-review">View Demo Report</a>
-    </div>
-  </form>
-</div>
+        <button type="submit" class="button button-primary">
+          Upload and validate packet
+        </button>
+      </form>
+    </section>
+  </div>
+</section>
 {% endblock %}
