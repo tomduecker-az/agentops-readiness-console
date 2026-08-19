@@ -942,3 +942,10 @@ pre {
     grid-template-columns: 1fr;
   }
 }
+
+.run-state-suggested-action {
+  margin-top: 10px;
+  font-size: 0.88rem;
+  line-height: 1.45;
+  color: #475569;
+}

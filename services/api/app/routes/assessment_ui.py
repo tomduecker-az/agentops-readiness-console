@@ -16,6 +16,7 @@ from app.services.assessment_orchestrator import (
     DEFAULT_EVALUATION_PROFILE_ID,
     run_workflow_packet_assessment,
 )
+from app.services.run_error_messages import friendly_error_details
 from app.services.local_run_store import (
     client_report_path,
     create_local_assessment_run,
@@ -487,11 +488,20 @@ def _execute_full_assessment_background(
         )
 
     except Exception as exc:
+        friendly_error = friendly_error_details(exc)
+
         write_run_status(
             run,
             status="failed",
             stage="full_assessment",
-            message=str(exc),
+            message=friendly_error["message"],
+            details={
+                **friendly_error,
+                "run_analysis": True,
+                "run_llm": run_llm,
+                "export_client_report": export_client_report,
+                "evaluation_profile_id": evaluation_profile_id,
+            },
         )
 
 def _report_response(
@@ -513,6 +523,8 @@ def _report_response(
             report_markdown,
             extensions=["tables", "fenced_code"],
         )
+
+    run_status = _with_friendly_run_status(run_status)
 
     is_demo = workflow_id == "access_request_review_packet_demo"
 
@@ -549,6 +561,27 @@ def _report_response(
             "is_run_active": is_run_active,
         },
     )
+
+
+def _with_friendly_run_status(run_status: dict | None) -> dict | None:
+    if not run_status or run_status.get("status") != "failed":
+        return run_status
+
+    details = run_status.get("details") or {}
+
+    if details.get("title") and details.get("message"):
+        return run_status
+
+    friendly = friendly_error_details(run_status.get("message", ""))
+
+    updated = dict(run_status)
+    updated["message"] = friendly["message"]
+    updated["details"] = {
+        **details,
+        **friendly,
+    }
+
+    return updated
 
 
 def _error_response(

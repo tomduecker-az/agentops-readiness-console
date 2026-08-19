@@ -29,11 +29,29 @@
     </div>
 
     {% if run_status %}
+      {% set status_details = run_status.details if run_status and run_status.details else {} %}
+
       <div class="run-state state-{{ run_status.status }}">
         <div class="run-state-label">Run status</div>
         <div class="run-state-title">{{ run_status.status }}</div>
-        <div class="run-state-stage">{{ run_status.stage }}</div>
-        <div class="run-state-message">{{ run_status.message }}</div>
+
+        {% if run_status.status == "failed" %}
+          <div class="run-state-stage">
+            {{ status_details.title or "Assessment failed" }}
+          </div>
+          <div class="run-state-message">
+            {{ status_details.message or run_status.message }}
+          </div>
+
+          {% if status_details.suggested_action %}
+            <div class="run-state-suggested-action">
+              {{ status_details.suggested_action }}
+            </div>
+          {% endif %}
+        {% else %}
+          <div class="run-state-stage">{{ run_status.stage }}</div>
+          <div class="run-state-message">{{ run_status.message }}</div>
+        {% endif %}
       </div>
     {% endif %}
 
@@ -218,11 +236,27 @@
             message below, adjust the run options or input workbook, and try again.
           </p>
 
+          {% set failure = run_status.details if run_status and run_status.details else {} %}
+
           <div class="run-status-box">
-            <div class="summary-label">Failure message</div>
-            <div class="summary-value">failed</div>
-            <div class="summary-detail">{{ run_status.message }}</div>
+            <div class="summary-label">Failure</div>
+            <div class="summary-value">{{ failure.title or "Assessment failed" }}</div>
+            <div class="summary-detail">
+              {{ failure.message or run_status.message }}
+            </div>
+
+            {% if failure.suggested_action %}
+              <div class="summary-label">Suggested next action</div>
+              <div class="summary-detail">{{ failure.suggested_action }}</div>
+            {% endif %}
           </div>
+
+          {% if failure.technical_detail %}
+            <details class="technical-details">
+              <summary>Show technical details</summary>
+              <pre>{{ failure.technical_detail }}</pre>
+            </details>
+          {% endif %}
 
           <form
             class="run-form"
