@@ -207,3 +207,8 @@ local_assessments/
 data/workflows/*_local/
 data/workflows/*_local_*/
 data/workflows/*_local_test/
+
+# Local UI assessment generated workflow installs
+data/workflows/*_test/
+data/workflows/*_test*/
+examples/blueprints/*_run_local_*_blueprint.json

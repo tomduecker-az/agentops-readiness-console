@@ -172,6 +172,8 @@ def run_workflow_packet_assessment(
             ],
             step_name="mcp_operational_evaluation",
             analysis_steps=analysis_steps,
+            allow_failure=True,
+            expected_artifact_path=artifacts_dir / "mcp_operational_evaluation.json",
         )
 
         _run_module(
@@ -187,6 +189,8 @@ def run_workflow_packet_assessment(
             ],
             step_name="evidence_grounding_evaluation",
             analysis_steps=analysis_steps,
+            allow_failure=True,
+            expected_artifact_path=artifacts_dir / "evidence_grounding_evaluation.json",
         )
 
         _run_module(

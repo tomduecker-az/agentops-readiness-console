@@ -86,9 +86,10 @@ def generate_agentic_readiness_blueprint(
                 },
             )
 
-        raise BlueprintGenerationError(
-            "Cannot persist Agentic Readiness Blueprint because safety validation failed."
-        )
+        if persist:
+            raise BlueprintGenerationError(
+                "Cannot persist Agentic Readiness Blueprint because safety validation failed."
+            )
 
     artifact_id = None
 
