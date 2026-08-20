@@ -14,24 +14,17 @@ CLIENT_ASSESSMENT_REPORT_SCHEMA: dict[str, Any] = {
     "required": [
         "report_title",
         "executive_brief",
-        "assessment_verdict",
-        "executive_summary",
         "recommended_product_concept",
         "non_obvious_insights",
-        "executive_decisions_needed",
-        "ai_opportunity_thesis",
-        "what_the_workflow_is_really_asking_for",
         "highest_value_use_cases",
         "where_agents_are_not_ready_yet",
         "recommended_first_build",
-        "future_state_workflow",
         "controls_and_human_review",
         "implementation_roadmap",
         "success_metrics",
         "open_questions",
-        "closing_recommendation",
-        "metadata",
-    ],
+        "packet_quality_findings"
+     ],
     "properties": {
         "report_title": {"type": "string"},
         "executive_brief": {
@@ -89,7 +82,7 @@ CLIENT_ASSESSMENT_REPORT_SCHEMA: dict[str, Any] = {
                 "executive_decisions": {"type": "array", "items": {"type": "string"}},
             },
         },
-        "executive_summary": {"type": "string"},
+        
         "recommended_product_concept": {
             "type": "object",
             "additionalProperties": False,
@@ -144,31 +137,8 @@ CLIENT_ASSESSMENT_REPORT_SCHEMA: dict[str, Any] = {
                 "demo_moment": {"type": "string"},
             },
         },
-        "ai_opportunity_thesis": {"type": "string"},
-        "what_the_workflow_is_really_asking_for": {"type": "string"},
-        "highest_value_use_cases": {
-            "type": "array",
-            "items": {
-                "type": "object",
-                "additionalProperties": False,
-                "required": ["use_case", "why_it_matters", "recommended_autonomy", "business_value"],
-                "properties": {
-                    "use_case": {"type": "string"},
-                    "why_it_matters": {"type": "string"},
-                    "recommended_autonomy": {"type": "string"},
-                    "business_value": {"type": "string"},
-                },
-            },
-        },
-        "assessment_verdict": {"type": "string"},
-        "non_obvious_insights": {
-            "type": "array",
-            "items": {"type": "string"},
-        },
-        "executive_decisions_needed": {
-            "type": "array",
-            "items": {"type": "string"},
-        },
+        
+        
         "where_agents_are_not_ready_yet": {
             "type": "array",
             "items": {"type": "string"},
@@ -191,7 +161,56 @@ CLIENT_ASSESSMENT_REPORT_SCHEMA: dict[str, Any] = {
                 "expected_user_experience": {"type": "string"},
             },
         },
-        "future_state_workflow": {"type": "string"},
+
+        "highest_value_use_cases": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "additionalProperties": False,
+                "required": [
+                    "use_case",
+                    "why_it_matters",
+                    "recommended_autonomy",
+                    "business_value",
+                ],
+                "properties": {
+                    "use_case": {"type": "string"},
+                    "why_it_matters": {"type": "string"},
+                    "recommended_autonomy": {"type": "string"},
+                    "business_value": {"type": "string"},
+                },
+            },
+        },
+
+        "packet_quality_findings": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "additionalProperties": False,
+                "required": [
+                    "severity",
+                    "finding",
+                    "evidence_reference",
+                    "why_it_matters",
+                    "recommended_resolution",
+                    "detection_source",
+                ],
+                "properties": {
+                    "severity": {"type": "string"},
+                    "finding": {"type": "string"},
+                    "evidence_reference": {"type": "string"},
+                    "why_it_matters": {"type": "string"},
+                    "recommended_resolution": {"type": "string"},
+                    "detection_source": {"type": "string"},
+                },
+            },
+        },
+
+        "non_obvious_insights": {
+            "type": "array",
+            "items": {"type": "string"},
+        },
+        
         "controls_and_human_review": {
             "type": "array",
             "items": {
@@ -226,11 +245,7 @@ CLIENT_ASSESSMENT_REPORT_SCHEMA: dict[str, Any] = {
             "type": "array",
             "items": {"type": "string"},
         },
-        "closing_recommendation": {"type": "string"},
-        "metadata": {
-            "type": "object",
-            "additionalProperties": True,
-        },
+                
     },
 }
 
@@ -238,45 +253,21 @@ CLIENT_ASSESSMENT_REPORT_SCHEMA: dict[str, Any] = {
 SYSTEM_INSTRUCTIONS = """
 You are a senior AI transformation consultant preparing a client-facing workflow AI assessment.
 
-Your job is to turn structured workflow evidence, LLM workflow analysis, and the agentic readiness blueprint into a persuasive but grounded report.
+Write for business and technology leaders. Be specific, practical, candid, and concise. Make a clear recommendation about what to build first, what not to automate yet, and why.
 
-Important balance:
-- Be more insightful than a compliance checklist.
-- Identify non-obvious opportunities and workflow redesign implications.
-- You are expected to synthesize strategic implications from the evidence, as long as you clearly distinguish interpretation from documented fact.
-- You may recommend future-state workflow improvements.
-- You may be candid about risk, organizational readiness, missing data, and where automation should not be used yet.
-- Do not invent workflow facts, systems, approvals, actors, or policies.
-- Clearly separate grounded observations from strategic interpretation.
-- Do not recommend autonomous write actions unless the blueprint supports them.
-- Preserve human approval where the evidence or blueprint requires it.
-- Write for business and technology leaders, not engineers.
-- Avoid generic AI hype.
-- Avoid dry artifact language.
-- Make the report feel useful enough that a leader would want to discuss it with their team.
-- Do not merely summarize the source artifacts. Make clear strategic judgments.
-- Start with a decisive assessment verdict in the executive summary.
-- Name the recommended first build clearly and explain why it is the right starting point.
-- Include at least three non-obvious insights that a workflow owner may not have considered.
-- Be willing to say "do not automate this yet" when autonomy would create risk.
-- Prefer concrete consulting language over cautious system language.
-- Use phrases like "The first build should...", "Do not start with...", "The hidden value is...", and "The main readiness gap is..." when supported by evidence.
-- Make the report feel like it came from a senior AI implementation advisor who is trying to help an executive decide what to build first, what not to build yet, and why.
-- Write with a clear point of view. The report should make a recommendation, not just list observations.
-- Use executive consulting language: "The real opportunity is...", "The first build should...", "Do not start with...", "The hidden bottleneck is...", "The unlock is..."
-- Avoid repeating safety constraints in every section. State the major boundaries clearly, then focus on business value, user experience, and implementation strategy.
-- Make the recommendation feel like a product concept, not just a control posture.
-- Describe what the first build would actually do for a user during the workflow.
-- Include practical examples of the assistant's output or behavior when useful.
-- Explain why the recommended first build is better than the obvious but riskier automation target.
-- Prioritize insight over completeness. Do not turn every section into a checklist.
-- The executive summary should open with a verdict sentence, then a product recommendation, then the primary business reason, then the main constraint.
-- Keep the executive summary to two concise paragraphs.
-- For the recommended product concept, avoid generic capability descriptions.
-- Describe one concrete moment in the workflow where the product changes the user's experience.
-- Include a sample assistant output that looks like something the user would actually see on screen.
-- Make the product concept section suitable for a live demo or hiring-manager walkthrough.
-- Avoid vague benefit language such as "improves efficiency" unless you explain exactly what work changes.
+Use only the supplied workflow packet, LLM workflow analysis, readiness blueprint, and packet-quality review as evidence. Do not invent workflow facts, systems, approvals, roles, policies, metrics, or constraints.
+
+For cost, you may provide an order-of-magnitude planning range when exact pricing is not supported, but only when you clearly label it as planning guidance rather than a vendor quote. Make the uncertainty visible by stating confidence level, assumptions, exclusions, and inputs needed to refine the estimate.
+
+You may synthesize strategic implications from the evidence, but distinguish documented facts from interpretation. When risk, readiness, business value, cost, or ROI depends on missing information, say so directly.
+
+Avoid generic AI hype, compliance-checklist language, and repeated safety disclaimers. Prefer clear consulting language over cautious system language.
+
+Do not recommend autonomous write actions, external communications, release, disclosure, denial, closure, fee actions, redaction execution, or system updates unless the provided readiness blueprint explicitly supports them.
+
+Make packet-quality findings a visible part of the product value. Do not hide material findings merely to shorten the report. Compress lower-severity findings when needed, but preserve traceability and actionability.
+
+The final report should help an executive understand four things: where AI can create value, where the workflow is not ready, what the safest useful first build should be, and what issues the packet-quality review surfaced that must be resolved before broader automation.
 """.strip()
 
 
@@ -300,16 +291,39 @@ def generate_client_assessment_report(
     user_prompt = "\n\n".join(
         [
             f"Create a client-facing AI workflow assessment report for workflow_id={workflow_id}, run_id={run_id}.",
-            "The report should be readable, strategic, and specific to the workflow.",
-            "Start with a one-page executive brief suitable for a C-level reader.",
-            "The executive brief must answer: proceed or not, what to build first, why, what it will take, what it may cost if assumptions allow, expected ROI/value, and what decisions are needed.",
-            "For cost and ROI, do not fake precision. Provide ranges, confidence, assumptions, and inputs needed to quantify when exact values are not supported.",
+            "The report should be readable, strategic, concise, and specific to the workflow.",
+            "Target total report length: 2,000 to 3,400 words when packet-quality findings are substantial. Prioritize complete material finding inventory over forcing the report below target length.",
+            "Prefer fewer, stronger findings over exhaustive lists.",
+            "Do not restate the same recommendation across sections.",
+            "Each section must add new information rather than repeat the Executive Brief.",
+            "State major no-go boundaries only in the Executive Brief and Controls and Human Review section unless a specific finding requires mention elsewhere.",
+            "Limit Non-Obvious Insights to 5 bullets.",
+            "Limit Highest-Value AI Use Cases to 4 use cases.",
+            "Limit Controls and Human Review to 6 to 8 controls.",
+            "Limit Implementation Roadmap to 4 phases.",
+            "Limit Success Metrics to 6 to 8 metrics.",
+            "Limit Open Questions to 8 questions.",
             "Use the provided materials as evidence. Do not invent facts not supported by these materials.",
-            "You may offer strategic interpretation and future-state recommendations when clearly grounded in the materials.",
+            "For cost, provide an order-of-magnitude planning range when exact pricing is not supported. Make uncertainty visible with confidence, assumptions, exclusions, and inputs needed. Label the range as planning guidance, not a vendor quote.",
+            "For ROI, distinguish theoretical value ceiling from forecast. State confidence, exclusions, and required inputs rather than pretending precision.",
             "The PACKET QUALITY REVIEW is mandatory governance evidence when provided.",
-            "You must explicitly address every reconciled critical/high packet-quality finding in the assessment verdict, executive summary, recommended first build, controls, roadmap, or open questions.",
+            "Packet Quality Findings must be a complete material finding inventory, not a severity-filtered summary.",
+            "Include all reconciled packet-quality findings supplied by the packet-quality review, regardless of severity, up to 12 findings.",
+            "If more than 12 reconciled findings are supplied, include all Critical and High findings, then summarize Medium and Low findings by theme.",
+            "Do not omit Medium or Low findings solely to reduce report length; compress their prose instead.",
+            "Critical and High findings should include clear why-it-matters and recommended-resolution language.",
+            "Medium and Low findings should be concise but still traceable and actionable.",
+            "If a client no-go list, governance boundary, or automation policy omits irreversible external actions, consequential workflow decisions, or write actions, include that as a Critical packet-quality finding.",
+            "Use packet record IDs when provided, such as REC-002. Do not replace them with generic phrases or altered IDs.",
+            "Detection source must clearly identify the primary detection layer as either deterministic or adversarial.",
+            "Do not bury packet-quality defects only inside recommendations, roadmap items, controls, or Open Questions.",
+            "Packet-quality defects should appear as distinct Packet Quality Findings when they are material, traceable, and actionable, even if severity is Medium or Low.",
+            "If a finding concerns vague escalation authority, missing appeal/challenge path, undeclared ownership, missing participant authority, missing system inventory, or omitted irreversible actions, include it as a distinct packet-quality finding when supported by the packet-quality review.",
+            "Do not repeat the same packet-quality finding across assessment verdict, executive summary, controls, roadmap, and open questions.",
+            "Critical and High packet-quality findings must appear in the Packet Quality Findings section, not only in narrative discussion or Open Questions.",
             "Do not claim the workflow is model-safe, release-ready, automation-ready, or suitable for the recommended first build unless the report explains how critical packet-quality findings are constrained, remediated, or excluded from scope.",
-            "Do not bury critical packet-quality findings only in open questions.",
+            "Do not include workflow_id, run_id, local run IDs, test slugs, file paths, policy-server names, evaluation-profile names, unrelated harness/configuration issues, or implementation/debug identifiers in client-facing text.",
+            "Use the business workflow name only. If the supplied artifacts contain conflicting internal identifiers, omit them from the client report and focus on the business workflow.",
             "Return only the structured JSON requested by the schema.",
             "",
             "NORMALIZED WORKFLOW PACKET:",
@@ -331,9 +345,8 @@ def generate_client_assessment_report(
         user_prompt=user_prompt,
         json_schema=CLIENT_ASSESSMENT_REPORT_SCHEMA,
         schema_name="client_assessment_report",
+        strict=True,
     )
-
-    _validate_executive_brief(report)
 
     report["metadata"] = {
         **report.get("metadata", {}),
@@ -355,8 +368,310 @@ def generate_client_assessment_report(
         ],
     }
 
+    _sanitize_client_facing_report_title(
+        report=report,
+        workflow_id=workflow_id,
+        run_id=run_id,
+    )
+
+    _validate_client_assessment_report(report)
+
     return report
 
+
+def _sanitize_client_facing_report_title(
+    *,
+    report: dict[str, Any],
+    workflow_id: str,
+    run_id: str,
+) -> None:
+    title = str(report.get("report_title") or "").strip()
+
+    if " (workflow_id=" in title:
+        title = title.split(" (workflow_id=", 1)[0].strip()
+
+    for token in [workflow_id, run_id]:
+        title = title.replace(token, "").strip(" -_(),")
+
+    report["report_title"] = title or "AI Workflow Assessment"
+
+
+def _validate_no_internal_client_leaks(
+    report: dict[str, Any],
+    *,
+    workflow_id: str,
+    run_id: str,
+) -> None:
+    client_facing_report = {
+        key: value
+        for key, value in report.items()
+        if key != "metadata"
+    }
+
+    serialized = json.dumps(client_facing_report, ensure_ascii=False).lower()
+
+    blocked_terms = [
+        workflow_id.lower(),
+        run_id.lower(),
+        "workflow_id=",
+        "run_id=",
+        "public_records_test",
+        "run_local_",
+        "policy-server",
+        "policy_server",
+        "employee-access workflow",
+        "employee access workflow",
+    ]
+
+    found_terms = sorted(
+        {
+            term
+            for term in blocked_terms
+            if term and term in serialized
+        }
+    )
+
+    if found_terms:
+        raise ValueError(
+            "Generated report contains internal implementation identifiers: "
+            + ", ".join(found_terms)
+        )
+
+def _validate_client_assessment_report(report: dict[str, Any]) -> None:
+    _validate_executive_brief(report)
+
+    required_string_fields = [
+        "report_title",
+    ]
+
+    for field_name in required_string_fields:
+        _require_nonblank_string(report, field_name, f"Generated report.{field_name}")
+
+    required_list_fields = [
+        "non_obvious_insights",
+        "highest_value_use_cases",
+        "where_agents_are_not_ready_yet",
+        "controls_and_human_review",
+        "implementation_roadmap",
+        "success_metrics",
+        "open_questions",
+        "packet_quality_findings",
+    ]
+
+    for field_name in required_list_fields:
+        _require_nonempty_list(report, field_name, f"Generated report.{field_name}")
+
+    product_concept = _require_nonempty_dict(
+        report,
+        "recommended_product_concept",
+        "Generated report.recommended_product_concept",
+    )
+    _validate_recommended_product_concept(product_concept)
+
+    first_build = _require_nonempty_dict(
+        report,
+        "recommended_first_build",
+        "Generated report.recommended_first_build",
+    )
+    _validate_recommended_first_build(first_build)
+
+    metadata = _require_nonempty_dict(report, "metadata", "Generated report.metadata")
+
+    for index, item in enumerate(report["highest_value_use_cases"]):
+        if not isinstance(item, dict):
+            raise ValueError(
+                f"Generated report.highest_value_use_cases[{index}] is not an object."
+            )
+        for field_name in [
+            "use_case",
+            "why_it_matters",
+            "recommended_autonomy",
+            "business_value",
+        ]:
+            _require_nonblank_string(
+                item,
+                field_name,
+                f"Generated report.highest_value_use_cases[{index}].{field_name}",
+            )
+
+    for index, item in enumerate(report["packet_quality_findings"]):
+        if not isinstance(item, dict):
+            raise ValueError(
+                f"Generated report.packet_quality_findings[{index}] is not an object."
+            )
+
+        for field_name in [
+            "severity",
+            "finding",
+            "evidence_reference",
+            "why_it_matters",
+            "recommended_resolution",
+            "detection_source",
+        ]:
+            _require_nonblank_string(
+                item,
+                field_name,
+                f"Generated report.packet_quality_findings[{index}].{field_name}",
+            )
+
+    for index, item in enumerate(report["controls_and_human_review"]):
+        if not isinstance(item, dict):
+            raise ValueError(
+                f"Generated report.controls_and_human_review[{index}] is not an object."
+            )
+        for field_name in ["control_area", "recommendation", "reason"]:
+            _require_nonblank_string(
+                item,
+                field_name,
+                f"Generated report.controls_and_human_review[{index}].{field_name}",
+            )
+
+    for index, item in enumerate(report["implementation_roadmap"]):
+        if not isinstance(item, dict):
+            raise ValueError(
+                f"Generated report.implementation_roadmap[{index}] is not an object."
+            )
+        for field_name in ["phase", "focus", "outcome"]:
+            _require_nonblank_string(
+                item,
+                field_name,
+                f"Generated report.implementation_roadmap[{index}].{field_name}",
+            )
+
+    workflow_id = str(metadata.get("workflow_id") or "")
+    run_id = str(metadata.get("run_id") or "")
+
+    _validate_no_internal_client_leaks(
+        report,
+        workflow_id=workflow_id,
+        run_id=run_id,
+    )
+    # Do not hard-fail on report length after a paid model call.
+    # Length is checked as a post-run quality signal instead.
+
+
+def _validate_recommended_product_concept(product_concept: dict[str, Any]) -> None:
+    for field_name in [
+        "name",
+        "one_sentence_pitch",
+        "workflow_moment",
+        "demo_moment",
+    ]:
+        _require_nonblank_string(
+            product_concept,
+            field_name,
+            f"Generated report.recommended_product_concept.{field_name}",
+        )
+
+    for field_name in [
+        "target_users",
+        "sample_assistant_output",
+        "what_ai_does",
+        "what_ai_does_not_do",
+    ]:
+        _require_nonempty_list(
+            product_concept,
+            field_name,
+            f"Generated report.recommended_product_concept.{field_name}",
+        )
+
+    before_after = _require_nonempty_dict(
+        product_concept,
+        "before_after",
+        "Generated report.recommended_product_concept.before_after",
+    )
+
+    for field_name in ["before", "after"]:
+        _require_nonblank_string(
+            before_after,
+            field_name,
+            f"Generated report.recommended_product_concept.before_after.{field_name}",
+        )
+
+    for index, item in enumerate(product_concept["sample_assistant_output"]):
+        if not isinstance(item, dict):
+            raise ValueError(
+                "Generated report.recommended_product_concept."
+                f"sample_assistant_output[{index}] is not an object."
+            )
+        for field_name in ["label", "value"]:
+            _require_nonblank_string(
+                item,
+                field_name,
+                "Generated report.recommended_product_concept."
+                f"sample_assistant_output[{index}].{field_name}",
+            )
+
+def _validate_recommended_first_build(first_build: dict[str, Any]) -> None:
+    for field_name in [
+        "name",
+        "description",
+        "why_this_first",
+        "what_it_should_not_do",
+        "expected_user_experience",
+    ]:
+        _require_nonblank_string(
+            first_build,
+            field_name,
+            f"Generated report.recommended_first_build.{field_name}",
+        )
+
+
+def _require_nonblank_string(
+    source: dict[str, Any],
+    field_name: str,
+    label: str,
+) -> str:
+    value = source.get(field_name)
+    if not isinstance(value, str) or not value.strip():
+        raise ValueError(f"{label} is blank.")
+    return value
+
+
+def _require_nonempty_list(
+    source: dict[str, Any],
+    field_name: str,
+    label: str,
+) -> list[Any]:
+    value = source.get(field_name)
+    if not isinstance(value, list) or not value:
+        raise ValueError(f"{label} is blank.")
+
+    if not any(_has_nonblank_content(item) for item in value):
+        raise ValueError(f"{label} is blank.")
+
+    return value
+
+
+def _require_nonempty_dict(
+    source: dict[str, Any],
+    field_name: str,
+    label: str,
+) -> dict[str, Any]:
+    value = source.get(field_name)
+    if not isinstance(value, dict) or not value:
+        raise ValueError(f"{label} is missing.")
+
+    if not _has_nonblank_content(value):
+        raise ValueError(f"{label} is blank.")
+
+    return value
+
+
+def _has_nonblank_content(value: Any) -> bool:
+    if value is None:
+        return False
+
+    if isinstance(value, str):
+        return bool(value.strip())
+
+    if isinstance(value, list):
+        return any(_has_nonblank_content(item) for item in value)
+
+    if isinstance(value, dict):
+        return any(_has_nonblank_content(item) for item in value.values())
+
+    return True
 
 def _validate_executive_brief(report: dict[str, Any]) -> None:
     executive_brief = report.get("executive_brief")
@@ -396,9 +711,6 @@ def render_client_assessment_report_markdown(report: dict[str, Any]) -> str:
     lines.append("")
 
     _render_executive_brief(lines, report.get("executive_brief", {}))
-
-    _section(lines, "Assessment Verdict", report.get("assessment_verdict"))
-    _section(lines, "Executive Summary", report.get("executive_summary"))
 
     product_concept = report.get("recommended_product_concept", {})
 
@@ -457,25 +769,44 @@ def render_client_assessment_report_markdown(report: dict[str, Any]) -> str:
     lines.append(product_concept.get("demo_moment", ""))
     lines.append("")
 
+    lines.append("## Packet Quality Findings")
+    lines.append("")
+
+    severity_rank = {
+        "critical": 0,
+        "high": 1,
+        "medium": 2,
+        "low": 3,
+    }
+
+    packet_quality_findings = sorted(
+        report.get("packet_quality_findings", []),
+        key=lambda item: (
+            severity_rank.get(str(item.get("severity", "")).strip().lower(), 99),
+            str(item.get("finding", "")).strip().lower(),
+        ),
+    )
+
+    for item in packet_quality_findings:
+    
+        lines.append(f"### {item.get('severity')}: {item.get('finding')}")
+        lines.append("")
+        lines.append(f"**Evidence reference:** {item.get('evidence_reference')}")
+        lines.append("")
+        lines.append(f"**Why it matters:** {item.get('why_it_matters')}")
+        lines.append("")
+        lines.append(f"**Recommended resolution:** {item.get('recommended_resolution')}")
+        lines.append("")
+        lines.append(f"**Detection source:** {item.get('detection_source')}")
+        lines.append("")
+
     lines.append("## Non-Obvious Insights")
     lines.append("")
     for item in report.get("non_obvious_insights", []):
         lines.append(f"- {item}")
     lines.append("")
 
-    lines.append("## Executive Decisions Needed")
-    lines.append("")
-    for item in report.get("executive_decisions_needed", []):
-        lines.append(f"- {item}")
-    lines.append("")
-
-    _section(lines, "AI Opportunity Thesis", report.get("ai_opportunity_thesis"))
-    _section(
-        lines,
-        "What This Workflow Is Really Asking For",
-        report.get("what_the_workflow_is_really_asking_for"),
-    )
-
+    
     lines.append("## Highest-Value AI Use Cases")
     lines.append("")
     for item in report.get("highest_value_use_cases", []):
@@ -508,8 +839,7 @@ def render_client_assessment_report_markdown(report: dict[str, Any]) -> str:
     lines.append(f"**Expected user experience:** {first_build.get('expected_user_experience', '')}")
     lines.append("")
 
-    _section(lines, "Future-State Workflow", report.get("future_state_workflow"))
-
+   
     lines.append("## Controls and Human Review")
     lines.append("")
     for item in report.get("controls_and_human_review", []):
@@ -541,8 +871,6 @@ def render_client_assessment_report_markdown(report: dict[str, Any]) -> str:
     for item in report.get("open_questions", []):
         lines.append(f"- {item}")
     lines.append("")
-
-    _section(lines, "Closing Recommendation", report.get("closing_recommendation"))
 
     return "\n".join(lines).strip() + "\n"
 

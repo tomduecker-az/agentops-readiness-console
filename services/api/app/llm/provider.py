@@ -25,6 +25,7 @@ def generate_structured_analysis(
     user_prompt: str,
     json_schema: dict[str, Any],
     schema_name: str = "llm_workflow_analysis",
+    strict: bool = False,
 ) -> dict[str, Any]:
     settings = get_settings()
 
@@ -53,7 +54,7 @@ def generate_structured_analysis(
                 "type": "json_schema",
                 "name": schema_name,
                 "schema": json_schema,
-                "strict": False,
+                "strict": strict,
             }
         },
     }
