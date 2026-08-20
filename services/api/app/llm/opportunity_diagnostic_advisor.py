@@ -114,6 +114,7 @@ def generate_workflow_ai_opportunity_diagnostic(
         user_prompt=prompt,
         json_schema=WorkflowAIOpportunityDiagnostic.model_json_schema(),
         schema_name="workflow_ai_opportunity_diagnostic",
+        stage="opportunity_diagnostic",
     )
 
     raw_diagnostic.setdefault("workflow_id", workflow_id)

@@ -1,5 +1,5 @@
 from __future__ import annotations
-
+import os
 import json
 import subprocess
 import sys
@@ -43,14 +43,20 @@ def run_workflow_packet_assessment(
         )
 
     output_dir.mkdir(parents=True, exist_ok=True)
+    artifacts_dir.mkdir(parents=True, exist_ok=True)
+    reports_dir.mkdir(parents=True, exist_ok=True)
 
     technical_dir = output_dir / "technical"
     generated_workflow_root = output_dir / "generated_workflows"
     artifacts_dir = technical_dir / "artifacts"
     reports_dir = output_dir / "reports"
 
-    artifacts_dir.mkdir(parents=True, exist_ok=True)
-    reports_dir.mkdir(parents=True, exist_ok=True)
+    llm_usage_log_path = artifacts_dir / "llm_usage.jsonl"
+    llm_env = {
+        "AGENTOPS_LLM_USAGE_LOG_PATH": str(llm_usage_log_path),
+    }
+
+
 
     prepare_result = prepare_workflow_packet_v1(
         workbook_path=options.workbook_path,
@@ -126,9 +132,11 @@ def run_workflow_packet_assessment(
                 str(artifacts_dir),
                 "--skip-persist",
                 "--skip-audit",
+                
             ],
             step_name="mcp_llm_shadow_analysis",
             analysis_steps=analysis_steps,
+            env_overrides=llm_env,
         )
 
     if options.run_analysis:
@@ -157,6 +165,7 @@ def run_workflow_packet_assessment(
             analysis_steps=analysis_steps,
             allow_failure=True,
             expected_artifact_path=artifacts_dir / "llm_shadow_evaluation.json",
+            env_overrides=llm_env,
         )
 
         _run_module(
@@ -174,6 +183,7 @@ def run_workflow_packet_assessment(
             analysis_steps=analysis_steps,
             allow_failure=True,
             expected_artifact_path=artifacts_dir / "mcp_operational_evaluation.json",
+            env_overrides=llm_env,
         )
 
         _run_module(
@@ -191,6 +201,7 @@ def run_workflow_packet_assessment(
             analysis_steps=analysis_steps,
             allow_failure=True,
             expected_artifact_path=artifacts_dir / "evidence_grounding_evaluation.json",
+            env_overrides=llm_env,
         )
 
         _run_module(
@@ -208,6 +219,7 @@ def run_workflow_packet_assessment(
             ],
             step_name="agentic_readiness_blueprint",
             analysis_steps=analysis_steps,
+            env_overrides=llm_env,
         )
 
         if options.export_client_report:
@@ -266,6 +278,7 @@ def run_workflow_packet_assessment(
                 ],
                 step_name="client_assessment_report",
                 analysis_steps=analysis_steps,
+                env_overrides=llm_env,
             )
 
     result = {
@@ -316,13 +329,18 @@ def _run_module(
     analysis_steps: list[dict[str, Any]],
     allow_failure: bool = False,
     expected_artifact_path: Path | None = None,
+    env_overrides: dict[str, str] | None = None,
 ) -> None:
     command = [sys.executable, "-m", *args]
 
     print(f"\nRunning assessment step: {step_name}")
     print("+ " + " ".join(command))
 
-    completed_process = subprocess.run(command, check=False)
+    child_env = os.environ.copy()
+    if env_overrides:
+        child_env.update(env_overrides)
+
+    completed_process = subprocess.run(command, check=False, env=child_env,)
 
     step_status = "completed"
     warning = None

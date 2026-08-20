@@ -267,6 +267,7 @@ def run_llm_shadow_analysis(
         system_instructions=SYSTEM_INSTRUCTIONS,
         user_prompt=user_prompt,
         json_schema=LLM_WORKFLOW_ANALYSIS_SCHEMA,
+        stage="workflow_analysis",
     )
 
     analysis["metadata"] = {

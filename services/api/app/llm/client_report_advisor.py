@@ -346,6 +346,7 @@ def generate_client_assessment_report(
         json_schema=CLIENT_ASSESSMENT_REPORT_SCHEMA,
         schema_name="client_assessment_report",
         strict=True,
+        stage="client_assessment_report",
     )
 
     report["metadata"] = {

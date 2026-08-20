@@ -1,9 +1,7 @@
 from __future__ import annotations
-
 import json
 from datetime import UTC, datetime
 from typing import Any
-
 from audit_core import AuditEventType
 
 from app.core.config import get_settings
@@ -84,6 +82,7 @@ def run_mcp_llm_shadow_analysis(
         system_instructions=SYSTEM_INSTRUCTIONS,
         user_prompt=user_prompt,
         json_schema=LLM_WORKFLOW_ANALYSIS_SCHEMA,
+        stage="mcp_shadow_analysis",
     )
 
     model = settings.openai_model.strip() or "gpt-5.6-sol"

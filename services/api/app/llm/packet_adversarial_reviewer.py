@@ -192,6 +192,7 @@ def generate_packet_adversarial_review(
         user_prompt=user_prompt,
         json_schema=PACKET_ADVERSARIAL_REVIEW_SCHEMA,
         schema_name="packet_adversarial_review",
+        stage="packet_adversarial_review",
     )
 
     result.setdefault("metadata", {})

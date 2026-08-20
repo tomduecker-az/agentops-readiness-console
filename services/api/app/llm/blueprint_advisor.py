@@ -388,6 +388,7 @@ def generate_llm_blueprint_proposal(
         user_prompt=user_prompt,
         json_schema=LLM_BLUEPRINT_PROPOSAL_SCHEMA,
         schema_name="llm_blueprint_proposal",
+        stage="agentic_readiness_blueprint",
     )
 
     proposal["metadata"] = {
