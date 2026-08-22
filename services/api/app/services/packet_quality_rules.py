@@ -984,6 +984,10 @@ def _resolves_to_known_role(role: str, participant_keys: set[str]) -> bool:
     return False
 
 def _data_usage_mismatch_severity(field_name: Any) -> str:
+    # Do not infer business severity from field-name keywords.
+    # A data-dictionary/step mismatch is a structural packet-quality issue.
+    # Future escalation should use explicit packet metadata such as
+    # criticality, decision_trigger, governing_control_id, or data classification.
     return "medium"
 
 def _same_source_or_business_family(left: dict[str, Any], right: dict[str, Any]) -> bool:
