@@ -31,6 +31,26 @@ SENSITIVE_DATA_CATEGORIES = {
     "sensitive",
 }
 
+NON_OPERATIONAL_SOURCE_SYSTEM_KEYS = {
+    "",
+    "sample_data",
+    "sample_records",
+    "example_data",
+    "test_data",
+    "seed_data",
+    "derived",
+    "calculated",
+    "not_specified",
+    "not_applicable",
+    "n_a",
+    "na",
+    "none",
+    "null",
+}
+
+
+def _is_non_operational_source_system(source_system: Any) -> bool:
+    return _slug(source_system) in NON_OPERATIONAL_SOURCE_SYSTEM_KEYS
 
 def run_packet_quality_rules(packet_claim_graph: dict[str, Any]) -> dict[str, Any]:
     claims = packet_claim_graph.get("claims", [])
@@ -40,14 +60,20 @@ def run_packet_quality_rules(packet_claim_graph: dict[str, Any]) -> dict[str, An
 
     findings.extend(_rule_step_data_references_declared(claims, indexes))
     findings.extend(_rule_data_dictionary_step_references_declared(claims, indexes))
+    findings.extend(_rule_data_dictionary_usage_reflected_in_step_data_used(claims, indexes))
     findings.extend(_rule_step_systems_declared(claims, indexes))
+    findings.extend(_rule_data_source_systems_declared(claims, indexes))
     findings.extend(_rule_controls_apply_to_existing_steps(claims, indexes))
     findings.extend(_rule_step_owners_resolve_to_participants(claims, indexes))
     findings.extend(_rule_control_approvers_resolve_to_participants(claims, indexes))
+    findings.extend(_rule_target_system_owners_resolve_to_participants(claims, indexes))
+    findings.extend(_rule_declared_participants_have_operational_use(claims))
+    findings.extend(_rule_declared_target_systems_have_operational_use(claims))
     findings.extend(_rule_approval_required_has_role(claims))
     findings.extend(_rule_sensitive_data_not_allowed_without_redaction(claims))
     findings.extend(_rule_similar_fields_have_consistent_handling(claims))
     findings.extend(_rule_sample_record_fields_declared(claims, indexes))
+    findings.extend(_rule_sample_record_segregation_of_duties(claims))
 
     return {
         "artifact_type": "packet_quality_deterministic_review",
@@ -60,7 +86,7 @@ def run_packet_quality_rules(packet_claim_graph: dict[str, Any]) -> dict[str, An
         "metadata": {
             "finding_count": len(findings),
             "input_claim_count": packet_claim_graph.get("metadata", {}).get("claim_count"),
-            "rule_count": 10,
+            "rule_count": 16,
         },
     }
 
@@ -146,6 +172,72 @@ def _rule_data_dictionary_step_references_declared(
     return findings
 
 
+def _rule_data_dictionary_usage_reflected_in_step_data_used(
+    claims: list[dict[str, Any]],
+    indexes: dict[str, Any],
+) -> list[PacketQualityFinding]:
+    declared_steps = set(indexes.get("workflow_steps", {}).keys())
+
+    step_data_pairs = {
+        (
+            _slug(claim["properties"].get("step_id")),
+            _slug(claim["properties"].get("field_name")),
+        )
+        for claim in _claims_by_type(claims, "step_data_usage_claim")
+    }
+
+    findings: list[PacketQualityFinding] = []
+
+    for claim in _claims_by_type(claims, "data_step_usage_claim"):
+        field_name = claim["properties"].get("field_name")
+        step_id = claim["properties"].get("step_id")
+
+        field_key = _slug(field_name)
+        step_key = _slug(step_id)
+
+        if not field_key or not step_key:
+            continue
+
+        # Avoid duplicating the existing "Data Dictionary references a workflow step
+        # that does not exist" finding.
+        if step_key not in declared_steps:
+            continue
+
+        if (step_key, field_key) in step_data_pairs:
+            continue
+
+        severity = _data_usage_mismatch_severity(field_name)
+
+        findings.append(
+            _finding(
+                rule_id="GRAPH-DATA-004",
+                rule_type="cross_sheet_reference",
+                category="data_dictionary_usage_not_reflected_in_step",
+                severity=severity,
+                title="Data Dictionary field is mapped to a workflow step that does not list it as used data",
+                evidence={
+                    "field_name": field_name,
+                    "step_id": step_id,
+                    "source_claim_id": claim["claim_id"],
+                    "source": claim["source"],
+                },
+                implication=(
+                    "The Data Dictionary says this field is used by a workflow step, "
+                    "but the Workflow Steps sheet does not list the field in that step's data_used values. "
+                    "This weakens traceability and may indicate that a control input, flag, threshold, "
+                    "or decision signal has no actual workflow consumer."
+                ),
+                recommendation=(
+                    "Either add the field to the workflow step's data_used list, correct the Data Dictionary "
+                    "used_in_steps mapping, or document why the field is retained but not consumed by the step."
+                ),
+                confidence="high",
+                sequence=len(findings) + 1,
+            )
+        )
+
+    return findings
+
 def _rule_step_systems_declared(
     claims: list[dict[str, Any]],
     indexes: dict[str, Any],
@@ -203,6 +295,8 @@ def _rule_data_source_systems_declared(
         source_system = claim["properties"].get("source_system")
         field_name = claim["properties"].get("field_name")
         system_key = _slug(source_system)
+        if _is_non_operational_source_system(source_system):
+            continue
 
         if system_key and system_key not in declared_systems:
             findings.append(
@@ -281,7 +375,7 @@ def _rule_step_owners_resolve_to_participants(
         owner_role = claim["properties"].get("owner_role")
         step_id = claim["properties"].get("step_id")
 
-        if owner_role and not _resolves_to_known_role(owner_role, participants):
+        if owner_role and not _resolves_to_known_role_strict(owner_role, participants):
             findings.append(
                 _finding(
                     rule_id="GRAPH-ROLE-001",
@@ -324,7 +418,7 @@ def _rule_control_approvers_resolve_to_participants(
         approval_role = claim["properties"].get("approval_role")
         control_id = claim["properties"].get("control_id")
 
-        if approval_required is True and approval_role and not _resolves_to_known_role(approval_role, participants):
+        if approval_required is True and approval_role and not _resolves_to_known_role_strict(approval_role, participants):
             findings.append(
                 _finding(
                     rule_id="GRAPH-ROLE-002",
@@ -578,6 +672,235 @@ def _rule_sample_record_fields_declared(
 
     return findings
 
+def _rule_target_system_owners_resolve_to_participants(
+    claims: list[dict[str, Any]],
+    indexes: dict[str, Any],
+) -> list[PacketQualityFinding]:
+    participants = set(indexes.get("participants", {}).keys())
+    findings: list[PacketQualityFinding] = []
+
+    for claim in _claims_by_type(claims, "target_system_claim"):
+        props = claim.get("properties", {})
+        system_name = props.get("system_name") or claim.get("subject_id")
+        owner_role = props.get("owner_role")
+
+        if owner_role and not _resolves_to_known_role_strict(owner_role, participants):
+            findings.append(
+                _finding(
+                    rule_id="GRAPH-ROLE-003",
+                    rule_type="cross_sheet_reference",
+                    category="unresolved_target_system_owner",
+                    severity="medium",
+                    title="Target system owner does not resolve to a declared participant",
+                    evidence={
+                        "system_name": system_name,
+                        "owner_role": owner_role,
+                        "declared_participant_keys": sorted(participants),
+                        "source_claim_id": claim["claim_id"],
+                        "source": claim["source"],
+                    },
+                    implication=(
+                        "The packet declares a system owner that is not part of the declared participant model. "
+                        "This weakens accountability for source access, integration boundaries, data quality, "
+                        "and operational ownership."
+                    ),
+                    recommendation=(
+                        "Use a role that appears in Primary Participants, or add the missing system-owner role "
+                        "to Primary Participants with its responsibilities clearly defined."
+                    ),
+                    confidence="high",
+                    sequence=len(findings) + 1,
+                )
+            )
+
+    return findings
+
+def _rule_declared_participants_have_operational_use(
+    claims: list[dict[str, Any]],
+) -> list[PacketQualityFinding]:
+    used_role_keys: set[str] = set()
+
+    operational_claim_types = {
+        "step_owner_role_claim",
+        "control_approval_role_claim",
+        "target_system_claim",
+        "sample_record_claim",
+    }
+
+    for claim in claims:
+        if claim.get("claim_type") not in operational_claim_types:
+            continue
+
+        props = claim.get("properties", {})
+
+        for _field_name, role_value in _role_reference_values_from_properties(props):
+            used_role_keys.add(_slug(role_value))
+
+    used_role_keys.discard("")
+
+    findings: list[PacketQualityFinding] = []
+
+    for claim in _claims_by_type(claims, "participant_claim"):
+        props = claim.get("properties", {})
+        role_name = props.get("role_name")
+        role_key = _slug(role_name or claim.get("subject_id"))
+
+        if not role_key:
+            continue
+
+        if role_key in used_role_keys:
+            continue
+
+        findings.append(
+            _finding(
+                rule_id="GRAPH-ROLE-004",
+                rule_type="reverse_reference",
+                category="declared_participant_without_operational_use",
+                severity="low",
+                title="Declared participant has no explicit operational responsibility in the packet",
+                evidence={
+                    "role_name": role_name,
+                    "participant_key": role_key,
+                    "used_role_keys": sorted(used_role_keys),
+                    "source_claim_id": claim["claim_id"],
+                    "source": claim["source"],
+                },
+                implication=(
+                    "The role is listed as a primary participant, but the packet does not show it owning a step, "
+                    "approving a control, owning a system, or appearing as a sample-record actor. This may mean "
+                    "the workflow documentation is incomplete, the role is contextual only, or the participant "
+                    "list overstates the operating model."
+                ),
+                recommendation=(
+                    "Either assign the participant explicit workflow responsibilities, document its review or "
+                    "notification role, or remove it from Primary Participants if it is not part of the operating workflow."
+                ),
+                confidence="high",
+                sequence=len(findings) + 1,
+            )
+        )
+
+    return findings
+
+def _rule_declared_target_systems_have_operational_use(
+    claims: list[dict[str, Any]],
+) -> list[PacketQualityFinding]:
+    used_system_keys: set[str] = set()
+
+    for claim in _claims_by_type(claims, "step_system_usage_claim"):
+        used_system_keys.add(_slug(claim.get("properties", {}).get("system_name")))
+
+    for claim in _claims_by_type(claims, "data_source_system_claim"):
+        source_system = claim.get("properties", {}).get("source_system")
+        if _is_non_operational_source_system(source_system):
+            continue
+        used_system_keys.add(_slug(source_system))
+
+    used_system_keys.discard("")
+
+    findings: list[PacketQualityFinding] = []
+
+    for claim in _claims_by_type(claims, "target_system_claim"):
+        props = claim.get("properties", {})
+        system_name = props.get("system_name")
+        system_key = _slug(system_name or claim.get("subject_id"))
+
+        if not system_key:
+            continue
+
+        if system_key in used_system_keys:
+            continue
+
+        findings.append(
+            _finding(
+                rule_id="GRAPH-SYS-003",
+                rule_type="reverse_reference",
+                category="declared_target_system_without_operational_use",
+                severity="medium",
+                title="Declared target system has no explicit workflow or data-source use",
+                evidence={
+                    "system_name": system_name,
+                    "system_key": system_key,
+                    "used_system_keys": sorted(used_system_keys),
+                    "source_claim_id": claim["claim_id"],
+                    "source": claim["source"],
+                },
+                implication=(
+                    "The system is declared in the target-system inventory, but the packet does not show it being "
+                    "used by a workflow step or as a data source. This may indicate an incomplete workflow map, "
+                    "an out-of-scope system, or a missing integration/data-lineage dependency."
+                ),
+                recommendation=(
+                    "Either reference the system in the relevant workflow steps or data fields, document why it is "
+                    "contextual or future-state only, or remove it from the target-system inventory for this assessment."
+                ),
+                confidence="high",
+                sequence=len(findings) + 1,
+            )
+        )
+
+    return findings
+
+def _rule_sample_record_segregation_of_duties(
+    claims: list[dict[str, Any]],
+) -> list[PacketQualityFinding]:
+    findings: list[PacketQualityFinding] = []
+
+    sod_field_pairs = [
+        ("preparer_role", "approver_role"),
+        ("preparer_user", "approver_user"),
+        ("prepared_by", "approved_by"),
+        ("posted_by", "approved_by"),
+        ("submitter_role", "approver_role"),
+        ("requester_role", "approver_role"),
+    ]
+
+    for claim in _claims_by_type(claims, "sample_record_claim"):
+        props = claim.get("properties", {})
+        record_id = props.get("record_id") or claim.get("subject_id")
+
+        for left_field, right_field in sod_field_pairs:
+            left_value = _text(props.get(left_field))
+            right_value = _text(props.get(right_field))
+
+            if not left_value or not right_value:
+                continue
+
+            if _slug(left_value) != _slug(right_value):
+                continue
+
+            findings.append(
+                _finding(
+                    rule_id="GRAPH-SAMPLE-002",
+                    rule_type="sample_record_consistency",
+                    category="sample_segregation_of_duties_conflict",
+                    severity="high",
+                    title="Sample record uses the same role or person for preparation and approval",
+                    evidence={
+                        "record_id": record_id,
+                        "left_field": left_field,
+                        "left_value": left_value,
+                        "right_field": right_field,
+                        "right_value": right_value,
+                        "source_claim_id": claim["claim_id"],
+                        "source": claim["source"],
+                    },
+                    implication=(
+                        "The sample record does not demonstrate segregation between preparation "
+                        "and approval. In a controlled workflow, this may indicate that the packet "
+                        "cannot prove independent review or that historical data contains a control failure."
+                    ),
+                    recommendation=(
+                        "Clarify whether the values represent roles or specific individuals. Capture "
+                        "identity-level preparer and approver evidence, enforce independence where required, "
+                        "and correct or explain the sample record before using it as ground truth."
+                    ),
+                    confidence="high",
+                    sequence=len(findings) + 1,
+                )
+            )
+
+    return findings
 
 def _finding(
     *,
@@ -606,9 +929,34 @@ def _finding(
     )
 
 
+def _role_reference_values_from_properties(
+    properties: dict[str, Any],
+) -> list[tuple[str, str]]:
+    role_references: list[tuple[str, str]] = []
+
+    for field_name, value in properties.items():
+        field_key = _slug(field_name)
+
+        if field_key != "role" and not field_key.endswith("_role"):
+            continue
+
+        role_value = _text(value)
+        if not role_value:
+            continue
+
+        role_references.append((field_name, role_value))
+
+    return role_references
+
 def _claims_by_type(claims: list[dict[str, Any]], claim_type: str) -> list[dict[str, Any]]:
     return [claim for claim in claims if claim.get("claim_type") == claim_type]
 
+def _resolves_to_known_role_strict(role: str, participant_keys: set[str]) -> bool:
+    role_key = _slug(role)
+    if not role_key:
+        return False
+
+    return role_key in participant_keys
 
 def _resolves_to_known_role(role: str, participant_keys: set[str]) -> bool:
     role_key = _slug(role)
@@ -635,6 +983,8 @@ def _resolves_to_known_role(role: str, participant_keys: set[str]) -> bool:
 
     return False
 
+def _data_usage_mismatch_severity(field_name: Any) -> str:
+    return "medium"
 
 def _same_source_or_business_family(left: dict[str, Any], right: dict[str, Any]) -> bool:
     left_source = _slug(left.get("source_system"))
